@@ -57,12 +57,25 @@ public class CrawlerThread implements Runnable {
                     continue;
                 }
 
-                // ------- page ----------
-
-                // html
-                Document html = JsoupUtil.load(link, null, null, false);
+                // ------- html ----------
+                Document html = JsoupUtil.load(link, null, null, false);    // index pages, not valid white
                 if (html == null) {
                     continue;
+                }
+
+                // ------- child link list (FIFO队列,广度优先) ----------
+                Set<String> links = JsoupUtil.findLinks(html);
+                if (links != null && links.size() > 0) {
+                    for (String item : links) {
+                        if (crawler.validWhiteUrl(item)) {
+                            crawler.addUrl(item);   // child link, valid white
+                        }
+                    }
+                }
+
+                // ------- pagevo ----------
+                if (!crawler.validWhiteUrl(link)) {
+                    continue;   // pagevo parse, valid white
                 }
 
                 // pagevo class-field info
@@ -111,14 +124,6 @@ public class CrawlerThread implements Runnable {
 
                         // pagevo output
                         crawler.getPageParser().parse(link, html, pageVo);
-                    }
-                }
-
-                // ------- child link list (FIFO队列,广度优先) ----------
-                Set<String> links = JsoupUtil.findLinks(html);
-                if (links != null && links.size() > 0) {
-                    for (String item : links) {
-                        crawler.addUrl(item);
                     }
                 }
             } catch (Exception e) {

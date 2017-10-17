@@ -62,9 +62,37 @@ public class XxlCrawler {
 
     // ---------------------- crawler url ----------------------
 
-
+    /**
+     * get page parser
+     *
+     * @return
+     */
     public PageParser getPageParser() {
         return pageParser;
+    }
+
+    /**
+     * valid url, include white url
+     * @param link
+     * @return
+     */
+    public boolean validWhiteUrl(String link){
+        if (!UrlUtil.isUrl(link)) {
+            return false; // check URL格式
+        }
+
+        if (whiteUrlRegexs!=null && whiteUrlRegexs.size()>0) {
+            boolean underWhiteUrl = false;
+            for (String whiteRegex: whiteUrlRegexs) {
+                if (RegexUtil.matches(whiteRegex, link)) {
+                    underWhiteUrl = true;
+                }
+            }
+            if (!underWhiteUrl) {
+                return false; // check 白名单
+            }
+        }
+        return true;
     }
 
     /**
@@ -83,17 +111,6 @@ public class XxlCrawler {
         if (unVisitedUrlQueue.contains(link)) {
             logger.debug(">>>>>>>>>>> xxl-crawler addUrl fail, link visited: {}", link);
             return false; // check 未记录过
-        }
-        if (whiteUrlRegexs!=null && whiteUrlRegexs.size()>0) {
-            boolean underWhiteUrl = false;
-            for (String whiteRegex: whiteUrlRegexs) {
-                if (RegexUtil.matches(whiteRegex, link)) {
-                    underWhiteUrl = true;
-                }
-            }
-            if (!underWhiteUrl) {
-                return false; // check 白名单
-            }
         }
         unVisitedUrlQueue.add(link);
         logger.info(">>>>>>>>>>> xxl-crawler addUrl success, link: {}", link);
