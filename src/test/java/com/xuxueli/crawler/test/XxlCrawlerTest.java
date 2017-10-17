@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * xxl crawler test
@@ -26,7 +27,7 @@ public class XxlCrawlerTest {
         private int read;
 
         @PageFieldSelect(".comment-content")
-        private String comment;
+        private List<String> comment;
 
 
         public String getTitle() {
@@ -45,11 +46,11 @@ public class XxlCrawlerTest {
             this.read = read;
         }
 
-        public String getComment() {
+        public List<String> getComment() {
             return comment;
         }
 
-        public void setComment(String comment) {
+        public void setComment(List<String> comment) {
             this.comment = comment;
         }
 
@@ -58,7 +59,7 @@ public class XxlCrawlerTest {
             return "PageVo{" +
                     "title='" + title + '\'' +
                     ", read=" + read +
-                    ", comment='" + comment + '\'' +
+                    ", comment=" + comment +
                     '}';
         }
     }

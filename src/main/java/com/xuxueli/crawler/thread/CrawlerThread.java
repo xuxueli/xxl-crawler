@@ -16,6 +16,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -89,7 +91,7 @@ public class CrawlerThread implements Runnable {
                 Elements pageVoElements = html.select(pageVoSelectCss);
 
                 if (pageVoElements != null && pageVoElements.hasText()) {
-                    for (Element pageVoItem : pageVoElements) {
+                    for (Element pageVoElement : pageVoElements) {
 
                         Object pageVo = pageVoClassType.newInstance();
 
@@ -99,6 +101,7 @@ public class CrawlerThread implements Runnable {
                                 if (Modifier.isStatic(field.getModifiers())) {
                                     continue;
                                 }
+
 
                                 // field origin value
                                 PageFieldSelect fieldSelect = field.getAnnotation(PageFieldSelect.class);
@@ -112,21 +115,63 @@ public class CrawlerThread implements Runnable {
                                     continue;
                                 }
 
-                                String fieldValueOrigin = null;
-                                if ("html".equals(valType)) {
-                                    fieldValueOrigin = pageVoItem.select(fieldSelectCss).html();
-                                } else if ("val".equals(valType)) {
-                                    fieldValueOrigin = pageVoItem.select(fieldSelectCss).val();
+                                // field value
+                                Object fieldValue = null;
+
+                                if (field.getGenericType() instanceof ParameterizedType) {
+                                    ParameterizedType fieldGenericType = (ParameterizedType) field.getGenericType();
+                                    if (fieldGenericType.getRawType().equals(List.class)) {
+                                        //Type gtATA = fieldGenericType.getActualTypeArguments()[0];
+
+                                        Elements fieldElementList = pageVoElement.select(fieldSelectCss);
+
+                                        if (fieldElementList!=null && fieldElementList.size()>0) {
+
+                                            List<Object> fieldValue2 = new ArrayList<Object>();
+
+                                            for (Element fieldElement: fieldElementList) {
+                                                String fieldElementOrigin = null;
+                                                if ("html".equals(valType)) {
+                                                    fieldElementOrigin = fieldElement.html();
+                                                } else if ("val".equals(valType)) {
+                                                    fieldElementOrigin = fieldElement.val();
+                                                } else {
+                                                    fieldElementOrigin = fieldElement.text();
+                                                }
+
+                                                if (fieldElementOrigin==null || fieldElementOrigin.length()==0) {
+                                                    continue;
+                                                }
+
+                                                fieldValue2.add(FieldReflectionUtil.parseValue(field, fieldElementOrigin));
+                                            }
+
+                                            if (fieldValue2.size() > 1) {
+                                                fieldValue = fieldValue2;
+                                            }
+
+
+                                        }
+                                    }
                                 } else {
-                                    fieldValueOrigin = pageVoItem.select(fieldSelectCss).text();
-                                }
 
-                                if (fieldValueOrigin==null || fieldValueOrigin.length()==0) {
-                                    continue;
-                                }
+                                    Elements fieldElement = pageVoElement.select(fieldSelectCss);
 
-                                // field object value
-                                Object fieldValue = FieldReflectionUtil.parseValue(field, fieldValueOrigin);
+                                    String fieldValueOrigin = null;
+                                    if ("html".equals(valType)) {
+                                        fieldValueOrigin = fieldElement.html();
+                                    } else if ("val".equals(valType)) {
+                                        fieldValueOrigin = fieldElement.val();
+                                    } else {
+                                        fieldValueOrigin = fieldElement.text();
+                                    }
+
+                                    if (fieldValueOrigin==null || fieldValueOrigin.length()==0) {
+                                        continue;
+                                    }
+
+                                    fieldValue = FieldReflectionUtil.parseValue(field, fieldValueOrigin);
+                                }
 
                                 if (fieldValue!=null) {
                                     field.setAccessible(true);

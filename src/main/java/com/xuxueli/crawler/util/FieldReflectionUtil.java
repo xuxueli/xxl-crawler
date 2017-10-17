@@ -3,9 +3,12 @@ package com.xuxueli.crawler.util;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * api request field, reflect util
@@ -101,7 +104,18 @@ public final class FieldReflectionUtil {
 	 * @return
 	 */
 	public static Object parseValue(Field field, String value) {
+
 		Class<?> fieldType = field.getType();
+
+		// parse list item
+		if (field.getGenericType() instanceof ParameterizedType) {
+			ParameterizedType fieldGenericType = (ParameterizedType) field.getGenericType();
+			if (fieldGenericType.getRawType().equals(List.class)) {
+				Type gtATA = fieldGenericType.getActualTypeArguments()[0];
+				fieldType = (Class<?>) gtATA;
+			}
+		}
+
 		PageFieldSelect apiRequestParam = field.getAnnotation(PageFieldSelect.class);
 
 		if(value==null || value.trim().length()==0)
