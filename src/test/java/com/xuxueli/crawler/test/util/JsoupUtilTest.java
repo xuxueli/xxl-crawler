@@ -1,7 +1,7 @@
 package com.xuxueli.crawler.test.util;
 
 import com.xuxueli.crawler.util.JsoupUtil;
-import org.jsoup.select.Elements;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,8 @@ public class JsoupUtilTest {
         tagMap.put(0, new HashSet<String>(Arrays.asList("a[href]")));
 
         // 加载解析html
-        Elements resultAll = JsoupUtil.loadParse(url, null, null, false, tagMap);
-        logger.info(resultAll.toString());
+        Document html = JsoupUtil.load(url, null, null, false);
+        logger.info(html.toString());
     }
 
     /**
