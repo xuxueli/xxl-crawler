@@ -102,13 +102,26 @@ public class CrawlerThread implements Runnable {
 
                                 // field origin value
                                 PageFieldSelect fieldSelect = field.getAnnotation(PageFieldSelect.class);
-                                String fieldSelectCss = (fieldSelect!=null && fieldSelect.value()!=null && fieldSelect.value().trim().length()>0)?fieldSelect.value():null;
-                                if (fieldSelectCss == null) {
+                                String fieldSelectCss = null;
+                                String valType = null;
+                                if (fieldSelect != null) {
+                                    fieldSelectCss = fieldSelect.value();
+                                    valType = fieldSelect.valType();
+                                }
+                                if (fieldSelectCss==null || fieldSelectCss.trim().length()==0) {
                                     continue;
                                 }
 
-                                String fieldValueOrigin = pageVoItem.select(fieldSelectCss).html().trim();
-                                if (fieldValueOrigin.length() == 0) {
+                                String fieldValueOrigin = null;
+                                if ("html".equals(valType)) {
+                                    fieldValueOrigin = pageVoItem.select(fieldSelectCss).html();
+                                } else if ("val".equals(valType)) {
+                                    fieldValueOrigin = pageVoItem.select(fieldSelectCss).val();
+                                } else {
+                                    fieldValueOrigin = pageVoItem.select(fieldSelectCss).text();
+                                }
+
+                                if (fieldValueOrigin==null || fieldValueOrigin.length()==0) {
                                     continue;
                                 }
 

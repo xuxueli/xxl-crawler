@@ -19,11 +19,15 @@ public class XxlCrawlerTest {
     @PageSelect(".body")
     public static class PageVo {
 
-        @PageFieldSelect(".blog-heading .title")
+        @PageFieldSelect(value = ".blog-heading .title")
         private String title;
 
         @PageFieldSelect("#read")
         private int read;
+
+        @PageFieldSelect(".comment-content")
+        private String comment;
+
 
         public String getTitle() {
             return title;
@@ -41,11 +45,20 @@ public class XxlCrawlerTest {
             this.read = read;
         }
 
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+
         @Override
         public String toString() {
             return "PageVo{" +
                     "title='" + title + '\'' +
                     ", read=" + read +
+                    ", comment='" + comment + '\'' +
                     '}';
         }
     }

@@ -12,8 +12,25 @@ import java.lang.annotation.*;
 @Documented
 public @interface PageFieldSelect {
 
+    /**
+     * css query string, like "#title"
+     *
+     * @return
+     */
     public String value() default "";
 
+    /**
+     * value type, like "html、val、text（default）"
+     *
+     * @return
+     */
+    public String valType() default "text";
+
+    /**
+     * data patttern
+     *
+     * @return
+     */
     String datePattern() default "yyyy-MM-dd HH:mm:ss";
 
 }
