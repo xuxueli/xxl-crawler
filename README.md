@@ -65,7 +65,7 @@ crawler.start();
 
 #### 第四步：停止爬虫
 ```java
-crawler.stop();
+crawler.stop(true);
 ```
 
 ## TODO

@@ -14,8 +14,8 @@ import java.io.IOException;
  *
  * @author xuxueli 2015-05-14 22:44:43
  */
-public class PageDownLoader {
-	private static Logger logger = LoggerFactory.getLogger(PageDownLoader.class);
+public class FileUtil {
+	private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
 	/**
 	 * 根据 url 和 contentType 生成文件名, 去除非文件名字符
@@ -33,17 +33,17 @@ public class PageDownLoader {
 	}
 
 	/**
-	 * 生成Html本地文件
+	 * 保存Html至本地文件
 	 *
-	 * @param htmlData
+	 * @param fileData
 	 * @param filePath
 	 * @param fileName
 	 */
-	public static void saveHtml(byte[] htmlData, String filePath, String fileName) {
+	public static void saveFile(byte[] fileData, String filePath, String fileName) {
 		try {
 			DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(filePath, fileName)));
-			for (int i = 0; i < htmlData.length; i++){
-				out.write(htmlData[i]);
+			for (int i = 0; i < fileData.length; i++){
+				out.write(fileData[i]);
 			}
 			out.flush();
 			out.close();

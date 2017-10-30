@@ -1,6 +1,6 @@
 package com.xuxueli.crawler.test.util;
 
-import com.xuxueli.crawler.util.PageDownLoader;
+import com.xuxueli.crawler.util.FileUtil;
 import org.junit.Test;
 
 /**
@@ -8,7 +8,7 @@ import org.junit.Test;
  *
  * @author xuxueli 2017-10-09 17:47:13
  */
-public class PageDownLoaderTest {
+public class FileUtilTest {
 
     /**
      * 生成Html本地文件
@@ -18,9 +18,9 @@ public class PageDownLoaderTest {
 
         byte[] htmlData = "<html>Hello world.</html>".getBytes();
         String filePath = "/Users/xuxueli/Downloads";
-        String fileName = PageDownLoader.getFileNameByUrl("http://www.baidu.com/",	"text/html");
+        String fileName = FileUtil.getFileNameByUrl("http://www.baidu.com/",	"text/html");
 
-        PageDownLoader.saveHtml(htmlData, filePath, fileName);
+        FileUtil.saveFile(htmlData, filePath, fileName);
     }
 
 }

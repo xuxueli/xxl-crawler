@@ -4,7 +4,7 @@ import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.util.PageDownLoader;
+import com.xuxueli.crawler.util.FileUtil;
 import org.jsoup.nodes.Document;
 
 import java.util.Arrays;
@@ -74,24 +74,19 @@ public class XxlCrawlerTest {
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(String url, Document html, PageVo pageVo) {
-                        System.out.println("-------------------");
-                        System.out.println(url);
-                        System.out.println(pageVo.toString());
+                        // 参考01：解析封装 PageVo 对象
+                        System.out.println(url + "：" + pageVo.toString());
 
-                        // save
-                        byte[] htmlData = html.html().getBytes();
-                        String filePath = "/Users/xuxueli/Downloads/123";
-                        String fileName = PageDownLoader.getFileNameByUrl(url,	"text/html");
-
-                        PageDownLoader.saveHtml(htmlData, filePath, fileName);
-
+                        // 参考02：保存Html至本地文件
+                        FileUtil.saveFile(html.html().getBytes(), "/Users/xuxueli/Downloads/123",
+                                FileUtil.getFileNameByUrl(url,	"text/html"));
                     }
                 })
                 .build();
 
-        System.out.println(111);
+        System.out.println("start");
         crawler.start(true);
-        System.out.println(222);
+        System.out.println("end");
     }
 
 }
