@@ -28,7 +28,7 @@ public class JsoupUtilTest {
         tagMap.put(0, new HashSet<String>(Arrays.asList("a[href]")));
 
         // 加载解析html
-        Document html = JsoupUtil.load(url, null, null, false);
+        Document html = JsoupUtil.load(url, null, null, false, null);
         logger.info(html.toString());
     }
 

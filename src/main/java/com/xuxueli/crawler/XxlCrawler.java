@@ -21,25 +21,31 @@ import java.util.concurrent.TimeUnit;
 public class XxlCrawler {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawler.class);
 
-    private Set<String> whiteUrlRegexs; // URL白名单正则，非空时进行URL白名单过滤页面
-    private int threadCount = 1;        // 爬虫线程数量
+    // url
     private volatile LinkedBlockingQueue<String> unVisitedUrlQueue = new LinkedBlockingQueue<String>();  // 未访问过的URL
     private volatile Set<String> visitedUrlSet = Collections.synchronizedSet(new HashSet<String>());;    // 已经访问过的URL
     private volatile boolean allowSpread = true;   // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+    private Set<String> whiteUrlRegexs; // URL白名单正则，非空时进行URL白名单过滤页面
 
+    // site
+    private volatile boolean ifPost = false;         // 请求方式：true=POST请求、false=GET请求
+    private volatile String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";               // UserAgent
+    private volatile Map<String, String> paramMap;   // 请求参数
+    private volatile Map<String, String> cookieMap;  // 请求Cookie
+
+    // thread
+    private int threadCount = 1;        // 爬虫线程数量
     private ExecutorService crawlers = Executors.newCachedThreadPool();
     private List<CrawlerThread> crawlerThreads = new ArrayList<CrawlerThread>();
 
+    // parser
     private PageParser pageParser;
-
-    public boolean getAllowSpread() {
-        return allowSpread;
-    }
 
     // ---------------------- builder ----------------------
     public static class Builder {
         private XxlCrawler crawler = new XxlCrawler();
 
+        // url
         /**
          * 待爬的URL列表
          *
@@ -56,6 +62,17 @@ public class XxlCrawler {
         }
 
         /**
+         * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+         *
+         * @param allowSpread
+         * @return
+         */
+        public Builder setAllowSpread(boolean allowSpread) {
+            crawler.allowSpread = allowSpread;
+            return this;
+        }
+
+        /**
          * URL白名单正则，非空时进行URL白名单过滤页面
          *
          * @param whiteUrlRegexs
@@ -66,6 +83,52 @@ public class XxlCrawler {
             return this;
         }
 
+        // site
+        /**
+         * 请求方式：true=POST请求、false=GET请求
+         *
+         * @param ifPost
+         * @return
+         */
+        private Builder setIfPost(boolean ifPost){
+            crawler.ifPost = ifPost;
+            return this;
+        }
+
+        /**
+         * UserAgent
+         *
+         * @param userAgent
+         * @return
+         */
+        private Builder setUserAgent(String userAgent){
+            crawler.userAgent = userAgent;
+            return this;
+        }
+
+        /**
+         * 请求参数
+         *
+         * @param paramMap
+         * @return
+         */
+        private Builder setParamMap(Map<String, String> paramMap){
+            crawler.paramMap = paramMap;
+            return this;
+        }
+
+        /**
+         * 请求Cookie
+         *
+         * @param cookieMap
+         * @return
+         */
+        private Builder setCookieMap(Map<String, String> cookieMap){
+            crawler.cookieMap = cookieMap;
+            return this;
+        }
+
+        // thread
         /**
          * 爬虫并发线程数
          *
@@ -77,17 +140,7 @@ public class XxlCrawler {
             return this;
         }
 
-        /**
-         * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
-         *
-         * @param allowSpread
-         * @return
-         */
-        public Builder setAllowSpread(boolean allowSpread) {
-            crawler.allowSpread = allowSpread;
-            return this;
-        }
-
+        // parser
         /**
          * 页面解析器
          *
@@ -104,16 +157,32 @@ public class XxlCrawler {
         }
     }
 
-    // ---------------------- crawler url ----------------------
+    // ---------------------- set/get ----------------------
+    public boolean getIfPost() {
+        return ifPost;
+    }
 
-    /**
-     * get page parser
-     *
-     * @return
-     */
+    public boolean getAllowSpread() {
+        return allowSpread;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public Map<String, String> getParamMap() {
+        return paramMap;
+    }
+
+    public Map<String, String> getCookieMap() {
+        return cookieMap;
+    }
+
     public PageParser getPageParser() {
         return pageParser;
     }
+
+    // ---------------------- crawler url ----------------------
 
     /**
      * valid url, include white url

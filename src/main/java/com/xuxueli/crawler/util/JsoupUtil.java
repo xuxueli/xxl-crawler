@@ -31,14 +31,14 @@ public class JsoupUtil {
      *
      * @return
      */
-    public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap, boolean ifPost) {
+    public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap, boolean ifPost, String userAgent) {
         if (!UrlUtil.isUrl(url)) {
             return null;
         }
         try {
             // 请求设置
             Connection conn = Jsoup.connect(url);
-            conn.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36");
+            conn.userAgent(userAgent);
             if (paramMap != null && !paramMap.isEmpty()) {
                 conn.data(paramMap);
             }
@@ -104,7 +104,7 @@ public class JsoupUtil {
      * @return
      */
     public static Set<String> findLinks(String link) {
-        Set<String> links = findLinks(load(link, null, null, false));
+        Set<String> links = findLinks(load(link, null, null, false, null));
         return links;
     }
 

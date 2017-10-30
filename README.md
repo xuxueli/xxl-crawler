@@ -9,8 +9,7 @@
 - 4、去重：防止重复爬取；
 - 5、URL白名单：支持设置页面白名单正则，过滤URL；
 - 6、同步运行、异步运行；
-
-
+- 7、支持自定义爬虫请求信息，如：请求参数、Cookie、userAgent等；
 
 ### 快速入门
 
@@ -69,8 +68,5 @@ crawler.stop();
 ```
 
 ## TODO
-1、param
-2、cookie
-7、userAgent;
 4、下载，取消httpclient；
 

@@ -60,7 +60,7 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // ------- html ----------
-                Document html = JsoupUtil.load(link, null, null, false);    // index pages, not valid white
+                Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(), crawler.getIfPost(), crawler.getUserAgent());
                 if (html == null) {
                     continue;
                 }
