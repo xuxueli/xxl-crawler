@@ -69,7 +69,7 @@ public class XxlCrawlerTest {
         XxlCrawler crawler = new XxlCrawler.Builder()
                 .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
                 .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
-                .setThreadCount(5)
+                .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(String url, Document html, PageVo pageVo) {
@@ -81,7 +81,7 @@ public class XxlCrawlerTest {
                 .build();
 
         System.out.println(111);
-        crawler.start();
+        crawler.start(true);
         System.out.println(222);
     }
 

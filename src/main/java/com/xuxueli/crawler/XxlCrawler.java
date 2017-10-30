@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  *  xxl crawler
@@ -24,16 +25,27 @@ public class XxlCrawler {
     private int threadCount = 1;        // 爬虫线程数量
     private volatile LinkedBlockingQueue<String> unVisitedUrlQueue = new LinkedBlockingQueue<String>();  // 未访问过的URL
     private volatile Set<String> visitedUrlSet = Collections.synchronizedSet(new HashSet<String>());;    // 已经访问过的URL
+    private volatile boolean allowSpread = true;   // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
 
     private ExecutorService crawlers = Executors.newCachedThreadPool();
     private List<CrawlerThread> crawlerThreads = new ArrayList<CrawlerThread>();
 
     private PageParser pageParser;
 
+    public boolean getAllowSpread() {
+        return allowSpread;
+    }
+
     // ---------------------- builder ----------------------
     public static class Builder {
         private XxlCrawler crawler = new XxlCrawler();
 
+        /**
+         * 待爬的URL列表
+         *
+         * @param urlSet
+         * @return
+         */
         public Builder setUrls(Set<String> urlSet) {
             if (urlSet!=null && urlSet.size()>0) {
                 for (String url: urlSet) {
@@ -42,14 +54,46 @@ public class XxlCrawler {
             }
             return this;
         }
+
+        /**
+         * URL白名单正则，非空时进行URL白名单过滤页面
+         *
+         * @param whiteUrlRegexs
+         * @return
+         */
         public Builder setWhiteUrlRegexs(Set<String> whiteUrlRegexs) {
             crawler.whiteUrlRegexs = whiteUrlRegexs;
             return this;
         }
+
+        /**
+         * 爬虫并发线程数
+         *
+         * @param threadCount
+         * @return
+         */
         public Builder setThreadCount(int threadCount) {
             crawler.threadCount = threadCount;
             return this;
         }
+
+        /**
+         * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+         *
+         * @param allowSpread
+         * @return
+         */
+        public Builder setAllowSpread(boolean allowSpread) {
+            crawler.allowSpread = allowSpread;
+            return this;
+        }
+
+        /**
+         * 页面解析器
+         *
+         * @param pageParser
+         * @return
+         */
         public Builder setPageParser(PageParser pageParser){
             crawler.pageParser = pageParser;
             return this;
@@ -131,7 +175,13 @@ public class XxlCrawler {
     }
 
     // ---------------------- crawler thread ----------------------
-    public void start(){
+
+    /**
+     * 启动
+     *
+     * @param sync  true=同步方式、false=异步方式
+     */
+    public void start(boolean sync){
         if (unVisitedUrlQueue.size() < 1) {
             throw new RuntimeException("xxl crawler indexUrl can not be empty.");
         }
@@ -149,16 +199,21 @@ public class XxlCrawler {
             crawlerThreads.add(crawlerThread);
         }
         crawlers.shutdown();
-        /*try {
-            while (!crawlers.awaitTermination(3, TimeUnit.SECONDS)) {
-                logger.info(">>>>>>>>>>> xxl crawler still running ...");
+
+        if (sync) {
+            try {
+                while (!crawlers.awaitTermination(5, TimeUnit.SECONDS)) {
+                    logger.info(">>>>>>>>>>> xxl crawler still running ...");
+                }
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage(), e);
             }
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
-            stop();
-        }*/
+        }
     }
 
+    /**
+     * 尝试终止
+     */
     public void tryFinish(){
         boolean isRunning = false;
         for (CrawlerThread crawlerThread: crawlerThreads) {
@@ -174,6 +229,9 @@ public class XxlCrawler {
         }
     }
 
+    /**
+     * 终止
+     */
     public void stop(){
         for (CrawlerThread crawlerThread: crawlerThreads) {
             crawlerThread.toStop();

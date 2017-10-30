@@ -31,6 +31,7 @@ public @interface PageFieldSelect {
 
     /**
      * data patttern
+     * 时间格式化，日期类型数据有效
      *
      * @return
      */

@@ -66,11 +66,13 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // ------- child link list (FIFO队列,广度优先) ----------
-                Set<String> links = JsoupUtil.findLinks(html);
-                if (links != null && links.size() > 0) {
-                    for (String item : links) {
-                        if (crawler.validWhiteUrl(item)) {
-                            crawler.addUrl(item);   // child link, valid white
+                if (crawler.getAllowSpread()) {
+                    Set<String> links = JsoupUtil.findLinks(html);
+                    if (links != null && links.size() > 0) {
+                        for (String item : links) {
+                            if (crawler.validWhiteUrl(item)) {
+                                crawler.addUrl(item);   // child link, valid white
+                            }
                         }
                     }
                 }
