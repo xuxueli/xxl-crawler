@@ -1,7 +1,6 @@
 package com.xuxueli.crawler.test.util;
 
 import com.xuxueli.crawler.util.PageDownLoader;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -12,14 +11,16 @@ import org.junit.Test;
 public class PageDownLoaderTest {
 
     /**
-     * 页面文件下载
+     * 生成Html本地文件
      */
     @Test
-    public void downloadFile() {
-        String url = "http://www.baidu.com/";
+    public void saveHtml() {
+
+        byte[] htmlData = "<html>Hello world.</html>".getBytes();
         String filePath = "/Users/xuxueli/Downloads";
-        boolean ret = PageDownLoader.downloadFile(url, filePath);
-        Assert.assertTrue(ret);
+        String fileName = PageDownLoader.getFileNameByUrl("http://www.baidu.com/",	"text/html");
+
+        PageDownLoader.saveHtml(htmlData, filePath, fileName);
     }
 
 }

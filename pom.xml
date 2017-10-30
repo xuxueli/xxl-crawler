@@ -22,6 +22,12 @@
     </properties>
 
     <dependencies>
+        <!-- jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.10.3</version>
+        </dependency>
 
         <!-- slf4j -->
         <dependency>
@@ -43,21 +49,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- httpclient -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.3.6</version>
-        </dependency>
-
-        <!-- jsoup -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.10.3</version>
-        </dependency>
-
     </dependencies>
 
     <build>

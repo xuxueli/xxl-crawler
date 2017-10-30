@@ -4,6 +4,7 @@ import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.parser.PageParser;
+import com.xuxueli.crawler.util.PageDownLoader;
 import org.jsoup.nodes.Document;
 
 import java.util.Arrays;
@@ -76,6 +77,14 @@ public class XxlCrawlerTest {
                         System.out.println("-------------------");
                         System.out.println(url);
                         System.out.println(pageVo.toString());
+
+                        // save
+                        byte[] htmlData = html.html().getBytes();
+                        String filePath = "/Users/xuxueli/Downloads/123";
+                        String fileName = PageDownLoader.getFileNameByUrl(url,	"text/html");
+
+                        PageDownLoader.saveHtml(htmlData, filePath, fileName);
+
                     }
                 })
                 .build();
