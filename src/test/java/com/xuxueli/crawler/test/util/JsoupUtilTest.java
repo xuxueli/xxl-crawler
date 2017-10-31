@@ -1,5 +1,6 @@
 package com.xuxueli.crawler.test.util;
 
+import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.util.JsoupUtil;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
@@ -22,15 +23,14 @@ public class JsoupUtilTest {
     @Test
     public void loadParseTest(){
         String url = "http://www.baidu.com/";
-        String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
         // 组装规则
         Map<Integer, Set<String>> tagMap = new HashMap<Integer, Set<String>>();
         tagMap.put(0, new HashSet<String>(Arrays.asList("a[href]")));
 
         // 加载解析html
-        Document html = JsoupUtil.load(url, null, null, false, userAgent, 5000);
-        logger.info(html.toString());
+        Document html = JsoupUtil.load(url, null, null, false, XxlCrawlerConf.USER_AGENT_SAMPLE, 5000);
+        logger.info(html.html());
     }
 
     /**
@@ -39,9 +39,8 @@ public class JsoupUtilTest {
     @Test
     public void findLinksTest() {
         String url = "http://www.baidu.com/";
-        String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
-        Document html = JsoupUtil.load(url, null, null, false, userAgent, 5000);
+        Document html = JsoupUtil.load(url, null, null, false, XxlCrawlerConf.USER_AGENT_SAMPLE, 5000);
         Set<String> linkList = JsoupUtil.findLinks(html);
 
         logger.info("link num {}", linkList.size());

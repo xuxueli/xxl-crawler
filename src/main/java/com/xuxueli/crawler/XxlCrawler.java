@@ -1,5 +1,6 @@
 package com.xuxueli.crawler;
 
+import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.thread.CrawlerThread;
 import com.xuxueli.crawler.util.RegexUtil;
@@ -26,7 +27,7 @@ public class XxlCrawler {
 
     // site
     private volatile boolean ifPost = false;            // 请求方式：true=POST请求、false=GET请求
-    private volatile String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";               // UserAgent
+    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_SAMPLE;               // UserAgent
     private volatile Map<String, String> paramMap;      // 请求参数
     private volatile Map<String, String> cookieMap;     // 请求Cookie
     private volatile int timeoutMillis = 5000;          // 超时时间，毫秒
