@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  *  xxl crawler
@@ -37,7 +34,7 @@ public class XxlCrawler {
     // thread
     private int threadCount = 1;        // 爬虫线程数量
     private ExecutorService crawlers = Executors.newCachedThreadPool();
-    private List<CrawlerThread> crawlerThreads = new ArrayList<CrawlerThread>();
+    private List<CrawlerThread> crawlerThreads = new CopyOnWriteArrayList<CrawlerThread>();
 
     // parser
     private PageParser pageParser;
