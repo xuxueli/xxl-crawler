@@ -19,6 +19,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * crawler thread
@@ -189,9 +190,17 @@ public class CrawlerThread implements Runnable {
                 }
             } catch (Exception e) {
                 if (e instanceof InterruptedException) {
-                    logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. {}", e.getMessage());
+                    logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. 1{}", e.getMessage());
                 } else {
                     logger.error(e.getMessage(), e);
+                }
+            }
+
+            if (crawler.getPauseMillis() > 0) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(crawler.getPauseMillis());
+                } catch (InterruptedException e) {
+                    logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. 2{}", e.getMessage());
                 }
             }
 

@@ -30,6 +30,7 @@ public class XxlCrawler {
     private volatile Map<String, String> paramMap;      // 请求参数
     private volatile Map<String, String> cookieMap;     // 请求Cookie
     private volatile int timeoutMillis = 5000;          // 超时时间，毫秒
+    private volatile int pauseMillis = 0;               // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 
     // thread
     private int threadCount = 1;        // 爬虫线程数量
@@ -137,6 +138,17 @@ public class XxlCrawler {
             return this;
         }
 
+        /**
+         * 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+         *
+         * @param pauseMillis
+         * @return
+         */
+        public Builder setPauseMillis(int pauseMillis){
+            crawler.pauseMillis = pauseMillis;
+            return this;
+        }
+
 
         // thread
         /**
@@ -194,6 +206,10 @@ public class XxlCrawler {
 
     public int getTimeoutMillis() {
         return timeoutMillis;
+    }
+
+    public int getPauseMillis() {
+        return pauseMillis;
     }
 
     // ---------------------- crawler url ----------------------
