@@ -108,11 +108,28 @@ XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。；
 
 概念 | 说明
 --- | ---
-XxlCrawler | 爬虫对象，维护爬虫信息，包括爬虫线程池
+XxlCrawler | 爬虫对象，维护爬虫信息
 PageVo | 页面数据对象，一张Web页面可抽取一个或多个PageVo
 PageParser | 页面解析器，绑定泛型PageVO后将会自动抽取页面数据对象
 
-### 3.3 核心注解：PageSelect
+### 3.3 爬虫对象：XxlCrawler
+功能：爬虫对象，维护爬虫信息，可选属性如下。
+
+方法 | 说明
+--- | ---
+setUrls | 待爬的URL列表
+setAllowSpread | 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+setWhiteUrlRegexs | URL白名单正则，非空时进行URL白名单过滤页面
+setIfPost | 请求方式：true=POST请求、false=GET请求
+setUserAgent | UserAgent
+setParamMap | 请求参数
+setCookieMap | 请求Cookie
+setTimeoutMillis | 超时时间，毫秒
+setPauseMillis | 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+setThreadCount | 爬虫并发线程数
+setPageParser | 页面解析器
+
+### 3.4 核心注解：PageSelect
 
 功能：描述页面数据对象，通过该注解从页面抽取PageVo数据信息，可选属性如下。
 
@@ -120,7 +137,7 @@ PageSelect | 说明
 --- | ---
 cssQuery | CSS选择器, 如 "#body"
 
-### 3.4 核心注解：PageFieldSelect
+### 3.5 核心注解：PageFieldSelect
 
 功能：描述页面数据对象的属性信息，通过该注解从页面抽取PageVo的属性信息，可选属性如下。  
 （支持基础数据类型 T ，包括 List<T>）
