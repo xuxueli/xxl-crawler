@@ -78,7 +78,7 @@ public class XxlCrawlerTest {
                         System.out.println(url + "：" + pageVo.toString());
 
                         // 参考02：保存Html至本地文件
-                        FileUtil.saveFile(html.html().getBytes(), "/Users/xuxueli/Downloads/123",
+                        FileUtil.saveFile(html.html().getBytes(), "/Users/xuxueli/Downloads/tmp",
                                 FileUtil.getFileNameByUrl(url,	"text/html"));
                     }
                 })

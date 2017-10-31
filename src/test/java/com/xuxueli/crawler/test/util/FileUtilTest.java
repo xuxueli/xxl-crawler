@@ -17,7 +17,7 @@ public class FileUtilTest {
     public void saveHtml() {
 
         byte[] htmlData = "<html>Hello world.</html>".getBytes();
-        String filePath = "/Users/xuxueli/Downloads";
+        String filePath = "/Users/xuxueli/Downloads/tmp";
         String fileName = FileUtil.getFileNameByUrl("http://www.baidu.com/",	"text/html");
 
         FileUtil.saveFile(htmlData, filePath, fileName);

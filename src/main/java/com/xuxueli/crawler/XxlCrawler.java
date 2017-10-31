@@ -264,8 +264,10 @@ public class XxlCrawler {
         logger.info(">>>>>>>>>>> xxl crawler start ...");
         for (int i = 0; i < threadCount; i++) {
             CrawlerThread crawlerThread = new CrawlerThread(this);
-            crawlers.execute(crawlerThread);
             crawlerThreads.add(crawlerThread);
+        }
+        for (CrawlerThread crawlerThread: crawlerThreads) {
+            crawlers.execute(crawlerThread);
         }
         crawlers.shutdown();
 
