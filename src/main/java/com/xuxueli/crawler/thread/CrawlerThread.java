@@ -90,10 +90,10 @@ public class CrawlerThread implements Runnable {
                 Class pageVoClassType = (Class) pageVoClassTypes[0];
 
                 PageSelect pageVoSelect = pageVoClassType.getClass().getAnnotation(PageSelect.class);
-                String pageVoSelectCss = (pageVoSelect!=null && pageVoSelect.value()!=null && pageVoSelect.value().trim().length()>0)?pageVoSelect.value():"body";
+                String pageVoCssQuery = (pageVoSelect!=null && pageVoSelect.cssQuery()!=null && pageVoSelect.cssQuery().trim().length()>0)?pageVoSelect.cssQuery():"body";
 
                 // pagevo document 2 object
-                Elements pageVoElements = html.select(pageVoSelectCss);
+                Elements pageVoElements = html.select(pageVoCssQuery);
 
                 if (pageVoElements != null && pageVoElements.hasText()) {
                     for (Element pageVoElement : pageVoElements) {

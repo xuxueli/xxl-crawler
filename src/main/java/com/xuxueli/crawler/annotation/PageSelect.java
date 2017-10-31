@@ -3,10 +3,9 @@ package com.xuxueli.crawler.annotation;
 import java.lang.annotation.*;
 
 /**
- * page select
- * 页面VO对象注解
+ * page vo annotation
  *
- *      1、一个页面可能对应多个VO对象；
+ * 页面数据对象 注解
  *
  * @author xuxueli 2017-10-17 20:28:11
  */
@@ -16,10 +15,12 @@ import java.lang.annotation.*;
 public @interface PageSelect {
 
     /**
-     * css选择器字符串，对应 "页面VO对象"
+     * CSS-like query, like "#body"
+     *
+     * CSS选择器, 如 "#body"
      *
      * @return
      */
-    public String value() default "";
+    public String cssQuery() default "";
 
 }

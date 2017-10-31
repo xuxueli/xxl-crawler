@@ -1,8 +1,37 @@
-## 面向对象的分布式爬虫框架 xxl-crawler
+<p align="center">
+    <a href="http://www.xuxueli.com/xxl-crawler/">
+        <img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/xxl-logo.jpg" width="150">
+    </a>
+    <h3 align="center">XXL-CRAWLER</h3>
+    <p align="center">
+        XXL-CRAWLER, a object-oriented web crawler framework..
+        <br>
+        <a href="http://www.xuxueli.com/xxl-crawler/"><strong>-- Browse website. --</strong></a>
+        <br>
+        <br>
+        <a href="https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/">
+            <img src="https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/badge.svg" >
+        </a>
+         <a href="https://github.com/xuxueli/xxl-crawler/releases">
+             <img src="https://img.shields.io/github/release/xuxueli/xxl-crawler.svg" >
+         </a>
+         <a href="http://www.gnu.org/licenses/gpl-3.0.html">
+             <img src="https://img.shields.io/badge/license-GPLv3-blue.svg" >
+         </a>
+    </p>    
+</p>
 
->An object-oriented crawler framework.
 
-## 特性
+## Introduction
+XXL-CRAWLER is a flexible and efficient、object-oriented web crawler framework. One line of code develops a distributed crawler.
+
+XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。一行代码开发一个分布式爬虫；
+
+## Documentation
+- [中文文档](http://www.xuxueli.com/xxl-crawler/)
+
+
+## Features
 - 1、面向对象：通过VO对象描述页面信息，提供注解方便的映射页面数据，爬取结果主动封装Java对象返回；
 - 2、多线程；
 - 3、扩散全站：将会以现有URL为起点扩散爬取整站；
@@ -15,67 +44,41 @@
 - 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 - 11、单个页面支持抽取多个PageVO；
 
-### 快速入门
+## Communication
 
-#### 第一步：定义 "页面对象VO"
-> 可参考测试代码：com.xuxueli.crawler.test.XxlCrawlerTest
-```java
-// PageSelect 注解：从页面中抽取出多个VO对象；
-@PageSelect(".body")
-    public static class PageVo {
-
-        @PageFieldSelect(cssQuery = ".blog-heading .title")
-        private String title;
-
-        @PageFieldSelect(cssQuery = "#read")
-        private int read;
-
-        @PageFieldSelect(cssQuery = ".comment-content")
-        private List<String> comment;
-
-        // set get
-    }
-```
-
-#### 第二步：创建爬虫对象
-```java
-XxlCrawler crawler = new XxlCrawler.Builder()
-        .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
-        .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
-        .setThreadCount(3)
-        .setPageParser(new PageParser<PageVo>() {
-            @Override
-            public void parse(String url, Document html, PageVo pageVo) {
-                // 解析封装 PageVo 对象
-                System.out.println(url + "：" + pageVo.toString());
-            }
-        })
-        .build();
-
-crawler.start(true);
-```
-
-#### 第三步：启动爬虫
-```java
-crawler.start(true);
-```
+- [社区交流](http://www.xuxueli.com/page/community.html)
 
 
-#### 第四步：停止爬虫
-```java
-crawler.stop(true);
-```
+## Contributing
+Contributions are welcome! Open a pull request to fix a bug, or open an [Issue](https://github.com/xuxueli/xxl-crawler/issues/) to discuss a new feature or change.
 
-#### 其他：爬虫参考示例
-- 1、爬取页面数据并封装VO对象
-- 2、爬取页面，下载Html文件
-- 3、爬取页面，下载图片文件
+欢迎参与项目贡献！比如提交PR修复一个bug，或者新建 [Issue](https://github.com/xuxueli/xxl-crawler/issues/) 讨论新特性或者变更。
 
-(上述示例代码位于 /test 目录下)
+## 接入登记
+更多接入的公司，欢迎在 [登记地址](https://github.com/xuxueli/xxl-crawler/issues/1 ) 登记，登记仅仅为了产品推广。
 
 
-## TODO
-- 1、超时重试机制；
+## Copyright and License
+This product is open source and free, and will continue to provide free community technical support. Individual or enterprise users are free to access and use.
+
+- Licensed under the GNU General Public License (GPL) v3.
+- Copyright (c) 2015-present, xuxueli.
+
+产品开源免费，并且将持续提供免费的社区技术支持。个人或企业内部可自由的接入和使用。
+
+
+## Donate
+No matter how much the amount is enough to express your thought, thank you very much ：）
+
+无论金额多少都足够表达您这份心意，非常感谢 ：）    [XXL系列捐赠记录](http://www.xuxueli.com/page/donate.html )
+
+微信：<img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/donate-wechat.png" width="200">
+支付宝：<img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/donate-alipay.jpg" width="200">
+
+
+
+
+
 
 
 

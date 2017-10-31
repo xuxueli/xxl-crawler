@@ -5,9 +5,9 @@ import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import java.lang.annotation.*;
 
 /**
- * page field select
+ * page vo field annotation
  *
- * 页面VO对象的属性信息 （支持基础数据类型 T ，包括 List<T>）
+ * 页面数据对象的属性信息 （支持基础数据类型 T ，包括 List<T>）
  *
  * @author xuxueli 2017-10-17 20:28:11
  */
@@ -26,9 +26,9 @@ public @interface PageFieldSelect {
     public String cssQuery() default "";
 
     /**
-     * jquery data-extraction-type
+     * jquery data-extraction-type，like ".html()/.text()/.val()/.attr()"
      *
-     * jquery 数据抽取方式
+     * jquery 数据抽取方式，如 ".html()/.text()/.val()/.attr()"等
      *
      * @see com.xuxueli.crawler.conf.XxlCrawlerConf.SelectType
      *
