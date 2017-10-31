@@ -28,10 +28,13 @@ public class JsoupUtil {
      * @param paramMap	：请求参数
      * @param cookieMap	：请求cookie
      * @param ifPost	：是否使用post请求
+     * @param userAgent : 请求UesrAgent
+     * @param timeoutMillis ：超时时间，毫秒
      *
      * @return
      */
-    public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap, boolean ifPost, String userAgent) {
+    public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap,
+                                boolean ifPost, String userAgent, int timeoutMillis) {
         if (!UrlUtil.isUrl(url)) {
             return null;
         }
@@ -45,7 +48,7 @@ public class JsoupUtil {
             if (cookieMap != null && !cookieMap.isEmpty()) {
                 conn.cookies(cookieMap);
             }
-            conn.timeout(5000);
+            conn.timeout(timeoutMillis);
 
             // 发出请求
             Document html = null;
@@ -94,17 +97,6 @@ public class JsoupUtil {
                 }
             }
         }
-        return links;
-    }
-
-    /**
-     * 获取页面上所有超链接地址
-     *
-     * @param link  待爬行的页面链接
-     * @return
-     */
-    public static Set<String> findLinks(String link) {
-        Set<String> links = findLinks(load(link, null, null, false, null));
         return links;
     }
 

@@ -22,13 +22,14 @@ public class JsoupUtilTest {
     @Test
     public void loadParseTest(){
         String url = "http://www.baidu.com/";
+        String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
         // 组装规则
         Map<Integer, Set<String>> tagMap = new HashMap<Integer, Set<String>>();
         tagMap.put(0, new HashSet<String>(Arrays.asList("a[href]")));
 
         // 加载解析html
-        Document html = JsoupUtil.load(url, null, null, false, null);
+        Document html = JsoupUtil.load(url, null, null, false, userAgent, 5000);
         logger.info(html.toString());
     }
 
@@ -38,10 +39,12 @@ public class JsoupUtilTest {
     @Test
     public void findLinksTest() {
         String url = "http://www.baidu.com/";
+        String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
-        Set<String> linkList = JsoupUtil.findLinks(url);
+        Document html = JsoupUtil.load(url, null, null, false, userAgent, 5000);
+        Set<String> linkList = JsoupUtil.findLinks(html);
+
         logger.info("link num {}", linkList.size());
-
         if (linkList!=null && linkList.size() > 0) {
             for (String link : linkList) {
                 logger.info(link);

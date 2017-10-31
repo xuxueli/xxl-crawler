@@ -28,10 +28,11 @@ public class XxlCrawler {
     private Set<String> whiteUrlRegexs; // URL白名单正则，非空时进行URL白名单过滤页面
 
     // site
-    private volatile boolean ifPost = false;         // 请求方式：true=POST请求、false=GET请求
+    private volatile boolean ifPost = false;            // 请求方式：true=POST请求、false=GET请求
     private volatile String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";               // UserAgent
-    private volatile Map<String, String> paramMap;   // 请求参数
-    private volatile Map<String, String> cookieMap;  // 请求Cookie
+    private volatile Map<String, String> paramMap;      // 请求参数
+    private volatile Map<String, String> cookieMap;     // 请求Cookie
+    private volatile int timeoutMillis = 5000;          // 超时时间，毫秒
 
     // thread
     private int threadCount = 1;        // 爬虫线程数量
@@ -128,6 +129,18 @@ public class XxlCrawler {
             return this;
         }
 
+        /**
+         * 超时时间，毫秒
+         *
+         * @param timeoutMillis
+         * @return
+         */
+        public Builder setTimeoutMillis(int timeoutMillis){
+            crawler.timeoutMillis = timeoutMillis;
+            return this;
+        }
+
+
         // thread
         /**
          * 爬虫并发线程数
@@ -180,6 +193,10 @@ public class XxlCrawler {
 
     public PageParser getPageParser() {
         return pageParser;
+    }
+
+    public int getTimeoutMillis() {
+        return timeoutMillis;
     }
 
     // ---------------------- crawler url ----------------------

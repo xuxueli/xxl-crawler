@@ -60,7 +60,8 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // ------- html ----------
-                Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(), crawler.getIfPost(), crawler.getUserAgent());
+                Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(),
+                        crawler.getIfPost(), crawler.getUserAgent(), crawler.getTimeoutMillis());
                 if (html == null) {
                     continue;
                 }
