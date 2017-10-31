@@ -20,13 +20,13 @@ public class XxlCrawlerTest {
     @PageSelect(".body")
     public static class PageVo {
 
-        @PageFieldSelect(value = ".blog-heading .title")
+        @PageFieldSelect(cssQuery = ".blog-heading .title")
         private String title;
 
-        @PageFieldSelect("#read")
+        @PageFieldSelect(cssQuery = "#read")
         private int read;
 
-        @PageFieldSelect(".comment-content")
+        @PageFieldSelect(cssQuery = ".comment-content")
         private List<String> comment;
 
         public String getTitle() {
@@ -68,7 +68,7 @@ public class XxlCrawlerTest {
         XxlCrawler crawler = new XxlCrawler.Builder()
                 .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
                 .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
-                .setThreadCount(1)
+                .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(String url, Document html, PageVo pageVo) {

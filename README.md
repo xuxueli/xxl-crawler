@@ -24,13 +24,13 @@
 @PageSelect(".body")
     public static class PageVo {
 
-        @PageFieldSelect(value = ".blog-heading .title")
+        @PageFieldSelect(cssQuery = ".blog-heading .title")
         private String title;
 
-        @PageFieldSelect("#read")
+        @PageFieldSelect(cssQuery = "#read")
         private int read;
 
-        @PageFieldSelect(".comment-content")
+        @PageFieldSelect(cssQuery = ".comment-content")
         private List<String> comment;
 
         // set get

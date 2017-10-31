@@ -20,4 +20,18 @@ public class XxlCrawlerConf {
     public static final String CONTENT_TYPE_TEXT = "text/plain";
     public static final String CONTENT_TYPE_JSONP = "text/javascript";
 
+    // 数据抽取方式
+    public enum SelectType {
+        // .html()
+        HTML,
+        // .val()
+        VAL,
+        // .text()
+        TEXT,
+        // .toString()
+        TOSTRING,
+        // .attr("attributeKey")
+        ATTR
+    }
+
 }

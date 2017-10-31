@@ -1,5 +1,6 @@
 package com.xuxueli.crawler.util;
 
+import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,7 +23,7 @@ public class JsoupUtil {
     private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
 
     /**
-     * 加载解析页面
+     * 加载页面
      *
      * @param url		：加载URL
      * @param paramMap	：请求参数
@@ -62,6 +63,30 @@ public class JsoupUtil {
             logger.error(e.getMessage(), e);
             return null;
         }
+    }
+
+    /**
+     * 抽取元素数据
+     *
+     * @param fieldElement
+     * @param selectType
+     * @param attributeKey
+     * @return
+     */
+    public static String parseElement(Element fieldElement, XxlCrawlerConf.SelectType selectType, String attributeKey) {
+        String fieldElementOrigin = null;
+        if (XxlCrawlerConf.SelectType.HTML == selectType) {
+            fieldElementOrigin = fieldElement.html();
+        } else if (XxlCrawlerConf.SelectType.VAL == selectType) {
+            fieldElementOrigin = fieldElement.val();
+        } else if (XxlCrawlerConf.SelectType.TEXT == selectType) {
+            fieldElementOrigin = fieldElement.text();
+        } else if (XxlCrawlerConf.SelectType.ATTR == selectType) {
+            fieldElementOrigin = fieldElement.attr(attributeKey);
+        } else {
+            fieldElementOrigin = fieldElement.toString();
+        }
+        return fieldElementOrigin;
     }
 
     /**

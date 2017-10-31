@@ -24,7 +24,7 @@ public class XxlCrawlerTest03 {
     @PageSelect(".body")
     public static class PageVo {
 
-        @PageFieldSelect(value = "#blogBody img", valType = "attr", attributeKey = "abs:src")
+        @PageFieldSelect(cssQuery = "#blogBody img", selectType = XxlCrawlerConf.SelectType.ATTR, attributeKey = "abs:src")
         private List<String> images;
 
         public List<String> getImages() {
@@ -48,7 +48,7 @@ public class XxlCrawlerTest03 {
         XxlCrawler crawler = new XxlCrawler.Builder()
                 .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
                 .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
-                .setThreadCount(1)
+                .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(String url, Document html, PageVo pageVo) {

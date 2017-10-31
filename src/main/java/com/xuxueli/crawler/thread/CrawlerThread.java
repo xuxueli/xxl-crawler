@@ -3,6 +3,7 @@ package com.xuxueli.crawler.thread;
 import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
+import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.util.FieldReflectionUtil;
 import com.xuxueli.crawler.util.JsoupUtil;
 import com.xuxueli.crawler.util.UrlUtil;
@@ -109,15 +110,15 @@ public class CrawlerThread implements Runnable {
 
                                 // field origin value
                                 PageFieldSelect fieldSelect = field.getAnnotation(PageFieldSelect.class);
-                                String fieldSelectCss = null;
-                                String valType = null;
+                                String cssQuery = null;
+                                XxlCrawlerConf.SelectType selectType = null;
                                 String attributeKey = null;
                                 if (fieldSelect != null) {
-                                    fieldSelectCss = fieldSelect.value();
-                                    valType = fieldSelect.valType();
+                                    cssQuery = fieldSelect.cssQuery();
+                                    selectType = fieldSelect.selectType();
                                     attributeKey = fieldSelect.attributeKey();
                                 }
-                                if (fieldSelectCss==null || fieldSelectCss.trim().length()==0) {
+                                if (cssQuery==null || cssQuery.trim().length()==0) {
                                     continue;
                                 }
 
@@ -127,57 +128,32 @@ public class CrawlerThread implements Runnable {
                                 if (field.getGenericType() instanceof ParameterizedType) {
                                     ParameterizedType fieldGenericType = (ParameterizedType) field.getGenericType();
                                     if (fieldGenericType.getRawType().equals(List.class)) {
+
                                         //Type gtATA = fieldGenericType.getActualTypeArguments()[0];
-
-                                        Elements fieldElementList = pageVoElement.select(fieldSelectCss);
-
+                                        Elements fieldElementList = pageVoElement.select(cssQuery);
                                         if (fieldElementList!=null && fieldElementList.size()>0) {
 
-                                            List<Object> fieldValue2 = new ArrayList<Object>();
-
+                                            List<Object> fieldValueTmp = new ArrayList<Object>();
                                             for (Element fieldElement: fieldElementList) {
-                                                String fieldElementOrigin = null;
-                                                if ("html".equals(valType)) {
-                                                    fieldElementOrigin = fieldElement.html();
-                                                } else if ("val".equals(valType)) {
-                                                    fieldElementOrigin = fieldElement.val();
-                                                } else if ("text".equals(valType)) {
-                                                    fieldElementOrigin = fieldElement.text();
-                                                } else if ("attr".equals(valType)) {
-                                                    fieldElementOrigin = fieldElement.attr(attributeKey);
-                                                } else {
-                                                    fieldElementOrigin = fieldElement.toString();
-                                                }
 
+                                                String fieldElementOrigin = JsoupUtil.parseElement(fieldElement, selectType, attributeKey);
                                                 if (fieldElementOrigin==null || fieldElementOrigin.length()==0) {
                                                     continue;
                                                 }
-
-                                                fieldValue2.add(FieldReflectionUtil.parseValue(field, fieldElementOrigin));
+                                                fieldValueTmp.add(FieldReflectionUtil.parseValue(field, fieldElementOrigin));
                                             }
 
-                                            if (fieldValue2.size() > 1) {
-                                                fieldValue = fieldValue2;
+                                            if (fieldValueTmp.size() > 0) {
+                                                fieldValue = fieldValueTmp;
                                             }
-
-
                                         }
                                     }
                                 } else {
 
-                                    Elements fieldElement = pageVoElement.select(fieldSelectCss);
-
+                                    Elements fieldElements = pageVoElement.select(cssQuery);
                                     String fieldValueOrigin = null;
-                                    if ("html".equals(valType)) {
-                                        fieldValueOrigin = fieldElement.html();
-                                    } else if ("val".equals(valType)) {
-                                        fieldValueOrigin = fieldElement.val();
-                                    } else if ("text".equals(valType)) {
-                                        fieldValueOrigin = fieldElement.text();
-                                    } else if ("attr".equals(valType)) {
-                                        fieldValueOrigin = fieldElement.attr(attributeKey);
-                                    } else {
-                                        fieldValueOrigin = fieldElement.toString();
+                                    if (fieldElements!=null && fieldElements.size()>0) {
+                                        fieldValueOrigin = JsoupUtil.parseElement(fieldElements.get(0), selectType, attributeKey);
                                     }
 
                                     if (fieldValueOrigin==null || fieldValueOrigin.length()==0) {

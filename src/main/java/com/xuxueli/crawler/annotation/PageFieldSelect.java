@@ -1,5 +1,7 @@
 package com.xuxueli.crawler.annotation;
 
+import com.xuxueli.crawler.conf.XxlCrawlerConf;
+
 import java.lang.annotation.*;
 
 /**
@@ -14,30 +16,37 @@ import java.lang.annotation.*;
 public @interface PageFieldSelect {
 
     /**
-     * css query string, like "#title"
-     * css选择器，对应 "页面VO对象的属性" , 如 "#title"
+     * CSS-like query, like "#title"
+     *
+     * CSS选择器, 如 "#title"
      *
      * @return
      */
-    public String value() default "";
+    public String cssQuery() default "";
 
     /**
-     * css query value type, like "html、val、text（default）、toString、attr"
-     * css选择器返回的数据类型，如 "html、val、text（default）、toString、attr"
+     * jquery data-extraction-type
+     *
+     * jquery 数据抽取方式
+     *
+     * @see com.xuxueli.crawler.conf.XxlCrawlerConf.SelectType
      *
      * @return
      */
-    public String valType() default "text";
+    public XxlCrawlerConf.SelectType selectType() default XxlCrawlerConf.SelectType.TEXT;
 
     /**
-     * attr, like "abs:src")
+     * jquery data-extraction-param, valid when SelectType=ATTR, like "abs:src / .attr("attributeKey")"
+     *
+     * jquery 数据抽取参数，SelectType=ATTR 时有效，如 "abs:src / .attr("attributeKey")"
      *
      * @return
      */
     public String attributeKey() default "";
 
     /**
-     * data patttern
+     * data patttern, valid when date data
+     *
      * 时间格式化，日期类型数据有效
      *
      * @return
