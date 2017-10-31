@@ -71,9 +71,10 @@ public class XxlCrawlerTest {
                 .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
-                    public void parse(String url, Document html, PageVo pageVo) {
+                    public void parse(Document html, PageVo pageVo) {
                         // 解析封装 PageVo 对象
-                        System.out.println(url + "：" + pageVo.toString());
+                        String pageUrl = html.baseUri();
+                        System.out.println(pageUrl + "：" + pageVo.toString());
                     }
                 })
                 .build();

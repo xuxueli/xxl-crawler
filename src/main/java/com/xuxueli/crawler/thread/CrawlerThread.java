@@ -171,7 +171,7 @@ public class CrawlerThread implements Runnable {
                         }
 
                         // pagevo output
-                        crawler.getPageParser().parse(link, html, pageVo);
+                        crawler.getPageParser().parse(html, pageVo);
                     }
                 }
             } catch (Exception e) {

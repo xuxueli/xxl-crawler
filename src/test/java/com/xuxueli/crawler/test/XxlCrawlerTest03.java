@@ -6,7 +6,6 @@ import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.util.FileUtil;
-import com.xuxueli.crawler.util.JsoupUtil;
 import org.jsoup.nodes.Document;
 
 import java.util.Arrays;
@@ -51,24 +50,19 @@ public class XxlCrawlerTest03 {
                 .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
-                    public void parse(String url, Document html, PageVo pageVo) {
-
-                        System.out.println(pageVo);
-                        if (pageVo != null) {
-                            return;
-                        }
+                    public void parse(Document html, PageVo pageVo) {
 
                         // 文件信息
                         String filePath = "/Users/xuxueli/Downloads/tmp";
 
-                        Set<String> images = JsoupUtil.findImages(html);
-                        if (images.size() > 0) {
-                            for (String img: images) {
+                        if (pageVo.getImages()!=null && pageVo.getImages().size() > 0) {
+                            Set<String> imagesSet = new HashSet<>(pageVo.getImages());
+                            for (String img: imagesSet) {
 
                                 // 下载图片文件
                                 String fileName = FileUtil.getFileNameByUrl(img, null);
                                 boolean ret = FileUtil.downFile(img, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, filePath, fileName);
-                                System.out.println("down images" + (ret?"success":"fail") + "：" + img);
+                                System.out.println("down images " + (ret?"success":"fail") + "：" + img);
                             }
                         }
                     }

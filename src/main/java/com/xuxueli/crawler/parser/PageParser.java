@@ -11,6 +11,6 @@ import org.jsoup.nodes.Document;
  */
 public abstract class PageParser<T> {
 
-    public abstract void parse(String url, Document html, T pageVo);
+    public abstract void parse(Document html, T pageVo);
 
 }

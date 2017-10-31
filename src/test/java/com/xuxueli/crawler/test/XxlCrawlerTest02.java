@@ -24,12 +24,12 @@ public class XxlCrawlerTest02 {
                 .setThreadCount(3)
                 .setPageParser(new PageParser<Object>() {
                     @Override
-                    public void parse(String url, Document html, Object pageVo) {
+                    public void parse(Document html, Object pageVo) {
 
                         // 文件信息
                         String htmlData = html.html();
                         String filePath = "/Users/xuxueli/Downloads/tmp";
-                        String fileName = FileUtil.getFileNameByUrl(url, XxlCrawlerConf.CONTENT_TYPE_HTML);
+                        String fileName = FileUtil.getFileNameByUrl(html.baseUri(), XxlCrawlerConf.CONTENT_TYPE_HTML);
 
                         // 下载Html文件
                         FileUtil.saveFile(htmlData, filePath, fileName);
