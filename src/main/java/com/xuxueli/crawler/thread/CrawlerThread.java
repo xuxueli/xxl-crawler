@@ -111,9 +111,11 @@ public class CrawlerThread implements Runnable {
                                 PageFieldSelect fieldSelect = field.getAnnotation(PageFieldSelect.class);
                                 String fieldSelectCss = null;
                                 String valType = null;
+                                String attributeKey = null;
                                 if (fieldSelect != null) {
                                     fieldSelectCss = fieldSelect.value();
                                     valType = fieldSelect.valType();
+                                    attributeKey = fieldSelect.attributeKey();
                                 }
                                 if (fieldSelectCss==null || fieldSelectCss.trim().length()==0) {
                                     continue;
@@ -139,8 +141,12 @@ public class CrawlerThread implements Runnable {
                                                     fieldElementOrigin = fieldElement.html();
                                                 } else if ("val".equals(valType)) {
                                                     fieldElementOrigin = fieldElement.val();
-                                                } else {
+                                                } else if ("text".equals(valType)) {
                                                     fieldElementOrigin = fieldElement.text();
+                                                } else if ("attr".equals(valType)) {
+                                                    fieldElementOrigin = fieldElement.attr(attributeKey);
+                                                } else {
+                                                    fieldElementOrigin = fieldElement.toString();
                                                 }
 
                                                 if (fieldElementOrigin==null || fieldElementOrigin.length()==0) {
@@ -166,8 +172,12 @@ public class CrawlerThread implements Runnable {
                                         fieldValueOrigin = fieldElement.html();
                                     } else if ("val".equals(valType)) {
                                         fieldValueOrigin = fieldElement.val();
-                                    } else {
+                                    } else if ("text".equals(valType)) {
                                         fieldValueOrigin = fieldElement.text();
+                                    } else if ("attr".equals(valType)) {
+                                        fieldValueOrigin = fieldElement.attr(attributeKey);
+                                    } else {
+                                        fieldValueOrigin = fieldElement.toString();
                                     }
 
                                     if (fieldValueOrigin==null || fieldValueOrigin.length()==0) {

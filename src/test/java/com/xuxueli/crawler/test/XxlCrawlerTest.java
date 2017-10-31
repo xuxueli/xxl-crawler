@@ -4,7 +4,6 @@ import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.util.FileUtil;
 import org.jsoup.nodes.Document;
 
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * xxl crawler test
+ * 爬虫示例01：爬取页面数据并封装VO对象
  *
  * @author xuxueli 2017-10-09 19:48:48
  */
@@ -29,7 +28,6 @@ public class XxlCrawlerTest {
 
         @PageFieldSelect(".comment-content")
         private List<String> comment;
-
 
         public String getTitle() {
             return title;
@@ -70,16 +68,12 @@ public class XxlCrawlerTest {
         XxlCrawler crawler = new XxlCrawler.Builder()
                 .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
                 .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
-                .setThreadCount(3)
+                .setThreadCount(1)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(String url, Document html, PageVo pageVo) {
-                        // 参考01：解析封装 PageVo 对象
+                        // 解析封装 PageVo 对象
                         System.out.println(url + "：" + pageVo.toString());
-
-                        // 参考02：保存Html至本地文件
-                        FileUtil.saveFile(html.html().getBytes(), "/Users/xuxueli/Downloads/tmp",
-                                FileUtil.getFileNameByUrl(url,	"text/html"));
                     }
                 })
                 .build();

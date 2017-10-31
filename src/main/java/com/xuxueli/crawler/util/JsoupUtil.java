@@ -100,4 +100,25 @@ public class JsoupUtil {
         return links;
     }
 
+    /**
+     * 获取页面上所有图片地址 （<a>标签的href值）
+     *
+     * @param html
+     * @return
+     */
+    public static Set<String> findImages(Document html) {
+
+        Elements imgs = html.getElementsByTag("img");
+
+        Set<String> images = new HashSet<String>();
+        if (imgs!=null && imgs.size() > 0) {
+            for (Element element: imgs) {
+                String imgSrc = element.attr("abs:src");
+                images.add(imgSrc);
+            }
+        }
+
+        return images;
+    }
+
 }

@@ -26,12 +26,12 @@ public class XxlCrawler {
     private Set<String> whiteUrlRegexs; // URL白名单正则，非空时进行URL白名单过滤页面
 
     // site
-    private volatile boolean ifPost = false;            // 请求方式：true=POST请求、false=GET请求
-    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_SAMPLE;               // UserAgent
-    private volatile Map<String, String> paramMap;      // 请求参数
-    private volatile Map<String, String> cookieMap;     // 请求Cookie
-    private volatile int timeoutMillis = 5000;          // 超时时间，毫秒
-    private volatile int pauseMillis = 0;               // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+    private volatile boolean ifPost = false;                                    // 请求方式：true=POST请求、false=GET请求
+    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_SAMPLE;       // UserAgent
+    private volatile Map<String, String> paramMap;                              // 请求参数
+    private volatile Map<String, String> cookieMap;                             // 请求Cookie
+    private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT; // 超时时间，毫秒
+    private volatile int pauseMillis = 0;                                       // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 
     // thread
     private int threadCount = 1;        // 爬虫线程数量

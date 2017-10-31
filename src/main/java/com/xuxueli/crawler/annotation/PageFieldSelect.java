@@ -22,12 +22,19 @@ public @interface PageFieldSelect {
     public String value() default "";
 
     /**
-     * css query value type, like "html、val、text（default）"
-     * css选择器返回的数据类型，如 "html、val、text（default）"
+     * css query value type, like "html、val、text（default）、toString、attr"
+     * css选择器返回的数据类型，如 "html、val、text（default）、toString、attr"
      *
      * @return
      */
     public String valType() default "text";
+
+    /**
+     * attr, like "abs:src")
+     *
+     * @return
+     */
+    public String attributeKey() default "";
 
     /**
      * data patttern

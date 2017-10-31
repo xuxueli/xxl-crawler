@@ -1,5 +1,6 @@
 package com.xuxueli.crawler.test.util;
 
+import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.util.FileUtil;
 import org.junit.Test;
 
@@ -14,11 +15,11 @@ public class FileUtilTest {
      * 生成Html本地文件
      */
     @Test
-    public void saveHtml() {
+    public void saveFileTest() {
 
-        byte[] htmlData = "<html>Hello world.</html>".getBytes();
+        String htmlData = "<html>Hello world.</html>";
         String filePath = "/Users/xuxueli/Downloads/tmp";
-        String fileName = FileUtil.getFileNameByUrl("http://www.baidu.com/",	"text/html");
+        String fileName = FileUtil.getFileNameByUrl("http://www.baidu.com/",	XxlCrawlerConf.CONTENT_TYPE_HTML);
 
         FileUtil.saveFile(htmlData, filePath, fileName);
     }

@@ -13,55 +13,51 @@
 - 8、轻量级：底层实现仅依赖jsoup，简洁高效；
 - 9、超时控制：支持设置爬虫请求的超时时间；
 - 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+- 11、单个页面支持抽取多个PageVO；
 
 ### 快速入门
-
 
 #### 第一步：定义 "页面对象VO"
 > 可参考测试代码：com.xuxueli.crawler.test.XxlCrawlerTest
 ```java
 // PageSelect 注解：从页面中抽取出多个VO对象；
 @PageSelect(".body")
-public static class PageVo {
+    public static class PageVo {
 
-    // PageFieldSelect 注解：从页面中，为每个VO对象抽取出属性数据 
-    @PageFieldSelect(value = ".blog-heading .title")
-    private String title;
+        @PageFieldSelect(value = ".blog-heading .title")
+        private String title;
 
-    @PageFieldSelect("#read")
-    private int read;
+        @PageFieldSelect("#read")
+        private int read;
 
-    @PageFieldSelect(".comment-content")
-    private List<String> comment;
-    
-    // set get
-}
+        @PageFieldSelect(".comment-content")
+        private List<String> comment;
+
+        // set get
+    }
 ```
 
 #### 第二步：创建爬虫对象
 ```java
 XxlCrawler crawler = new XxlCrawler.Builder()
-    // 设置入口URL
-    .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
-    // 设置爬取页面地址白名单正则
-    .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
-    // 设置爬虫并发线程
-    .setThreadCount(5)
-    // 设置页面数据解析器，通过解析器绑定 "页面对象VO"，爬虫将会自动封装VO对象数据，方便操作
-    .setPageParser(new PageParser<PageVo>() {
-        @Override
-        public void parse(String url, Document html, PageVo pageVo) {
-            System.out.println("-------------------");
-            System.out.println(url);
-            System.out.println(pageVo.toString());
-        }
-    })
-    .build();
+        .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
+        .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
+        .setThreadCount(3)
+        .setPageParser(new PageParser<PageVo>() {
+            @Override
+            public void parse(String url, Document html, PageVo pageVo) {
+                // 解析封装 PageVo 对象
+                System.out.println(url + "：" + pageVo.toString());
+            }
+        })
+        .build();
+
+crawler.start(true);
 ```
 
 #### 第三步：启动爬虫
 ```java
-crawler.start();
+crawler.start(true);
 ```
 
 
@@ -70,6 +66,16 @@ crawler.start();
 crawler.stop(true);
 ```
 
+#### 其他：爬虫参考示例
+- 1、爬取页面数据并封装VO对象
+- 2、爬取页面，下载Html文件
+- 3、爬取页面，下载图片文件
+
+(上述示例代码位于 /test 目录下)
+
+
 ## TODO
+- 1、超时重试机制；
+
 
 
