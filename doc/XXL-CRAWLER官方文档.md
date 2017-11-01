@@ -51,7 +51,16 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 - 2、爬取页面，下载Html文件
 - 3、爬取页面，下载图片文件
 
-### 第一步：定义 "页面对象VO"
+### 第一步：引入Maven依赖
+```
+<dependency>
+    <groupId>com.xuxueli</groupId>
+    <artifactId>xxl-crawler</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+### 第二步：定义 "PageVo/页面数据对象"
 ```java
 // PageSelect 注解：从页面中抽取出多个VO对象；
 @PageSelect(".body")
@@ -70,7 +79,7 @@ public static class PageVo {
 }
 ```
 
-### 第二步：创建爬虫对象
+### 第三步：创建爬虫
 ```java
 XxlCrawler crawler = new XxlCrawler.Builder()
     .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
@@ -87,15 +96,11 @@ XxlCrawler crawler = new XxlCrawler.Builder()
     .build();
 ```
 
-### 第三步：启动爬虫
+### 第四步：启动爬虫
 ```java
 crawler.start(true);
 ```
 
-### 第四步：停止爬虫
-```java
-crawler.stop(true);
-```
 
 ## 三、总体设计
 ### 3.1 功能定位
