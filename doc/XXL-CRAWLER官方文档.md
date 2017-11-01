@@ -60,7 +60,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 </dependency>
 ```
 
-### 第二步：定义 "PageVo/页面数据对象"
+### 第二步：定义 "PageVo/页面数据对象"（可选）
 ```java
 // PageSelect 注解：从页面中抽取出多个VO对象；
 @PageSelect(".body")
@@ -170,9 +170,9 @@ datePattern | 时间格式化，日期类型数据有效
 - 11、单个页面支持抽取多个PageVO；
 
 ### 版本 V1.1.0，新特性[规划中]
+- 1、页面默认cssQuery调整为html标签；
 
 ### TODO LIST
-## TODO
 - 1、爬虫超时重试；
 
 
