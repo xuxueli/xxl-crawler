@@ -81,9 +81,9 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // ------- pagevo ----------
-                /*if (!crawler.validWhiteUrl(link)) {
-                    continue;   // pagevo parse, valid white
-                }*/
+                if (!crawler.validWhiteUrl(link)) {
+                    continue;   // pagevo parse, valid white （limit init-page not white, only allow spread）
+                }
 
                 // pagevo class-field info
                 Type[] pageVoClassTypes = ((ParameterizedType)crawler.getPageParser().getClass().getGenericSuperclass()).getActualTypeArguments();
