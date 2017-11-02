@@ -175,6 +175,7 @@ datePattern | 时间格式化，日期类型数据有效
 
 ### TODO LIST
 - 1、爬虫超时重试；
+- 2、扩展SelectType，比如HasClass等；
 
 
 ## 五、其他
