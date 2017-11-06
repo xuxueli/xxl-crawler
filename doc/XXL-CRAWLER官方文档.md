@@ -171,6 +171,7 @@ datePattern | 时间格式化，日期类型数据有效
 
 ### 版本 V1.1.0，新特性[规划中]
 - 1、页面默认cssQuery调整为html标签；
+- 2、升级Jsoup至1.11.1版本；
 
 
 ### TODO LIST
