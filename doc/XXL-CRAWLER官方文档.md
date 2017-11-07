@@ -151,7 +151,7 @@ PageFieldSelect | 说明
 --- | ---
 cssQuery | CSS选择器, 如 "#title"
 selectType | jquery 数据抽取方式，如 ".html()/.text()/.val()/.attr()"等
-attributeKey | jquery 数据抽取参数，SelectType=ATTR 时有效，如 "abs:src / .attr("attributeKey")"
+selectVal | jquery 数据抽取参数，SelectType=ATTR 时有效，如 ".attr("abs:src")"
 datePattern | 时间格式化，日期类型数据有效
 
 
@@ -173,6 +173,7 @@ datePattern | 时间格式化，日期类型数据有效
 - 1、页面默认cssQuery调整为html标签；
 - 2、升级Jsoup至1.11.1版本；
 - 3、修复PageVO注解失效的问题；
+- 4、属性注解参数attributeKey调整为selectVal；
 
 
 ### TODO LIST

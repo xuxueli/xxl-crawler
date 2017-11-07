@@ -112,11 +112,11 @@ public class CrawlerThread implements Runnable {
                                 PageFieldSelect fieldSelect = field.getAnnotation(PageFieldSelect.class);
                                 String cssQuery = null;
                                 XxlCrawlerConf.SelectType selectType = null;
-                                String attributeKey = null;
+                                String selectVal = null;
                                 if (fieldSelect != null) {
                                     cssQuery = fieldSelect.cssQuery();
                                     selectType = fieldSelect.selectType();
-                                    attributeKey = fieldSelect.attributeKey();
+                                    selectVal = fieldSelect.selectVal();
                                 }
                                 if (cssQuery==null || cssQuery.trim().length()==0) {
                                     continue;
@@ -136,7 +136,7 @@ public class CrawlerThread implements Runnable {
                                             List<Object> fieldValueTmp = new ArrayList<Object>();
                                             for (Element fieldElement: fieldElementList) {
 
-                                                String fieldElementOrigin = JsoupUtil.parseElement(fieldElement, selectType, attributeKey);
+                                                String fieldElementOrigin = JsoupUtil.parseElement(fieldElement, selectType, selectVal);
                                                 if (fieldElementOrigin==null || fieldElementOrigin.length()==0) {
                                                     continue;
                                                 }
@@ -153,7 +153,7 @@ public class CrawlerThread implements Runnable {
                                     Elements fieldElements = pageVoElement.select(cssQuery);
                                     String fieldValueOrigin = null;
                                     if (fieldElements!=null && fieldElements.size()>0) {
-                                        fieldValueOrigin = JsoupUtil.parseElement(fieldElements.get(0), selectType, attributeKey);
+                                        fieldValueOrigin = JsoupUtil.parseElement(fieldElements.get(0), selectType, selectVal);
                                     }
 
                                     if (fieldValueOrigin==null || fieldValueOrigin.length()==0) {

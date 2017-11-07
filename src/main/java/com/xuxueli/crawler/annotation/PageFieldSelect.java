@@ -26,9 +26,9 @@ public @interface PageFieldSelect {
     public String cssQuery() default "";
 
     /**
-     * jquery data-extraction-type，like ".html()/.text()/.val()/.attr()"
+     * jquery data-extraction-type，like ".html()/.text()/.val()/.attr() ..."
      *
-     * jquery 数据抽取方式，如 ".html()/.text()/.val()/.attr()"等
+     * jquery 数据抽取方式，如 ".html()/.text()/.val()/.attr() ..."等
      *
      * @see com.xuxueli.crawler.conf.XxlCrawlerConf.SelectType
      *
@@ -37,13 +37,13 @@ public @interface PageFieldSelect {
     public XxlCrawlerConf.SelectType selectType() default XxlCrawlerConf.SelectType.TEXT;
 
     /**
-     * jquery data-extraction-param, valid when SelectType=ATTR, like "abs:src / .attr("attributeKey")"
+     * jquery data-extraction-value, effect when SelectType=ATTR/HAS_CLASS, like ".attr("abs:src")"
      *
-     * jquery 数据抽取参数，SelectType=ATTR 时有效，如 "abs:src / .attr("attributeKey")"
+     * jquery 数据抽取参数，SelectType=ATTR/HAS_CLASS 时有效，如 ".attr("abs:src")"
      *
      * @return
      */
-    public String attributeKey() default "";
+    public String selectVal() default "";
 
     /**
      * data patttern, valid when date data

@@ -70,10 +70,10 @@ public class JsoupUtil {
      *
      * @param fieldElement
      * @param selectType
-     * @param attributeKey
+     * @param selectVal
      * @return
      */
-    public static String parseElement(Element fieldElement, XxlCrawlerConf.SelectType selectType, String attributeKey) {
+    public static String parseElement(Element fieldElement, XxlCrawlerConf.SelectType selectType, String selectVal) {
         String fieldElementOrigin = null;
         if (XxlCrawlerConf.SelectType.HTML == selectType) {
             fieldElementOrigin = fieldElement.html();
@@ -82,8 +82,10 @@ public class JsoupUtil {
         } else if (XxlCrawlerConf.SelectType.TEXT == selectType) {
             fieldElementOrigin = fieldElement.text();
         } else if (XxlCrawlerConf.SelectType.ATTR == selectType) {
-            fieldElementOrigin = fieldElement.attr(attributeKey);
-        } else {
+            fieldElementOrigin = fieldElement.attr(selectVal);
+        }  else if (XxlCrawlerConf.SelectType.HAS_CLASS == selectType) {
+            fieldElementOrigin = String.valueOf(fieldElement.hasClass(selectVal));
+        }  else {
             fieldElementOrigin = fieldElement.toString();
         }
         return fieldElementOrigin;

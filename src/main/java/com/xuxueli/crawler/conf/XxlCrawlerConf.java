@@ -31,7 +31,9 @@ public class XxlCrawlerConf {
         // .toString()
         TOSTRING,
         // .attr("attributeKey")
-        ATTR
+        ATTR,
+        // .hasClass("className")
+        HAS_CLASS;
     }
 
 }

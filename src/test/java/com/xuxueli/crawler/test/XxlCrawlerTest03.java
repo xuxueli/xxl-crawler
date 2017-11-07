@@ -23,7 +23,7 @@ public class XxlCrawlerTest03 {
     @PageSelect(cssQuery = ".body")
     public static class PageVo {
 
-        @PageFieldSelect(cssQuery = "#blogBody img", selectType = XxlCrawlerConf.SelectType.ATTR, attributeKey = "abs:src")
+        @PageFieldSelect(cssQuery = "#blogBody img", selectType = XxlCrawlerConf.SelectType.ATTR, selectVal = "abs:src")
         private List<String> images;
 
         public List<String> getImages() {
