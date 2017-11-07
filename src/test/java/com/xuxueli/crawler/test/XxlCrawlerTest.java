@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class XxlCrawlerTest {
 
-    @PageSelect(cssQuery = ".body")
+    @PageSelect(cssQuery = "body")
     public static class PageVo {
 
         @PageFieldSelect(cssQuery = ".blog-heading .title")
