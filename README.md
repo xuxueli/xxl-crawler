@@ -23,9 +23,9 @@
 
 
 ## Introduction
-XXL-CRAWLER is a flexible and efficient、object-oriented web crawler framework. One line of code develops a distributed crawler.
 
-XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫；
+XXL-CRAWLER is a flexible and efficient、object-oriented web crawler framework. One line of code develops a distributed crawler. Features such as "multithreaded、asynchronous、dynamic IP proxy".
+XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理"等特性；
 
 ## Documentation
 - [中文文档](http://www.xuxueli.com/xxl-crawler/)
@@ -43,6 +43,8 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 - 9、超时控制：支持设置爬虫请求的超时时间；
 - 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 - 11、单个页面支持抽取一个或多个PageVO；
+- 12、代理IP：对抗反采集策略规则WAF；
+- 13、动态代理：支持运行时动态调整代理池，甚至自定义代理池路由策略；
 
 ## Communication
 
