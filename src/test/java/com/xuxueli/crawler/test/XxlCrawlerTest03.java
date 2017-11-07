@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class XxlCrawlerTest03 {
 
-    @PageSelect(cssQuery = ".body")
+    @PageSelect(cssQuery = "body")
     public static class PageVo {
 
         @PageFieldSelect(cssQuery = "#blogBody img", selectType = XxlCrawlerConf.SelectType.ATTR, selectVal = "abs:src")

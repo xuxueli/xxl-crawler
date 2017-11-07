@@ -20,7 +20,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 - 8、轻量级：底层实现仅依赖jsoup，简洁高效；
 - 9、超时控制：支持设置爬虫请求的超时时间；
 - 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
-- 11、单个页面支持抽取多个PageVO；
+- 11、单个页面支持抽取一个或多个PageVO；
 
 ### 1.4 下载
 
@@ -62,8 +62,8 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 
 ### 第二步：定义 "PageVo/页面数据对象"（可选）
 ```java
-// PageSelect 注解：从页面中抽取出多个VO对象；
-@PageSelect(".body")
+// PageSelect 注解：从页面中抽取出一个或多个VO对象；
+@PageSelect(cssQuery = "body")
 public static class PageVo {
 
     @PageFieldSelect(cssQuery = ".blog-heading .title")
@@ -167,7 +167,7 @@ datePattern | 时间格式化，日期类型数据有效
 - 8、轻量级：底层实现仅依赖jsoup，简洁高效；
 - 9、超时控制：支持设置爬虫请求的超时时间；
 - 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
-- 11、单个页面支持抽取多个PageVO；
+- 11、单个页面支持抽取一个或多个PageVO；
 
 ### 版本 V1.1.0，新特性[规划中]
 - 1、页面默认cssQuery调整为html标签；
