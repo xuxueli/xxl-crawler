@@ -184,6 +184,7 @@ datePattern | 时间格式化，日期类型数据有效
 - 1、爬虫超时重试；
 - 2、扩展SelectType，比如HasClass等；
 - 3、动态UserAgent；
+- 4、js渲染；
 
 ## 五、其他
 
