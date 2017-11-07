@@ -2,6 +2,7 @@ package com.xuxueli.crawler;
 
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
+import com.xuxueli.crawler.proxy.ProxyMaker;
 import com.xuxueli.crawler.thread.CrawlerThread;
 import com.xuxueli.crawler.util.RegexUtil;
 import com.xuxueli.crawler.util.UrlUtil;
@@ -32,6 +33,7 @@ public class XxlCrawler {
     private volatile Map<String, String> cookieMap;                             // 请求Cookie
     private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT; // 超时时间，毫秒
     private volatile int pauseMillis = 0;                                       // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+    private volatile ProxyMaker proxyMaker;                                     // 代理生成器
 
     // thread
     private int threadCount = 1;        // 爬虫线程数量
@@ -150,6 +152,16 @@ public class XxlCrawler {
             return this;
         }
 
+        /**
+         * 代理生成器
+         *
+         * @param proxyMaker
+         * @return
+         */
+        public Builder setProxyMaker(ProxyMaker proxyMaker){
+            crawler.proxyMaker = proxyMaker;
+            return this;
+        }
 
         // thread
         /**
@@ -211,6 +223,10 @@ public class XxlCrawler {
 
     public int getPauseMillis() {
         return pauseMillis;
+    }
+
+    public ProxyMaker getProxyMaker() {
+        return proxyMaker;
     }
 
     // ---------------------- crawler url ----------------------

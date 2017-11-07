@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +36,7 @@ public class JsoupUtil {
      * @return
      */
     public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap,
-                                boolean ifPost, String userAgent, int timeoutMillis) {
+                                boolean ifPost, String userAgent, int timeoutMillis, Proxy proxy) {
         if (!UrlUtil.isUrl(url)) {
             return null;
         }
@@ -50,6 +51,11 @@ public class JsoupUtil {
                 conn.cookies(cookieMap);
             }
             conn.timeout(timeoutMillis);
+
+            // 代理
+            if (proxy != null) {
+                conn.proxy(proxy);
+            }
 
             // 发出请求
             Document html = null;

@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -62,8 +63,13 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // ------- html ----------
+                Proxy proxy = null;
+                if (crawler.getProxyMaker() != null) {
+                    proxy = crawler.getProxyMaker().make();
+                }
+
                 Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(),
-                        crawler.getIfPost(), crawler.getUserAgent(), crawler.getTimeoutMillis());
+                        crawler.getIfPost(), crawler.getUserAgent(), crawler.getTimeoutMillis(), proxy);
                 if (html == null) {
                     continue;
                 }
