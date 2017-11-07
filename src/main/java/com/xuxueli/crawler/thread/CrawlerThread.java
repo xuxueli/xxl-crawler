@@ -89,7 +89,7 @@ public class CrawlerThread implements Runnable {
                 Type[] pageVoClassTypes = ((ParameterizedType)crawler.getPageParser().getClass().getGenericSuperclass()).getActualTypeArguments();
                 Class pageVoClassType = (Class) pageVoClassTypes[0];
 
-                PageSelect pageVoSelect = pageVoClassType.getClass().getAnnotation(PageSelect.class);
+                PageSelect pageVoSelect = (PageSelect) pageVoClassType.getAnnotation(PageSelect.class);
                 String pageVoCssQuery = (pageVoSelect!=null && pageVoSelect.cssQuery()!=null && pageVoSelect.cssQuery().trim().length()>0)?pageVoSelect.cssQuery():"html";
 
                 // pagevo document 2 object
