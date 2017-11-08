@@ -36,4 +36,8 @@ public class XxlCrawlerConf {
         HAS_CLASS;
     }
 
+    // site address
+    public static final String SITE_BAIDU = "http://www.baidu.com/";
+    public static final String SITE_GOOGLE = "http://www.google.com/";
+
 }

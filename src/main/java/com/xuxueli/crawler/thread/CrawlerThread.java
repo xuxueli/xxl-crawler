@@ -146,7 +146,11 @@ public class CrawlerThread implements Runnable {
                                                 if (fieldElementOrigin==null || fieldElementOrigin.length()==0) {
                                                     continue;
                                                 }
-                                                fieldValueTmp.add(FieldReflectionUtil.parseValue(field, fieldElementOrigin));
+                                                try {
+                                                    fieldValueTmp.add(FieldReflectionUtil.parseValue(field, fieldElementOrigin));
+                                                } catch (Exception e) {
+                                                    logger.error(e.getMessage(), e);
+                                                }
                                             }
 
                                             if (fieldValueTmp.size() > 0) {
@@ -166,7 +170,11 @@ public class CrawlerThread implements Runnable {
                                         continue;
                                     }
 
-                                    fieldValue = FieldReflectionUtil.parseValue(field, fieldValueOrigin);
+                                    try {
+                                        fieldValue = FieldReflectionUtil.parseValue(field, fieldValueOrigin);
+                                    } catch (Exception e) {
+                                        logger.error(e.getMessage(), e);
+                                    }
                                 }
 
                                 if (fieldValue!=null) {

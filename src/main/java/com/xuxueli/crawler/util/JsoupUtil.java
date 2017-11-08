@@ -43,7 +43,9 @@ public class JsoupUtil {
         try {
             // 请求设置
             Connection conn = Jsoup.connect(url);
-            conn.userAgent(userAgent);
+            if (userAgent!=null) {
+                conn.userAgent(userAgent);
+            }
             if (paramMap != null && !paramMap.isEmpty()) {
                 conn.data(paramMap);
             }
