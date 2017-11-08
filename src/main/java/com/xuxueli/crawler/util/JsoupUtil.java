@@ -54,6 +54,12 @@ public class JsoupUtil {
             }
             conn.timeout(timeoutMillis);
 
+            // TODO
+            Map<String, String> headerMap = null;
+            if (headerMap!=null && !headerMap.isEmpty()) {
+                conn.headers(headerMap);
+            }
+
             // 代理
             if (proxy != null) {
                 conn.proxy(proxy);
