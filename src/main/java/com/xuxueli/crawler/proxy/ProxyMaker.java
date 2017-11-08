@@ -1,8 +1,8 @@
 package com.xuxueli.crawler.proxy;
 
 import java.net.Proxy;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * proxy macker
@@ -11,18 +11,21 @@ import java.util.List;
  */
 public abstract class ProxyMaker {
 
-    protected List<Proxy> proxyList = new ArrayList<Proxy>();            // 请求代理池，对抗反采集策略规则WAF
+    protected List<Proxy> proxyList = new CopyOnWriteArrayList<Proxy>();            // 请求代理池，对抗反采集策略规则WAF
 
-    public ProxyMaker(List<Proxy> proxyList) {
-        this.proxyList = proxyList;
+    public ProxyMaker addProxy(Proxy proxy) {
+        this.proxyList.add(proxy);
+        return this;
     }
 
-    public void setProxyList(List<Proxy> proxyList) {
-        this.proxyList = proxyList;
-    }
-
-    public void addProxyList(List<Proxy> proxyList) {
+    public ProxyMaker addProxyList(List<Proxy> proxyList) {
         this.proxyList.addAll(proxyList);
+        return this;
+    }
+
+    public ProxyMaker clear() {
+        this.proxyList.clear();
+        return this;
     }
 
     /**

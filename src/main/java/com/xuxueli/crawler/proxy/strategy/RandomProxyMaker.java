@@ -1,9 +1,8 @@
-package com.xuxueli.crawler.proxy.impl;
+package com.xuxueli.crawler.proxy.strategy;
 
 import com.xuxueli.crawler.proxy.ProxyMaker;
 
 import java.net.Proxy;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,16 +14,17 @@ public class RandomProxyMaker extends ProxyMaker {
 
     private Random random = new Random();
 
-    public RandomProxyMaker(List<Proxy> proxyList) {
-        super(proxyList);
-    }
-
     @Override
     public Proxy make() {
-        if (super.proxyList!=null && super.proxyList.size()>0) {
-            return super.proxyList.get(random.nextInt(super.proxyList.size()));
+        if (super.proxyList==null || super.proxyList.size()==0) {
+            return null;
         }
-        return null;
+
+        if (super.proxyList.size() == 1) {
+            super.proxyList.get(0);
+        }
+
+        return super.proxyList.get(random.nextInt(super.proxyList.size()));
     }
 
 }

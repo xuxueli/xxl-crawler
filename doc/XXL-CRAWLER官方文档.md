@@ -134,8 +134,11 @@ setParamMap | 请求参数
 setCookieMap | 请求Cookie
 setTimeoutMillis | 超时时间，毫秒
 setPauseMillis | 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+setProxyMaker | 代理生成器，支持设置代理IP，同时支持调整代理池实现动态代理；
 setThreadCount | 爬虫并发线程数
 setPageParser | 页面解析器
+start   | 运行爬虫，可通过入参控制同步或异步方式运行
+stop    | 终止爬虫
 
 ### 3.4 核心注解：PageSelect
 
@@ -156,6 +159,22 @@ cssQuery | CSS选择器, 如 "#title"
 selectType | jquery 数据抽取方式，如 ".html()/.text()/.val()/.attr()"等
 selectVal | jquery 数据抽取参数，SelectType=ATTR 时有效，如 ".attr("abs:src")"
 datePattern | 时间格式化，日期类型数据有效
+
+### 3.6 多线程
+以线程池方式并行运行，提供对应API（可参考"章节3.3"）调整线程池大小，提高运行效率；
+
+### 3.7 异步
+支持同步、异步两种方式启动运行。
+
+- 同步：将会阻塞业务逻辑，爬虫爬取完全部页面后才会继续执行后续逻辑。
+- 异步：不会阻塞业务逻辑，爬虫逻辑以异步方式运行。
+
+### 3.8 动态代理
+ProxyMaker（代理生成器）：实现代理支持的组件。支持设置代理IP，同时支持调整代理池实现动态代理；
+
+系统已经提供了两种策略实现；
+- RoundProxyMaker（循环代理生成器）: 以循环方式获取代理池中代理；
+- RandomProxyMaker（随机代理生成器）: 以随机方式获取代理池中代理；
 
 
 ## 四、版本更新日志
