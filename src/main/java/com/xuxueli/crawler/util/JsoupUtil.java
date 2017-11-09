@@ -35,7 +35,7 @@ public class JsoupUtil {
      *
      * @return
      */
-    public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap,
+    public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap, Map<String, String> headerMap,
                                 boolean ifPost, String userAgent, int timeoutMillis, Proxy proxy) {
         if (!UrlUtil.isUrl(url)) {
             return null;
@@ -43,22 +43,19 @@ public class JsoupUtil {
         try {
             // 请求设置
             Connection conn = Jsoup.connect(url);
-            if (userAgent!=null) {
-                conn.userAgent(userAgent);
-            }
             if (paramMap != null && !paramMap.isEmpty()) {
                 conn.data(paramMap);
             }
             if (cookieMap != null && !cookieMap.isEmpty()) {
                 conn.cookies(cookieMap);
             }
-            conn.timeout(timeoutMillis);
-
-            // TODO
-            Map<String, String> headerMap = null;
             if (headerMap!=null && !headerMap.isEmpty()) {
                 conn.headers(headerMap);
             }
+            if (userAgent!=null) {
+                conn.userAgent(userAgent);
+            }
+            conn.timeout(timeoutMillis);
 
             // 代理
             if (proxy != null) {

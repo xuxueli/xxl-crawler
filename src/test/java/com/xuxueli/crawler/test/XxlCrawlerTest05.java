@@ -101,6 +101,7 @@ public class XxlCrawlerTest05 {
                     Document html = JsoupUtil.load("http://2017.ip138.com/ic.asp",
                             null,
                             null,
+                            null,
                             false,
                             XxlCrawlerConf.USER_AGENT_SAMPLE,
                             XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT,

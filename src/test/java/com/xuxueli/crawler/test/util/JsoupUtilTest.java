@@ -24,12 +24,8 @@ public class JsoupUtilTest {
     public void loadParseTest(){
         String url = "http://www.baidu.com/";
 
-        // 组装规则
-        Map<Integer, Set<String>> tagMap = new HashMap<Integer, Set<String>>();
-        tagMap.put(0, new HashSet<String>(Arrays.asList("a[href]")));
-
-        // 加载解析html
-        Document html = JsoupUtil.load(url, null, null, false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
+        Document html = JsoupUtil.load(url, null, null, null,
+                false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
         logger.info(html.html());
     }
 
@@ -40,7 +36,8 @@ public class JsoupUtilTest {
     public void findLinksTest() {
         String url = "http://www.baidu.com/";
 
-        Document html = JsoupUtil.load(url, null, null, false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
+        Document html = JsoupUtil.load(url, null, null, null,
+                false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
         Set<String> linkList = JsoupUtil.findLinks(html);
 
         logger.info("link num {}", linkList.size());
@@ -59,7 +56,8 @@ public class JsoupUtilTest {
     public void findImagesTest() {
         String url = "http://www.baidu.com/";
 
-        Document html = JsoupUtil.load(url, null, null, false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
+        Document html = JsoupUtil.load(url, null, null, null,
+                false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
         Set<String> linkList = JsoupUtil.findImages(html);
 
         logger.info("images num {}", linkList.size());

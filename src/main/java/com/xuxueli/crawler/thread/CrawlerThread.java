@@ -68,7 +68,7 @@ public class CrawlerThread implements Runnable {
                     proxy = crawler.getProxyMaker().make();
                 }
 
-                Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(),
+                Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(), crawler.getHeaderMap(),
                         crawler.getIfPost(), crawler.getUserAgent(), crawler.getTimeoutMillis(), proxy);
                 if (html == null) {
                     continue;

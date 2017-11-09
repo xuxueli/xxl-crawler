@@ -31,6 +31,7 @@ public class XxlCrawler {
     private volatile String userAgent = XxlCrawlerConf.USER_AGENT_SAMPLE;             // UserAgent
     private volatile Map<String, String> paramMap;                                       // 请求参数
     private volatile Map<String, String> cookieMap;                                      // 请求Cookie
+    private volatile Map<String, String> headerMap;                                      // 请求Header
     private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT;     // 超时时间，毫秒
     private volatile int pauseMillis = 0;                                               // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
     private volatile ProxyMaker proxyMaker;                                              // 代理生成器
@@ -135,6 +136,17 @@ public class XxlCrawler {
         }
 
         /**
+         * 请求Header
+         *
+         * @param headerMap
+         * @return
+         */
+        private Builder setHeaderMap(Map<String, String> headerMap){
+            crawler.headerMap = headerMap;
+            return this;
+        }
+
+        /**
          * 超时时间，毫秒
          *
          * @param timeoutMillis
@@ -215,6 +227,10 @@ public class XxlCrawler {
 
     public Map<String, String> getCookieMap() {
         return cookieMap;
+    }
+
+    public Map<String, String> getHeaderMap() {
+        return headerMap;
     }
 
     public PageParser getPageParser() {
