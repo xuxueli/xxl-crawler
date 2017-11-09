@@ -102,8 +102,9 @@ public class XxlCrawlerTest05 {
                             null,
                             null,
                             null,
-                            false,
                             XxlCrawlerConf.USER_AGENT_CHROME,
+                            null,
+                            false,
                             XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT,
                             new Proxy(Proxy.Type.HTTP, new InetSocketAddress(pageVo.getIp(), pageVo.getPort())));
                     logger.info(pageVo + " : " + html.html());

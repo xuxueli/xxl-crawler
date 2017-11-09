@@ -29,6 +29,7 @@ public class XxlCrawler {
     // site
     private volatile boolean ifPost = false;                                            // 请求方式：true=POST请求、false=GET请求
     private volatile List<String> userAgentList = Collections.synchronizedList(new ArrayList<String>(Arrays.asList(XxlCrawlerConf.USER_AGENT_CHROME)));     // 请求UserAgent
+    private volatile String referrer;                                                    // 请求Referrer
     private volatile Map<String, String> paramMap;                                       // 请求参数
     private volatile Map<String, String> cookieMap;                                      // 请求Cookie
     private volatile Map<String, String> headerMap;                                      // 请求Header
@@ -104,7 +105,7 @@ public class XxlCrawler {
         }
 
         /**
-         * UserAgent
+         * 请求UserAgent
          *
          * @param userAgents
          * @return
@@ -117,6 +118,17 @@ public class XxlCrawler {
                     }
                 }
             }
+            return this;
+        }
+
+        /**
+         * 请求Referrer
+         *
+         * @param referrer
+         * @return
+         */
+        public Builder setReferrer(String referrer){
+            crawler.referrer = referrer;
             return this;
         }
 
@@ -239,6 +251,10 @@ public class XxlCrawler {
 
     public List<String> getUserAgentList() {
         return userAgentList;
+    }
+
+    public String getReferrer() {
+        return referrer;
     }
 
     public Map<String, String> getParamMap() {

@@ -100,7 +100,7 @@ public class CrawlerThread implements Runnable {
         }
 
         Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(), crawler.getHeaderMap(),
-                crawler.getIfPost(), userAgent, crawler.getTimeoutMillis(), proxy);
+                userAgent, crawler.getReferrer(), crawler.getIfPost(), crawler.getTimeoutMillis(), proxy);
         if (html == null) {
             return false;
         }

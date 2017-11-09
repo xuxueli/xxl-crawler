@@ -36,7 +36,7 @@ public class JsoupUtil {
      * @return
      */
     public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap, Map<String, String> headerMap,
-                                boolean ifPost, String userAgent, int timeoutMillis, Proxy proxy) {
+                                String userAgent, String referrer, boolean ifPost, int timeoutMillis, Proxy proxy) {
         if (!UrlUtil.isUrl(url)) {
             return null;
         }
@@ -54,6 +54,9 @@ public class JsoupUtil {
             }
             if (userAgent!=null) {
                 conn.userAgent(userAgent);
+            }
+            if (referrer != null) {
+                conn.referrer(referrer);
             }
             conn.timeout(timeoutMillis);
 

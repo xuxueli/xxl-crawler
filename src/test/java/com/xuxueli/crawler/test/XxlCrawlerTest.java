@@ -71,7 +71,6 @@ public class XxlCrawlerTest {
                 .setUrls("https://my.oschina.net/xuxueli/blog")
                 .setWhiteUrlRegexs("https://my\\.oschina\\.net/xuxueli/blog/\\d+")
                 .setThreadCount(3)
-                .setUserAgent(XxlCrawlerConf.USER_AGENT_CHROME, XxlCrawlerConf.USER_AGENT_FIREFOX_45)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(Document html, PageVo pageVo) {
