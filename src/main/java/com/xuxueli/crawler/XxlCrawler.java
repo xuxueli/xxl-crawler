@@ -28,7 +28,7 @@ public class XxlCrawler {
 
     // site
     private volatile boolean ifPost = false;                                            // 请求方式：true=POST请求、false=GET请求
-    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_SAMPLE;             // UserAgent
+    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_CHROME;             // UserAgent
     private volatile Map<String, String> paramMap;                                       // 请求参数
     private volatile Map<String, String> cookieMap;                                      // 请求Cookie
     private volatile Map<String, String> headerMap;                                      // 请求Header

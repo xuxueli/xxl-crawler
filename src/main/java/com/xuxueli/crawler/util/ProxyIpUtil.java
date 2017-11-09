@@ -29,7 +29,7 @@ public class ProxyIpUtil {
             URL url = new URL(validSite!=null?validSite:XxlCrawlerConf.SITE_BAIDU);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection(proxy);
-            httpURLConnection.setRequestProperty("User-Agent", XxlCrawlerConf.USER_AGENT_SAMPLE);
+            httpURLConnection.setRequestProperty("User-Agent", XxlCrawlerConf.USER_AGENT_CHROME);
             httpURLConnection.setConnectTimeout(XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT);
             httpURLConnection.setReadTimeout(XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT);
 

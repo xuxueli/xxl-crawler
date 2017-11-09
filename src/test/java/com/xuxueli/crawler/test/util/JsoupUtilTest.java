@@ -25,7 +25,7 @@ public class JsoupUtilTest {
         String url = "http://www.baidu.com/";
 
         Document html = JsoupUtil.load(url, null, null, null,
-                false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
+                false, XxlCrawlerConf.USER_AGENT_CHROME, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
         logger.info(html.html());
     }
 
@@ -37,7 +37,7 @@ public class JsoupUtilTest {
         String url = "http://www.baidu.com/";
 
         Document html = JsoupUtil.load(url, null, null, null,
-                false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
+                false, XxlCrawlerConf.USER_AGENT_CHROME, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
         Set<String> linkList = JsoupUtil.findLinks(html);
 
         logger.info("link num {}", linkList.size());
@@ -57,7 +57,7 @@ public class JsoupUtilTest {
         String url = "http://www.baidu.com/";
 
         Document html = JsoupUtil.load(url, null, null, null,
-                false, XxlCrawlerConf.USER_AGENT_SAMPLE, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
+                false, XxlCrawlerConf.USER_AGENT_CHROME, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, null);
         Set<String> linkList = JsoupUtil.findImages(html);
 
         logger.info("images num {}", linkList.size());
