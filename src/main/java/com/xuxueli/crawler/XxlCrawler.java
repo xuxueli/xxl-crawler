@@ -27,21 +27,21 @@ public class XxlCrawler {
     private Set<String> whiteUrlRegexs = Collections.synchronizedSet(new HashSet<String>());                 // URL白名单正则，非空时进行URL白名单过滤页面
 
     // site
-    private volatile boolean ifPost = false;                                            // 请求方式：true=POST请求、false=GET请求
-    private volatile List<String> userAgentList = Collections.synchronizedList(new ArrayList<String>(Arrays.asList(XxlCrawlerConf.USER_AGENT_CHROME)));     // 请求UserAgent
-    private volatile String referrer;                                                    // 请求Referrer
     private volatile Map<String, String> paramMap;                                       // 请求参数
     private volatile Map<String, String> cookieMap;                                      // 请求Cookie
     private volatile Map<String, String> headerMap;                                      // 请求Header
+    private volatile List<String> userAgentList = Collections.synchronizedList(new ArrayList<String>(Arrays.asList(XxlCrawlerConf.USER_AGENT_CHROME)));     // 请求UserAgent
+    private volatile String referrer;                                                    // 请求Referrer
+    private volatile boolean ifPost = false;                                           // 请求方式：true=POST请求、false=GET请求
     private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT;     // 超时时间，毫秒
     private volatile int pauseMillis = 0;                                               // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
     private volatile ProxyMaker proxyMaker;                                              // 代理生成器
     private volatile int failRetryCount = 0;                                            // 失败重试次数，大于零时生效
 
     // thread
-    private int threadCount = 1;        // 爬虫线程数量
-    private ExecutorService crawlers = Executors.newCachedThreadPool();
-    private List<CrawlerThread> crawlerThreads = new CopyOnWriteArrayList<CrawlerThread>();
+    private int threadCount = 1;                                                          // 爬虫线程数量
+    private ExecutorService crawlers = Executors.newCachedThreadPool();                    // 爬虫线程池
+    private List<CrawlerThread> crawlerThreads = new CopyOnWriteArrayList<CrawlerThread>();          // 爬虫线程引用镜像
 
     // parser
     private PageParser pageParser;
@@ -94,13 +94,35 @@ public class XxlCrawler {
 
         // site
         /**
-         * 请求方式：true=POST请求、false=GET请求
+         * 请求参数
          *
-         * @param ifPost
+         * @param paramMap
          * @return
          */
-        public Builder setIfPost(boolean ifPost){
-            crawler.ifPost = ifPost;
+        public Builder setParamMap(Map<String, String> paramMap){
+            crawler.paramMap = paramMap;
+            return this;
+        }
+
+        /**
+         * 请求Cookie
+         *
+         * @param cookieMap
+         * @return
+         */
+        public Builder setCookieMap(Map<String, String> cookieMap){
+            crawler.cookieMap = cookieMap;
+            return this;
+        }
+
+        /**
+         * 请求Header
+         *
+         * @param headerMap
+         * @return
+         */
+        public Builder setHeaderMap(Map<String, String> headerMap){
+            crawler.headerMap = headerMap;
             return this;
         }
 
@@ -133,35 +155,13 @@ public class XxlCrawler {
         }
 
         /**
-         * 请求参数
+         * 请求方式：true=POST请求、false=GET请求
          *
-         * @param paramMap
+         * @param ifPost
          * @return
          */
-        public Builder setParamMap(Map<String, String> paramMap){
-            crawler.paramMap = paramMap;
-            return this;
-        }
-
-        /**
-         * 请求Cookie
-         *
-         * @param cookieMap
-         * @return
-         */
-        public Builder setCookieMap(Map<String, String> cookieMap){
-            crawler.cookieMap = cookieMap;
-            return this;
-        }
-
-        /**
-         * 请求Header
-         *
-         * @param headerMap
-         * @return
-         */
-        public Builder setHeaderMap(Map<String, String> headerMap){
-            crawler.headerMap = headerMap;
+        public Builder setIfPost(boolean ifPost){
+            crawler.ifPost = ifPost;
             return this;
         }
 
@@ -198,6 +198,19 @@ public class XxlCrawler {
             return this;
         }
 
+        /**
+         * 失败重试次数，大于零时生效
+         *
+         * @param failRetryCount
+         * @return
+         */
+        public Builder setFailRetryCount(int failRetryCount){
+            if (failRetryCount > 0) {
+                crawler.failRetryCount = failRetryCount;
+            }
+            return this;
+        }
+
         // thread
         /**
          * 爬虫并发线程数
@@ -222,18 +235,7 @@ public class XxlCrawler {
             return this;
         }
 
-        /**
-         * 失败重试次数，大于零时生效
-         *
-         * @param failRetryCount
-         * @return
-         */
-        public Builder setFailRetryCount(int failRetryCount){
-            if (failRetryCount > 0) {
-                crawler.failRetryCount = failRetryCount;
-            }
-            return this;
-        }
+
 
         public XxlCrawler build() {
             return crawler;
