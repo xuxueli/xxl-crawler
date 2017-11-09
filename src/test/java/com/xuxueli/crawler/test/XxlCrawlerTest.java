@@ -6,6 +6,7 @@ import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.parser.PageParser;
 import org.jsoup.nodes.Document;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -66,8 +67,8 @@ public class XxlCrawlerTest {
     public static void main(String[] args) {
 
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
-                .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
+                .setUrls("https://my.oschina.net/xuxueli/blog")
+                .setWhiteUrlRegexs("https://my\\.oschina\\.net/xuxueli/blog/\\d+")
                 .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override

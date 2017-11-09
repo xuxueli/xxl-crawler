@@ -65,8 +65,8 @@ public class XxlCrawlerTest05 {
 
         // 构造爬虫
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls(new HashSet<String>(Arrays.asList("http://www.ip181.com/daili/1.html")))
-                .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("http://www.ip181.com/daili/\\b[1-2].html")))      // 前2页数据
+                .setUrls("http://www.ip181.com/daili/1.html")
+                .setWhiteUrlRegexs("http://www.ip181.com/daili/\\b[1-2].html")      // 前2页数据
                 //.setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("http://www.ip181.com/daili/\\\\d+.html")))      // 全部数据
                 .setThreadCount(10)
                 .setPageParser(new PageParser<PageVo>() {

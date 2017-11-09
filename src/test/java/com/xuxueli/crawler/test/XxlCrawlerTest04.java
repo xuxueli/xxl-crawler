@@ -28,7 +28,7 @@ public class XxlCrawlerTest04 {
 
         // 构造爬虫     (代理方式请求IP地址查询网IP138，可从页面响应确认代理是否生效)
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls(new HashSet<String>(Arrays.asList("http://2017.ip138.com/ic.asp")))
+                .setUrls("http://2017.ip138.com/ic.asp")
                 .setAllowSpread(false)
                 .setProxyMaker(proxyMaker)
                 .setPageParser(new PageParser<Object>() {

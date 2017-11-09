@@ -21,19 +21,19 @@ public class XxlCrawler {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawler.class);
 
     // url
-    private volatile LinkedBlockingQueue<String> unVisitedUrlQueue = new LinkedBlockingQueue<String>();  // 未访问过的URL
-    private volatile Set<String> visitedUrlSet = Collections.synchronizedSet(new HashSet<String>());;    // 已经访问过的URL
-    private volatile boolean allowSpread = true;   // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
-    private Set<String> whiteUrlRegexs; // URL白名单正则，非空时进行URL白名单过滤页面
+    private volatile LinkedBlockingQueue<String> unVisitedUrlQueue = new LinkedBlockingQueue<String>();    // 未访问过的URL
+    private volatile Set<String> visitedUrlSet = Collections.synchronizedSet(new HashSet<String>());        // 已经访问过的URL
+    private volatile boolean allowSpread = true;                                                           // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+    private Set<String> whiteUrlRegexs = Collections.synchronizedSet(new HashSet<String>());                 // URL白名单正则，非空时进行URL白名单过滤页面
 
     // site
-    private volatile boolean ifPost = false;                                    // 请求方式：true=POST请求、false=GET请求
-    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_SAMPLE;       // UserAgent
-    private volatile Map<String, String> paramMap;                              // 请求参数
-    private volatile Map<String, String> cookieMap;                             // 请求Cookie
-    private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT; // 超时时间，毫秒
-    private volatile int pauseMillis = 0;                                       // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
-    private volatile ProxyMaker proxyMaker;                                     // 代理生成器
+    private volatile boolean ifPost = false;                                            // 请求方式：true=POST请求、false=GET请求
+    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_SAMPLE;             // UserAgent
+    private volatile Map<String, String> paramMap;                                       // 请求参数
+    private volatile Map<String, String> cookieMap;                                      // 请求Cookie
+    private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT;     // 超时时间，毫秒
+    private volatile int pauseMillis = 0;                                               // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+    private volatile ProxyMaker proxyMaker;                                              // 代理生成器
 
     // thread
     private int threadCount = 1;        // 爬虫线程数量
@@ -51,12 +51,12 @@ public class XxlCrawler {
         /**
          * 待爬的URL列表
          *
-         * @param urlSet
+         * @param urls
          * @return
          */
-        public Builder setUrls(Set<String> urlSet) {
-            if (urlSet!=null && urlSet.size()>0) {
-                for (String url: urlSet) {
+        public Builder setUrls(String... urls) {
+            if (urls!=null && urls.length>0) {
+                for (String url: urls) {
                     crawler.addUrl(url);
                 }
             }
@@ -80,8 +80,12 @@ public class XxlCrawler {
          * @param whiteUrlRegexs
          * @return
          */
-        public Builder setWhiteUrlRegexs(Set<String> whiteUrlRegexs) {
-            crawler.whiteUrlRegexs = whiteUrlRegexs;
+        public Builder setWhiteUrlRegexs(String... whiteUrlRegexs) {
+            if (whiteUrlRegexs!=null && whiteUrlRegexs.length>0) {
+                for (String whiteUrlRegex: whiteUrlRegexs) {
+                    crawler.whiteUrlRegexs.add(whiteUrlRegex);
+                }
+            }
             return this;
         }
 
