@@ -3,6 +3,7 @@ package com.xuxueli.crawler.test;
 import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
+import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import org.jsoup.nodes.Document;
 
@@ -70,6 +71,7 @@ public class XxlCrawlerTest {
                 .setUrls("https://my.oschina.net/xuxueli/blog")
                 .setWhiteUrlRegexs("https://my\\.oschina\\.net/xuxueli/blog/\\d+")
                 .setThreadCount(3)
+                .setUserAgent(XxlCrawlerConf.USER_AGENT_CHROME, XxlCrawlerConf.USER_AGENT_FIREFOX_45)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(Document html, PageVo pageVo) {

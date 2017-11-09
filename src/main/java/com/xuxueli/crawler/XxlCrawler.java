@@ -28,7 +28,7 @@ public class XxlCrawler {
 
     // site
     private volatile boolean ifPost = false;                                            // 请求方式：true=POST请求、false=GET请求
-    private volatile String userAgent = XxlCrawlerConf.USER_AGENT_CHROME;             // UserAgent
+    private volatile List<String> userAgentList = Collections.synchronizedList(new ArrayList<String>(Arrays.asList(XxlCrawlerConf.USER_AGENT_CHROME)));     // 请求UserAgent
     private volatile Map<String, String> paramMap;                                       // 请求参数
     private volatile Map<String, String> cookieMap;                                      // 请求Cookie
     private volatile Map<String, String> headerMap;                                      // 请求Header
@@ -97,7 +97,7 @@ public class XxlCrawler {
          * @param ifPost
          * @return
          */
-        private Builder setIfPost(boolean ifPost){
+        public Builder setIfPost(boolean ifPost){
             crawler.ifPost = ifPost;
             return this;
         }
@@ -105,11 +105,17 @@ public class XxlCrawler {
         /**
          * UserAgent
          *
-         * @param userAgent
+         * @param userAgents
          * @return
          */
-        private Builder setUserAgent(String userAgent){
-            crawler.userAgent = userAgent;
+        public Builder setUserAgent(String... userAgents){
+            if (userAgents!=null && userAgents.length>0) {
+                for (String userAgent: userAgents) {
+                    if (!crawler.userAgentList.contains(userAgent)) {
+                        crawler.userAgentList.add(userAgent);
+                    }
+                }
+            }
             return this;
         }
 
@@ -119,7 +125,7 @@ public class XxlCrawler {
          * @param paramMap
          * @return
          */
-        private Builder setParamMap(Map<String, String> paramMap){
+        public Builder setParamMap(Map<String, String> paramMap){
             crawler.paramMap = paramMap;
             return this;
         }
@@ -130,7 +136,7 @@ public class XxlCrawler {
          * @param cookieMap
          * @return
          */
-        private Builder setCookieMap(Map<String, String> cookieMap){
+        public Builder setCookieMap(Map<String, String> cookieMap){
             crawler.cookieMap = cookieMap;
             return this;
         }
@@ -141,7 +147,7 @@ public class XxlCrawler {
          * @param headerMap
          * @return
          */
-        private Builder setHeaderMap(Map<String, String> headerMap){
+        public Builder setHeaderMap(Map<String, String> headerMap){
             crawler.headerMap = headerMap;
             return this;
         }
@@ -217,8 +223,8 @@ public class XxlCrawler {
         return allowSpread;
     }
 
-    public String getUserAgent() {
-        return userAgent;
+    public List<String> getUserAgentList() {
+        return userAgentList;
     }
 
     public Map<String, String> getParamMap() {

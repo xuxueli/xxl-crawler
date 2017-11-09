@@ -202,7 +202,9 @@ ProxyMaker（代理生成器）：实现代理支持的组件。支持设置代�
 
 ### 版本 V1.1.1，新特性[迭代中]
 - 1、爬虫Builder底层API优化；
-- 1、支持设置请求Headers；
+- 2、支持设置请求Headers；
+- 3、支持设置页面编码；
+- 4、支持设置多UserAgent轮询；
 
 ### TODO LIST
 - 1、扩展SelectType；

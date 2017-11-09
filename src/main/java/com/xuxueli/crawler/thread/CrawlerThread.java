@@ -20,6 +20,7 @@ import java.lang.reflect.Type;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -63,13 +64,16 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // ------- html ----------
+                String userAgent = crawler.getUserAgentList().size()>1
+                        ?crawler.getUserAgentList().get(new Random().nextInt(crawler.getUserAgentList().size()))
+                        :crawler.getUserAgentList().size()==1?crawler.getUserAgentList().get(0):null;
                 Proxy proxy = null;
                 if (crawler.getProxyMaker() != null) {
                     proxy = crawler.getProxyMaker().make();
                 }
 
                 Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(), crawler.getHeaderMap(),
-                        crawler.getIfPost(), crawler.getUserAgent(), crawler.getTimeoutMillis(), proxy);
+                        crawler.getIfPost(), userAgent, crawler.getTimeoutMillis(), proxy);
                 if (html == null) {
                     continue;
                 }
