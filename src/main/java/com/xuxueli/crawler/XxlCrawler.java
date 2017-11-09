@@ -35,6 +35,7 @@ public class XxlCrawler {
     private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT;     // 超时时间，毫秒
     private volatile int pauseMillis = 0;                                               // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
     private volatile ProxyMaker proxyMaker;                                              // 代理生成器
+    private volatile int failRetryCount = 0;                                            // 失败重试次数，大于零时生效
 
     // thread
     private int threadCount = 1;        // 爬虫线程数量
@@ -209,6 +210,19 @@ public class XxlCrawler {
             return this;
         }
 
+        /**
+         * 失败重试次数，大于零时生效
+         *
+         * @param failRetryCount
+         * @return
+         */
+        public Builder setFailRetryCount(int failRetryCount){
+            if (failRetryCount > 0) {
+                crawler.failRetryCount = failRetryCount;
+            }
+            return this;
+        }
+
         public XxlCrawler build() {
             return crawler;
         }
@@ -253,6 +267,10 @@ public class XxlCrawler {
 
     public ProxyMaker getProxyMaker() {
         return proxyMaker;
+    }
+
+    public int getFailRetryCount() {
+        return failRetryCount;
     }
 
     // ---------------------- crawler url ----------------------
