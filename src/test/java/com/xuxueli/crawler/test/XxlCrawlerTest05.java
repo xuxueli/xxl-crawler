@@ -9,6 +9,7 @@ import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.util.JsoupUtil;
 import com.xuxueli.crawler.util.ProxyIpUtil;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +73,7 @@ public class XxlCrawlerTest05 {
                 .setThreadCount(10)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
-                    public void parse(Document html, PageVo pageVo) {
+                    public void parse(Document html, Element pageVoElement, PageVo pageVo) {
                         if (pageVo.getPort() == 0) {
                             return;
                         }
@@ -80,7 +81,7 @@ public class XxlCrawlerTest05 {
                         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(pageVo.getIp(), pageVo.getPort()));
                         if (ProxyIpUtil.checkProxy(proxy, null) == 200) {
                             proxyPool.add(pageVo);
-                            logger.info("proxy pool size : " + proxyPool.size());
+                            logger.info("proxy pool size : {}, new proxy: {}", proxyPool.size(), pageVo);
                         }
 
                     }

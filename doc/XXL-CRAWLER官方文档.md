@@ -24,6 +24,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 - 12、代理IP：对抗反采集策略规则WAF；
 - 13、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
 - 14、失败重试：请求失败后重试，并支持设置重试次数；
+- 15、动态参数：支持运行时动态调整请求参数；
 
 ### 1.4 下载
 
@@ -61,7 +62,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 <dependency>
     <groupId>com.xuxueli</groupId>
     <artifactId>xxl-crawler</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -87,8 +88,8 @@ public static class PageVo {
 ### 第三步：创建爬虫
 ```java
 XxlCrawler crawler = new XxlCrawler.Builder()
-    .setUrls(new HashSet<String>(Arrays.asList("https://my.oschina.net/xuxueli/blog")))
-    .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
+    .setUrls("https://my.oschina.net/xuxueli/blog")
+    .setWhiteUrlRegexs("https://my\\.oschina\\.net/xuxueli/blog/\\d+")
     .setThreadCount(3)
     .setPageParser(new PageParser<PageVo>() {
         @Override
@@ -120,7 +121,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。；
 --- | ---
 XxlCrawler | 爬虫对象，维护爬虫信息
 PageVo | 页面数据对象，一张Web页面可抽取一个或多个PageVo
-PageParser | 页面解析器，绑定泛型PageVO后将会自动抽取页面数据对象
+PageParser | 页面解析器，绑定泛型PageVO后将会自动抽取页面数据对象，同时支持运行时调整请求参数信息
 
 ### 3.3 爬虫对象：XxlCrawler
 功能：爬虫对象，维护爬虫信息，可选属性如下。
@@ -178,6 +179,14 @@ ProxyMaker（代理生成器）：实现代理支持的组件。支持设置代�
 - RoundProxyMaker（循环代理生成器）: 以循环方式获取代理池中代理；
 - RandomProxyMaker（随机代理生成器）: 以随机方式获取代理池中代理；
 
+### 3.9、PageParser
+PageParser（页面解析器）：绑定泛型PageVO后将会自动抽取页面数据对象，同时支持运行时调整请求参数信息；
+
+内部方法 | 说明
+--- | ---
+public void preLoad(PageLoadInfo pageLoadInfo) | 可选实现，发起页面请求之前触发调用，可基于此运行时调整请求参数；
+public void postLoad(Document html) | 可选实现，发起页面请求之后触发调用，可基于此运行时调整页面数据；
+public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必须实现，页面抽离封装每个PageVO之后触发调用，可基于此处理PageVO文档或数据；
 
 ## 四、版本更新日志
 ### 版本 V1.0.0，新特性[2017-09-13]
@@ -211,9 +220,7 @@ ProxyMaker（代理生成器）：实现代理支持的组件。支持设置代�
 
 ### TODO LIST
 - 1、扩展SelectType；
-- 2、支持运行时动态调整请求信息；
-- 3、js渲染；
-- 4、支持PreLoad，页面加载前进行预处理；
+- 2、js渲染；
 
 ## 五、其他
 

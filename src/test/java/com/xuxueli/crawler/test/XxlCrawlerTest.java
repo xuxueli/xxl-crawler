@@ -5,6 +5,7 @@ import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.parser.PageParser;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class XxlCrawlerTest {
                 .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
-                    public void parse(Document html, PageVo pageVo) {
+                    public void parse(Document html, Element pageVoElement, PageVo pageVo) {
                         // 解析封装 PageVo 对象
                         String pageUrl = html.baseUri();
                         System.out.println(pageUrl + "：" + pageVo.toString());

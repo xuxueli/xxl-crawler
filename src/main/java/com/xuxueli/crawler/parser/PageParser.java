@@ -2,6 +2,7 @@ package com.xuxueli.crawler.parser;
 
 import com.xuxueli.crawler.model.PageLoadInfo;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
  * page parser
@@ -14,6 +15,8 @@ public abstract class PageParser<T> {
 
     /**
      * pre page load
+     *
+     * @param pageLoadInfo  page request params
      */
     public void preLoad(PageLoadInfo pageLoadInfo) {
         // TODO
@@ -21,7 +24,7 @@ public abstract class PageParser<T> {
 
     /**
      * post page load
-     * @param html
+     * @param html  page html data
      */
     public void postLoad(Document html) {
         // TODO
@@ -30,9 +33,10 @@ public abstract class PageParser<T> {
     /**
      * parse pageVo
      *
-     * @param html
-     * @param pageVo
+     * @param html              page html data
+     * @param pageVoElement     pageVo html data
+     * @param pageVo            pageVo object
      */
-    public abstract void parse(Document html, T pageVo);
+    public abstract void parse(Document html, Element pageVoElement, T pageVo);
 
 }

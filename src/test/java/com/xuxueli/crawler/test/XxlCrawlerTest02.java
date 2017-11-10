@@ -5,9 +5,7 @@ import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.util.FileUtil;
 import org.jsoup.nodes.Document;
-
-import java.util.Arrays;
-import java.util.HashSet;
+import org.jsoup.nodes.Element;
 
 /**
  * 爬虫示例02：爬取页面，下载Html文件
@@ -24,7 +22,7 @@ public class XxlCrawlerTest02 {
                 .setThreadCount(3)
                 .setPageParser(new PageParser<Object>() {
                     @Override
-                    public void parse(Document html, Object pageVo) {
+                    public void parse(Document html, Element pageVoElement, Object pageVo) {
 
                         // 文件信息
                         String htmlData = html.html();

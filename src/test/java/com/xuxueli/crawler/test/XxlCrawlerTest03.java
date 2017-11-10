@@ -7,8 +7,8 @@ import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.util.FileUtil;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +50,7 @@ public class XxlCrawlerTest03 {
                 .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
-                    public void parse(Document html, PageVo pageVo) {
+                    public void parse(Document html, Element pageVoElement, PageVo pageVo) {
 
                         // 文件信息
                         String filePath = "/Users/xuxueli/Downloads/tmp";

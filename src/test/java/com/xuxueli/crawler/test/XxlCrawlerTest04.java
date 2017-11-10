@@ -5,11 +5,10 @@ import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.proxy.ProxyMaker;
 import com.xuxueli.crawler.proxy.strategy.RoundProxyMaker;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.Arrays;
-import java.util.HashSet;
 
 /**
  * 爬虫示例04：爬取页面，代理IP方式
@@ -33,7 +32,7 @@ public class XxlCrawlerTest04 {
                 .setProxyMaker(proxyMaker)
                 .setPageParser(new PageParser<Object>() {
                     @Override
-                    public void parse(Document html, Object pageVo) {
+                    public void parse(Document html, Element pageVoElement, Object pageVo) {
                         System.out.println(html.baseUri() + "：" + html.html());
                     }
                 })
