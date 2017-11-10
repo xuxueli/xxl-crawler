@@ -220,6 +220,7 @@ public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必
 ### TODO LIST
 - 1、扩展SelectType；
 - 2、js渲染；
+- 3、分布式完整支持：单机集合上升为抽象类；
 
 ## 五、其他
 
