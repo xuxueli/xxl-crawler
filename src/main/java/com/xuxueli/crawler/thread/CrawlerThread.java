@@ -4,6 +4,7 @@ import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.model.PageLoadInfo;
 import com.xuxueli.crawler.util.FieldReflectionUtil;
 import com.xuxueli.crawler.util.JsoupUtil;
 import com.xuxueli.crawler.util.UrlUtil;
@@ -99,8 +100,22 @@ public class CrawlerThread implements Runnable {
             proxy = crawler.getProxyMaker().make();
         }
 
-        Document html = JsoupUtil.load(link, crawler.getParamMap(), crawler.getCookieMap(), crawler.getHeaderMap(),
-                userAgent, crawler.getReferrer(), crawler.getIfPost(), crawler.getTimeoutMillis(), proxy);
+        PageLoadInfo pageLoadInfo = new PageLoadInfo();
+        pageLoadInfo.setUrl(link);
+        pageLoadInfo.setParamMap(crawler.getParamMap());
+        pageLoadInfo.setCookieMap(crawler.getCookieMap());
+        pageLoadInfo.setHeaderMap(crawler.getHeaderMap());
+        pageLoadInfo.setUserAgent(userAgent);
+        pageLoadInfo.setReferrer(crawler.getReferrer());
+        pageLoadInfo.setIfPost(crawler.getIfPost());
+        pageLoadInfo.setTimeoutMillis(crawler.getTimeoutMillis());
+        pageLoadInfo.setProxy(proxy);
+
+        // pre + load + post
+        crawler.getPageParser().preLoad(pageLoadInfo);
+        Document html = JsoupUtil.load(pageLoadInfo);
+        crawler.getPageParser().postLoad(html);
+
         if (html == null) {
             return false;
         }

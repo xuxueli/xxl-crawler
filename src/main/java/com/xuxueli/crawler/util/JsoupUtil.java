@@ -1,6 +1,7 @@
 package com.xuxueli.crawler.util;
 
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.model.PageLoadInfo;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,9 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,48 +25,42 @@ public class JsoupUtil {
     /**
      * 加载页面
      *
-     * @param url		：加载URL
-     * @param paramMap	：请求参数
-     * @param cookieMap	：请求cookie
-     * @param ifPost	：是否使用post请求
-     * @param userAgent : 请求UesrAgent
-     * @param timeoutMillis ：超时时间，毫秒
+     * @param pageLoadInfo
      *
      * @return
      */
-    public static Document load(String url, Map<String, String> paramMap, Map<String, String> cookieMap, Map<String, String> headerMap,
-                                String userAgent, String referrer, boolean ifPost, int timeoutMillis, Proxy proxy) {
-        if (!UrlUtil.isUrl(url)) {
+    public static Document load(PageLoadInfo pageLoadInfo) {
+        if (!UrlUtil.isUrl(pageLoadInfo.getUrl())) {
             return null;
         }
         try {
             // 请求设置
-            Connection conn = Jsoup.connect(url);
-            if (paramMap != null && !paramMap.isEmpty()) {
-                conn.data(paramMap);
+            Connection conn = Jsoup.connect(pageLoadInfo.getUrl());
+            if (pageLoadInfo.getParamMap() != null && !pageLoadInfo.getParamMap().isEmpty()) {
+                conn.data(pageLoadInfo.getParamMap());
             }
-            if (cookieMap != null && !cookieMap.isEmpty()) {
-                conn.cookies(cookieMap);
+            if (pageLoadInfo.getCookieMap() != null && !pageLoadInfo.getCookieMap().isEmpty()) {
+                conn.cookies(pageLoadInfo.getCookieMap());
             }
-            if (headerMap!=null && !headerMap.isEmpty()) {
-                conn.headers(headerMap);
+            if (pageLoadInfo.getHeaderMap()!=null && !pageLoadInfo.getHeaderMap().isEmpty()) {
+                conn.headers(pageLoadInfo.getHeaderMap());
             }
-            if (userAgent!=null) {
-                conn.userAgent(userAgent);
+            if (pageLoadInfo.getUserAgent()!=null) {
+                conn.userAgent(pageLoadInfo.getUserAgent());
             }
-            if (referrer != null) {
-                conn.referrer(referrer);
+            if (pageLoadInfo.getReferrer() != null) {
+                conn.referrer(pageLoadInfo.getReferrer());
             }
-            conn.timeout(timeoutMillis);
+            conn.timeout(pageLoadInfo.getTimeoutMillis());
 
             // 代理
-            if (proxy != null) {
-                conn.proxy(proxy);
+            if (pageLoadInfo.getProxy() != null) {
+                conn.proxy(pageLoadInfo.getProxy());
             }
 
             // 发出请求
             Document html = null;
-            if (ifPost) {
+            if (pageLoadInfo.getIfPost()) {
                 html = conn.post();
             } else {
                 html = conn.get();

@@ -4,6 +4,7 @@ import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.model.PageLoadInfo;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.util.JsoupUtil;
 import com.xuxueli.crawler.util.ProxyIpUtil;
@@ -98,7 +99,7 @@ public class XxlCrawlerTest05 {
         if (proxyPool!=null && proxyPool.size()>0) {
             for (PageVo pageVo: proxyPool) {
                 try {
-                    Document html = JsoupUtil.load("http://2017.ip138.com/ic.asp",
+                    Document html = JsoupUtil.load(new PageLoadInfo("http://2017.ip138.com/ic.asp",
                             null,
                             null,
                             null,
@@ -106,7 +107,7 @@ public class XxlCrawlerTest05 {
                             null,
                             false,
                             XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT,
-                            new Proxy(Proxy.Type.HTTP, new InetSocketAddress(pageVo.getIp(), pageVo.getPort())));
+                            new Proxy(Proxy.Type.HTTP, new InetSocketAddress(pageVo.getIp(), pageVo.getPort()))));
                     logger.info(pageVo + " : " + html.html());
                 } catch (Exception e) {
                     e.printStackTrace();
