@@ -210,7 +210,7 @@ public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必
 - 5、代理IP：对抗反采集策略规则WAF；
 - 6、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
 
-### 版本 V1.2.3，新特性[迭代中]
+### 版本 V1.2.0，新特性[迭代中]
 - 1、爬虫Builder底层API优化；
 - 2、支持设置请求Headers；
 - 3、支持设置多UserAgent轮询；
@@ -220,7 +220,7 @@ public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必
 ### TODO LIST
 - 1、扩展SelectType；
 - 2、js渲染；
-- 3、分布式完整支持：单机集合上升为抽象类；
+- 3、分布式完整支持：单机爬虫提供抽象接口，扩展支持分布式并行爬虫；
 
 ## 五、其他
 
