@@ -18,6 +18,9 @@
          <a href="http://www.gnu.org/licenses/gpl-3.0.html">
              <img src="https://img.shields.io/badge/license-GPLv3-blue.svg" >
          </a>
+         <a href="http://www.xuxueli.com/page/donate.html">
+            <img src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square" >
+         </a>
     </p>    
 </p>
 
@@ -73,17 +76,6 @@ This product is open source and free, and will continue to provide free communit
 
 
 ## Donate
-No matter how much the amount is enough to express your thought, thank you very much ：）
+No matter how much the amount is enough to express your thought, thank you very much ：）     [To donate](http://www.xuxueli.com/page/donate.html )
 
-无论金额多少都足够表达您这份心意，非常感谢 ：）    [XXL系列捐赠记录](http://www.xuxueli.com/page/donate.html )
-
-微信：<img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/donate-wechat.png" width="200">
-支付宝：<img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/donate-alipay.jpg" width="200">
-
-
-
-
-
-
-
-
+无论金额多少都足够表达您这份心意，非常感谢 ：）      [前往捐赠](http://www.xuxueli.com/page/donate.html )
