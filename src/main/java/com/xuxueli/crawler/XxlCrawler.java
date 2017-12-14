@@ -3,14 +3,17 @@ package com.xuxueli.crawler;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.proxy.ProxyMaker;
+import com.xuxueli.crawler.rundata.RunData;
+import com.xuxueli.crawler.rundata.strategy.LocalRunData;
 import com.xuxueli.crawler.thread.CrawlerThread;
-import com.xuxueli.crawler.util.RegexUtil;
-import com.xuxueli.crawler.util.UrlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  *  xxl crawler
@@ -20,28 +23,28 @@ import java.util.concurrent.*;
 public class XxlCrawler {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawler.class);
 
-    // url
-    private volatile LinkedBlockingQueue<String> unVisitedUrlQueue = new LinkedBlockingQueue<String>();    // 未访问过的URL
-    private volatile Set<String> visitedUrlSet = Collections.synchronizedSet(new HashSet<String>());        // 已经访问过的URL
-    private volatile boolean allowSpread = true;                                                           // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
-    private Set<String> whiteUrlRegexs = Collections.synchronizedSet(new HashSet<String>());                 // URL白名单正则，非空时进行URL白名单过滤页面
+    // spread
+    private volatile boolean allowSpread = true;                                    // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+
+    // run data
+    private volatile RunData runData = new LocalRunData();
 
     // site
-    private volatile Map<String, String> paramMap;                                       // 请求参数
-    private volatile Map<String, String> cookieMap;                                      // 请求Cookie
-    private volatile Map<String, String> headerMap;                                      // 请求Header
+    private volatile Map<String, String> paramMap;                                  // 请求参数
+    private volatile Map<String, String> cookieMap;                                 // 请求Cookie
+    private volatile Map<String, String> headerMap;                                 // 请求Header
     private volatile List<String> userAgentList = Collections.synchronizedList(new ArrayList<String>(Arrays.asList(XxlCrawlerConf.USER_AGENT_CHROME)));     // 请求UserAgent
-    private volatile String referrer;                                                    // 请求Referrer
-    private volatile boolean ifPost = false;                                           // 请求方式：true=POST请求、false=GET请求
+    private volatile String referrer;                                               // 请求Referrer
+    private volatile boolean ifPost = false;                                        // 请求方式：true=POST请求、false=GET请求
     private volatile int timeoutMillis = XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT;     // 超时时间，毫秒
-    private volatile int pauseMillis = 0;                                               // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
-    private volatile ProxyMaker proxyMaker;                                              // 代理生成器
-    private volatile int failRetryCount = 0;                                            // 失败重试次数，大于零时生效
+    private volatile int pauseMillis = 0;                                           // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+    private volatile ProxyMaker proxyMaker;                                         // 代理生成器
+    private volatile int failRetryCount = 0;                                        // 失败重试次数，大于零时生效
 
     // thread
-    private int threadCount = 1;                                                          // 爬虫线程数量
-    private ExecutorService crawlers = Executors.newCachedThreadPool();                    // 爬虫线程池
-    private List<CrawlerThread> crawlerThreads = new CopyOnWriteArrayList<CrawlerThread>();          // 爬虫线程引用镜像
+    private int threadCount = 1;                                                    // 爬虫线程数量
+    private ExecutorService crawlers = Executors.newCachedThreadPool();             // 爬虫线程池
+    private List<CrawlerThread> crawlerThreads = new CopyOnWriteArrayList<CrawlerThread>();     // 爬虫线程引用镜像
 
     // parser
     private PageParser pageParser;
@@ -50,22 +53,7 @@ public class XxlCrawler {
     public static class Builder {
         private XxlCrawler crawler = new XxlCrawler();
 
-        // url
-        /**
-         * 待爬的URL列表
-         *
-         * @param urls
-         * @return
-         */
-        public Builder setUrls(String... urls) {
-            if (urls!=null && urls.length>0) {
-                for (String url: urls) {
-                    crawler.addUrl(url);
-                }
-            }
-            return this;
-        }
-
+        // spread
         /**
          * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
          *
@@ -78,6 +66,33 @@ public class XxlCrawler {
         }
 
         /**
+         * 设置运行数据类型
+         *
+         * @param runData
+         * @return
+         */
+        public Builder setRunData(RunData runData){
+            crawler.runData = runData;
+            return this;
+        }
+
+        // run data
+        /**
+         * 待爬的URL列表
+         *
+         * @param urls
+         * @return
+         */
+        public Builder setUrls(String... urls) {
+            if (urls!=null && urls.length>0) {
+                for (String url: urls) {
+                    crawler.runData.addUrl(url);
+                }
+            }
+            return this;
+        }
+
+        /**
          * URL白名单正则，非空时进行URL白名单过滤页面
          *
          * @param whiteUrlRegexs
@@ -86,7 +101,7 @@ public class XxlCrawler {
         public Builder setWhiteUrlRegexs(String... whiteUrlRegexs) {
             if (whiteUrlRegexs!=null && whiteUrlRegexs.length>0) {
                 for (String whiteUrlRegex: whiteUrlRegexs) {
-                    crawler.whiteUrlRegexs.add(whiteUrlRegex);
+                    crawler.runData.addWhiteUrlRegex(whiteUrlRegex);
                 }
             }
             return this;
@@ -243,20 +258,13 @@ public class XxlCrawler {
     }
 
     // ---------------------- set/get ----------------------
-    public boolean getIfPost() {
-        return ifPost;
-    }
 
-    public boolean getAllowSpread() {
+    public boolean isAllowSpread() {
         return allowSpread;
     }
 
-    public List<String> getUserAgentList() {
-        return userAgentList;
-    }
-
-    public String getReferrer() {
-        return referrer;
+    public RunData getRunData() {
+        return runData;
     }
 
     public Map<String, String> getParamMap() {
@@ -271,8 +279,16 @@ public class XxlCrawler {
         return headerMap;
     }
 
-    public PageParser getPageParser() {
-        return pageParser;
+    public List<String> getUserAgentList() {
+        return userAgentList;
+    }
+
+    public String getReferrer() {
+        return referrer;
+    }
+
+    public boolean isIfPost() {
+        return ifPost;
     }
 
     public int getTimeoutMillis() {
@@ -291,66 +307,22 @@ public class XxlCrawler {
         return failRetryCount;
     }
 
-    // ---------------------- crawler url ----------------------
-
-    /**
-     * valid url, include white url
-     * @param link
-     * @return
-     */
-    public boolean validWhiteUrl(String link){
-        if (!UrlUtil.isUrl(link)) {
-            return false; // check URL格式
-        }
-
-        if (whiteUrlRegexs!=null && whiteUrlRegexs.size()>0) {
-            boolean underWhiteUrl = false;
-            for (String whiteRegex: whiteUrlRegexs) {
-                if (RegexUtil.matches(whiteRegex, link)) {
-                    underWhiteUrl = true;
-                }
-            }
-            if (!underWhiteUrl) {
-                return false; // check 白名单
-            }
-        }
-        return true;
+    public int getThreadCount() {
+        return threadCount;
     }
 
-    /**
-     * url add
-     * @param link
-     */
-    public boolean addUrl(String link) {
-        if (!UrlUtil.isUrl(link)) {
-            logger.debug(">>>>>>>>>>> xxl-crawler addUrl fail, link not valid: {}", link);
-            return false; // check URL格式
-        }
-        if (visitedUrlSet.contains(link)) {
-            logger.debug(">>>>>>>>>>> xxl-crawler addUrl fail, link repeate: {}", link);
-            return false; // check 未访问过
-        }
-        if (unVisitedUrlQueue.contains(link)) {
-            logger.debug(">>>>>>>>>>> xxl-crawler addUrl fail, link visited: {}", link);
-            return false; // check 未记录过
-        }
-        unVisitedUrlQueue.add(link);
-        logger.info(">>>>>>>>>>> xxl-crawler addUrl success, link: {}", link);
-        return true;
+    public ExecutorService getCrawlers() {
+        return crawlers;
     }
 
-    /**
-     * url take
-     * @return
-     * @throws InterruptedException
-     */
-    public String takeUrl() throws InterruptedException {
-        String link = unVisitedUrlQueue.take();
-        if (link != null) {
-            visitedUrlSet.add(link);
-        }
-        return link;
+    public List<CrawlerThread> getCrawlerThreads() {
+        return crawlerThreads;
     }
+
+    public PageParser getPageParser() {
+        return pageParser;
+    }
+
 
     // ---------------------- crawler thread ----------------------
 
@@ -360,7 +332,10 @@ public class XxlCrawler {
      * @param sync  true=同步方式、false=异步方式
      */
     public void start(boolean sync){
-        if (unVisitedUrlQueue.size() < 1) {
+        if (runData == null) {
+            throw new RuntimeException("xxl crawler runData can not be null.");
+        }
+        if (runData.getUrlNum() <= 0) {
             throw new RuntimeException("xxl crawler indexUrl can not be empty.");
         }
         if (threadCount<1 || threadCount>1000) {
@@ -402,7 +377,7 @@ public class XxlCrawler {
                 break;
             }
         }
-        boolean isEnd = unVisitedUrlQueue.size()==0 && !isRunning;
+        boolean isEnd = runData.getUrlNum()==0 && !isRunning;
         if (isEnd) {
             logger.info(">>>>>>>>>>> xxl crawler is finished.");
             stop();

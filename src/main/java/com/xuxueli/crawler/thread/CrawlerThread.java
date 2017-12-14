@@ -50,15 +50,15 @@ public class CrawlerThread implements Runnable {
 
     @Override
     public void run() {
+
         while (!toStop) {
             try {
 
                 // ------- url ----------
                 running = false;
                 crawler.tryFinish();
-                String link = crawler.takeUrl();
+                String link = crawler.getRunData().getUrl();
                 running = true;
-
                 logger.info(">>>>>>>>>>> xxl crawler, process link : {}", link);
                 if (!UrlUtil.isUrl(link)) {
                     continue;
@@ -79,7 +79,7 @@ public class CrawlerThread implements Runnable {
                     }
                 }
 
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 if (e instanceof InterruptedException) {
                     logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. 1{}", e.getMessage());
                 } else {
@@ -107,7 +107,7 @@ public class CrawlerThread implements Runnable {
         pageLoadInfo.setHeaderMap(crawler.getHeaderMap());
         pageLoadInfo.setUserAgent(userAgent);
         pageLoadInfo.setReferrer(crawler.getReferrer());
-        pageLoadInfo.setIfPost(crawler.getIfPost());
+        pageLoadInfo.setIfPost(crawler.isIfPost());
         pageLoadInfo.setTimeoutMillis(crawler.getTimeoutMillis());
         pageLoadInfo.setProxy(proxy);
 
@@ -121,19 +121,19 @@ public class CrawlerThread implements Runnable {
         }
 
         // ------- child link list (FIFO队列,广度优先) ----------
-        if (crawler.getAllowSpread()) {     // limit child spread
+        if (crawler.isAllowSpread()) {     // limit child spread
             Set<String> links = JsoupUtil.findLinks(html);
             if (links != null && links.size() > 0) {
                 for (String item : links) {
-                    if (crawler.validWhiteUrl(item)) {      // limit unvalid-child spread
-                        crawler.addUrl(item);
+                    if (crawler.getRunData().validWhiteUrl(item)) {      // limit unvalid-child spread
+                        crawler.getRunData().addUrl(item);
                     }
                 }
             }
         }
 
         // ------- pagevo ----------
-        if (!crawler.validWhiteUrl(link)) {     // limit unvalid-page parse, only allow spread child
+        if (!crawler.getRunData().validWhiteUrl(link)) {     // limit unvalid-page parse, only allow spread child
             return false;
         }
 

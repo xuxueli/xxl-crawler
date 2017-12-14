@@ -219,11 +219,12 @@ public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必
 - 3、支持设置多UserAgent轮询；
 - 4、失败重试：支持请求失败后主动重试，并支持设置重试次数；
 - 5、动态参数：支持运行时动态调整请求参数；
+- 6、分布式支持：支持通过RunData(运行时数据)扩展支持分布式，默认提供LocalRunData实现单机版爬虫。可通过预留接口通过Redis或DB实现分布式爬虫的数据共享。
 
 ### TODO LIST
 - 1、扩展SelectType；
 - 2、js渲染；
-- 3、分布式完整支持：单机爬虫提供抽象接口，扩展支持分布式并行爬虫；
+
 
 ## 五、其他
 
