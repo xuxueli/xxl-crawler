@@ -113,6 +113,11 @@ crawler.start(true);
 
 
 ## 三、总体设计
+
+### 架构图
+
+![输入图片说明](https://static.oschina.net/uploads/img/201712/14205637_EuXJ.png "在这里输入图片标题")
+
 ### 3.1 功能定位
 
 XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。；
@@ -237,6 +242,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 6、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
 ### 版本 V1.2.1，新特性[迭代中]
+- 1、对抗爬虫蜜罐；
 
 ### TODO LIST
 - 1、扩展SelectType；
