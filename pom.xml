@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>An object-oriented crawler framework.</description>
+    <description>An object-oriented distributed crawler framework.</description>
     <url>http://www.xuxueli.com/</url>
 
     <properties>
