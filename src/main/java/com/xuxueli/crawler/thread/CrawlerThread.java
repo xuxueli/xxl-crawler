@@ -65,11 +65,11 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // failover
-                for (int i = 0; i < (1 + crawler.getFailRetryCount()); i++) {
+                for (int i = 0; i < (1 + crawler.getRunConf().getFailRetryCount()); i++) {
                     boolean ret = process(link);
-                    if (crawler.getPauseMillis() > 0) {
+                    if (crawler.getRunConf().getPauseMillis() > 0) {
                         try {
-                            TimeUnit.MILLISECONDS.sleep(crawler.getPauseMillis());
+                            TimeUnit.MILLISECONDS.sleep(crawler.getRunConf().getPauseMillis());
                         } catch (InterruptedException e) {
                             logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. 2{}", e.getMessage());
                         }
@@ -92,36 +92,36 @@ public class CrawlerThread implements Runnable {
 
     private boolean process(String link) throws IllegalAccessException, InstantiationException {
         // ------- html ----------
-        String userAgent = crawler.getUserAgentList().size()>1
-                ?crawler.getUserAgentList().get(new Random().nextInt(crawler.getUserAgentList().size()))
-                :crawler.getUserAgentList().size()==1?crawler.getUserAgentList().get(0):null;
+        String userAgent = crawler.getRunConf().getUserAgentList().size()>1
+                ?crawler.getRunConf().getUserAgentList().get(new Random().nextInt(crawler.getRunConf().getUserAgentList().size()))
+                :crawler.getRunConf().getUserAgentList().size()==1?crawler.getRunConf().getUserAgentList().get(0):null;
         Proxy proxy = null;
-        if (crawler.getProxyMaker() != null) {
-            proxy = crawler.getProxyMaker().make();
+        if (crawler.getRunConf().getProxyMaker() != null) {
+            proxy = crawler.getRunConf().getProxyMaker().make();
         }
 
         PageLoadInfo pageLoadInfo = new PageLoadInfo();
         pageLoadInfo.setUrl(link);
-        pageLoadInfo.setParamMap(crawler.getParamMap());
-        pageLoadInfo.setCookieMap(crawler.getCookieMap());
-        pageLoadInfo.setHeaderMap(crawler.getHeaderMap());
+        pageLoadInfo.setParamMap(crawler.getRunConf().getParamMap());
+        pageLoadInfo.setCookieMap(crawler.getRunConf().getCookieMap());
+        pageLoadInfo.setHeaderMap(crawler.getRunConf().getHeaderMap());
         pageLoadInfo.setUserAgent(userAgent);
-        pageLoadInfo.setReferrer(crawler.getReferrer());
-        pageLoadInfo.setIfPost(crawler.isIfPost());
-        pageLoadInfo.setTimeoutMillis(crawler.getTimeoutMillis());
+        pageLoadInfo.setReferrer(crawler.getRunConf().getReferrer());
+        pageLoadInfo.setIfPost(crawler.getRunConf().isIfPost());
+        pageLoadInfo.setTimeoutMillis(crawler.getRunConf().getTimeoutMillis());
         pageLoadInfo.setProxy(proxy);
 
         // pre + load + post
-        crawler.getPageParser().preLoad(pageLoadInfo);
+        crawler.getRunConf().getPageParser().preLoad(pageLoadInfo);
         Document html = JsoupUtil.load(pageLoadInfo);
-        crawler.getPageParser().postLoad(html);
+        crawler.getRunConf().getPageParser().postLoad(html);
 
         if (html == null) {
             return false;
         }
 
         // ------- child link list (FIFO队列,广度优先) ----------
-        if (crawler.isAllowSpread()) {     // limit child spread
+        if (crawler.getRunConf().isAllowSpread()) {     // limit child spread
             Set<String> links = JsoupUtil.findLinks(html);
             if (links != null && links.size() > 0) {
                 for (String item : links) {
@@ -138,7 +138,7 @@ public class CrawlerThread implements Runnable {
         }
 
         // pagevo class-field info
-        Type[] pageVoClassTypes = ((ParameterizedType)crawler.getPageParser().getClass().getGenericSuperclass()).getActualTypeArguments();
+        Type[] pageVoClassTypes = ((ParameterizedType)crawler.getRunConf().getPageParser().getClass().getGenericSuperclass()).getActualTypeArguments();
         Class pageVoClassType = (Class) pageVoClassTypes[0];
 
         PageSelect pageVoSelect = (PageSelect) pageVoClassType.getAnnotation(PageSelect.class);
@@ -231,7 +231,7 @@ public class CrawlerThread implements Runnable {
                 }
 
                 // pagevo output
-                crawler.getPageParser().parse(html, pageVoElement, pageVo);
+                crawler.getRunConf().getPageParser().parse(html, pageVoElement, pageVo);
             }
         }
 
