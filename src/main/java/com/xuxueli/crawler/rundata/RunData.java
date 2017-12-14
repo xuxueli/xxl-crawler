@@ -7,14 +7,42 @@ package com.xuxueli.crawler.rundata;
  */
 public abstract class RunData {
 
+    /**
+     * add link
+     *
+     * @param link
+     * @return
+     */
     public abstract boolean addUrl(String link);
 
+    /**
+     * get link, remove from unVisitedUrlQueue and add to visitedUrlSet
+     *
+     * @return
+     */
     public abstract String getUrl();
 
+    /**
+     * get url num
+     *
+     * @return
+     */
     public abstract int getUrlNum();
 
+    /**
+     * add white url regex
+     *
+     * @param link
+     * @return
+     */
     public abstract boolean addWhiteUrlRegex(String link);
 
+    /**
+     * valid white url
+     *
+     * @param link
+     * @return
+     */
     public abstract boolean validWhiteUrl(String link);
 
 }

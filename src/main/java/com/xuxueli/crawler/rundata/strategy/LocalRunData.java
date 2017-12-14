@@ -100,7 +100,7 @@ public class LocalRunData extends RunData {
                 return false; // check 白名单
             }
         }
-        return true;
+        return true;    // true if regex is empty
     }
 
 }
