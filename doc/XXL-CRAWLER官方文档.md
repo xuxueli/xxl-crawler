@@ -144,7 +144,7 @@ setPauseMillis | 停顿时间，爬虫线程处理完页面之后进行主动停
 setProxyMaker | 代理生成器，支持设置代理IP，同时支持调整代理池实现动态代理；
 setThreadCount | 爬虫并发线程数
 setPageParser | 页面解析器
-setRunData  | 设置运行时数据模型；
+setRunData  | 设置运行时数据模型，默认提供LocalRunData单机模型，支持扩展实现分布式模型；
 start   | 运行爬虫，可通过入参控制同步或异步方式运行
 stop    | 终止爬虫
 
