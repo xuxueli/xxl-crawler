@@ -64,7 +64,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 <dependency>
     <groupId>com.xuxueli</groupId>
     <artifactId>xxl-crawler</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
