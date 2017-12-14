@@ -203,7 +203,7 @@ public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必
 
 - RunData：运行时数据模型，维护爬虫运行时的URL和白名单规则。
     - 单机：单机方式维护爬虫运行数据，默认提供 "LocalRunData" 的单机版实现。
-    - 分布式/集群：集群方式维护爬虫爬虫运行数据，可通过Redis或D定制实现。
+    - 分布式/集群：集群方式维护爬虫爬虫运行数据，可通过Redis或DB定制实现。
 
 RunData抽象方法 | 说明
 --- | ---
