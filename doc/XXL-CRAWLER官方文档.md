@@ -236,6 +236,8 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 5、动态参数：支持运行时动态调整请求参数；
 - 6、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
+### 版本 V1.2.1，新特性[迭代中]
+
 ### TODO LIST
 - 1、扩展SelectType；
 - 2、js渲染；
