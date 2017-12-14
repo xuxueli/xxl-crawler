@@ -1,7 +1,6 @@
 package com.xuxueli.crawler.rundata.strategy;
 
 import com.xuxueli.crawler.rundata.RunData;
-import com.xuxueli.crawler.util.RegexUtil;
 import com.xuxueli.crawler.util.UrlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,8 @@ public class LocalRunData extends RunData {
     private static Logger logger = LoggerFactory.getLogger(LocalRunData.class);
 
     // url
-    private volatile LinkedBlockingQueue<String> unVisitedUrlQueue = new LinkedBlockingQueue<String>();    // 未访问过的URL
-    private volatile Set<String> visitedUrlSet = Collections.synchronizedSet(new HashSet<String>());        // 已经访问过的URL
-    private Set<String> whiteUrlRegexs = Collections.synchronizedSet(new HashSet<String>());                 // URL白名单正则，非空时进行URL白名单过滤页面
+    private volatile LinkedBlockingQueue<String> unVisitedUrlQueue = new LinkedBlockingQueue<String>();     // 待采集URL池
+    private volatile Set<String> visitedUrlSet = Collections.synchronizedSet(new HashSet<String>());        // 已采集URL池
 
 
     /**
@@ -70,37 +68,6 @@ public class LocalRunData extends RunData {
     @Override
     public int getUrlNum() {
         return unVisitedUrlQueue.size();
-    }
-
-    @Override
-    public boolean addWhiteUrlRegex(String link) {
-        whiteUrlRegexs.add(link);
-        return false;
-    }
-
-    /**
-     * valid url, include white url
-     * @param link
-     * @return
-     */
-    @Override
-    public boolean validWhiteUrl(String link){
-        if (!UrlUtil.isUrl(link)) {
-            return false; // check URL格式
-        }
-
-        if (whiteUrlRegexs!=null && whiteUrlRegexs.size()>0) {
-            boolean underWhiteUrl = false;
-            for (String whiteRegex: whiteUrlRegexs) {
-                if (RegexUtil.matches(whiteRegex, link)) {
-                    underWhiteUrl = true;
-                }
-            }
-            if (!underWhiteUrl) {
-                return false; // check 白名单
-            }
-        }
-        return true;    // true if regex is empty
     }
 
 }

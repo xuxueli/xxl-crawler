@@ -8,7 +8,7 @@
 ## 一、简介
 
 ### 1.1 概述
-XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理"等特性；
+XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式"等特性；
 
 ### 1.2 特性
 - 1、面向对象：通过VO对象描述页面信息，提供注解方便的映射页面数据，爬取结果主动封装Java对象返回；
@@ -26,6 +26,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的分布式爬虫框架。一�
 - 13、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
 - 14、失败重试：请求失败后重试，并支持设置重试次数；
 - 15、动态参数：支持运行时动态调整请求参数；
+- 16、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
 ### 1.4 下载
 
@@ -143,6 +144,7 @@ setPauseMillis | 停顿时间，爬虫线程处理完页面之后进行主动停
 setProxyMaker | 代理生成器，支持设置代理IP，同时支持调整代理池实现动态代理；
 setThreadCount | 爬虫并发线程数
 setPageParser | 页面解析器
+setRunData  | 设置运行时数据模型；
 start   | 运行爬虫，可通过入参控制同步或异步方式运行
 stop    | 终止爬虫
 
@@ -191,6 +193,19 @@ public void preLoad(PageLoadInfo pageLoadInfo) | 可选实现，发起页面请�
 public void postLoad(Document html) | 可选实现，发起页面请求之后触发调用，可基于此运行时调整页面数据；
 public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必须实现，页面抽离封装每个PageVO之后触发调用，可基于此处理PageVO文档或数据；
 
+### 3.10、分布式支持 & RunData
+支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式爬虫。默认提供LocalRunData实现单机版爬虫。
+
+- RunData：运行时数据模型，维护爬虫运行时的URL和白名单规则。
+    - 单机：单机方式维护爬虫运行数据，默认提供 "LocalRunData" 的单机版实现。
+    - 分布式/集群：集群方式维护爬虫爬虫运行数据，可通过Redis或D定制实现。
+
+RunData抽象方法 | 说明
+--- | ---
+public abstract boolean addUrl(String link); | 新增一个待采集的URL，接口需要做URL去重，爬虫线程将会获取到并进行处理；
+public abstract String getUrl(); | 获取一个待采集的URL，并且将它从"待采集URL池"中移除，并且添加到"已采集URL池"中；
+public abstract int getUrlNum(); | 获取待采集URL数量；
+
 ## 四、版本更新日志
 ### 版本 V1.0.0，新特性[2017-09-13]
 - 1、面向对象：通过VO对象描述页面信息，提供注解方便的映射页面数据，爬取结果主动封装Java对象返回；
@@ -219,7 +234,7 @@ public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必
 - 3、支持设置多UserAgent轮询；
 - 4、失败重试：支持请求失败后主动重试，并支持设置重试次数；
 - 5、动态参数：支持运行时动态调整请求参数；
-- 6、分布式支持：支持通过RunData(运行时数据)扩展支持分布式，默认提供LocalRunData实现单机版爬虫。可通过预留接口通过Redis或DB实现分布式爬虫的数据共享。
+- 6、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
 ### TODO LIST
 - 1、扩展SelectType；

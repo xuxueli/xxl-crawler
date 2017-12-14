@@ -25,10 +25,10 @@ public class XxlCrawler {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawler.class);
 
     // run data
-    private volatile RunData runData = new LocalRunData();
+    private volatile RunData runData = new LocalRunData();                          // 运行时数据模型
 
     // run conf
-    private volatile RunConf runConf = new RunConf();
+    private volatile RunConf runConf = new RunConf();                               // 运行时配置
 
     // thread
     private int threadCount = 1;                                                    // 爬虫线程数量
@@ -97,7 +97,7 @@ public class XxlCrawler {
         public Builder setWhiteUrlRegexs(String... whiteUrlRegexs) {
             if (whiteUrlRegexs!=null && whiteUrlRegexs.length>0) {
                 for (String whiteUrlRegex: whiteUrlRegexs) {
-                    crawler.runData.addWhiteUrlRegex(whiteUrlRegex);
+                    crawler.runConf.getWhiteUrlRegexs().add(whiteUrlRegex);
                 }
             }
             return this;

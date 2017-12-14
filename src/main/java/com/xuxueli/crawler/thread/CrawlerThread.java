@@ -125,7 +125,7 @@ public class CrawlerThread implements Runnable {
             Set<String> links = JsoupUtil.findLinks(html);
             if (links != null && links.size() > 0) {
                 for (String item : links) {
-                    if (crawler.getRunData().validWhiteUrl(item)) {      // limit unvalid-child spread
+                    if (crawler.getRunConf().validWhiteUrl(item)) {      // limit unvalid-child spread
                         crawler.getRunData().addUrl(item);
                     }
                 }
@@ -133,7 +133,7 @@ public class CrawlerThread implements Runnable {
         }
 
         // ------- pagevo ----------
-        if (!crawler.getRunData().validWhiteUrl(link)) {     // limit unvalid-page parse, only allow spread child
+        if (!crawler.getRunConf().validWhiteUrl(link)) {     // limit unvalid-page parse, only allow spread child
             return false;
         }
 

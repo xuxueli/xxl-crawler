@@ -3,6 +3,8 @@ package com.xuxueli.crawler.model;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.proxy.ProxyMaker;
+import com.xuxueli.crawler.util.RegexUtil;
+import com.xuxueli.crawler.util.UrlUtil;
 
 import java.util.*;
 
@@ -14,6 +16,8 @@ import java.util.*;
 public class RunConf {
 
     private volatile boolean allowSpread = true;                                    // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+    private Set<String> whiteUrlRegexs = Collections.synchronizedSet(new HashSet<String>());    // URL白名单正则，非空时进行URL白名单过滤页面
+    private PageParser pageParser;                                                  // 页面解析器
 
     private volatile Map<String, String> paramMap;                                  // 请求参数
     private volatile Map<String, String> cookieMap;                                 // 请求Cookie
@@ -26,7 +30,33 @@ public class RunConf {
     private volatile ProxyMaker proxyMaker;                                         // 代理生成器
     private volatile int failRetryCount = 0;                                        // 失败重试次数，大于零时生效
 
-    private PageParser pageParser;                                                  // 页面解析器
+    // util
+    /**
+     * valid url, include white url
+     *
+     * @param link
+     * @return
+     */
+    public boolean validWhiteUrl(String link){
+        if (!UrlUtil.isUrl(link)) {
+            return false;   // false if url invalid
+        }
+
+        if (whiteUrlRegexs!=null && whiteUrlRegexs.size()>0) {
+            boolean underWhiteUrl = false;
+            for (String whiteRegex: whiteUrlRegexs) {
+                if (RegexUtil.matches(whiteRegex, link)) {
+                    underWhiteUrl = true;
+                }
+            }
+            if (!underWhiteUrl) {
+                return false;   // check white
+            }
+        }
+        return true;    // true if regex is empty
+    }
+
+    // set/get
 
     public boolean isAllowSpread() {
         return allowSpread;
@@ -34,6 +64,22 @@ public class RunConf {
 
     public void setAllowSpread(boolean allowSpread) {
         this.allowSpread = allowSpread;
+    }
+
+    public Set<String> getWhiteUrlRegexs() {
+        return whiteUrlRegexs;
+    }
+
+    public void setWhiteUrlRegexs(Set<String> whiteUrlRegexs) {
+        this.whiteUrlRegexs = whiteUrlRegexs;
+    }
+
+    public PageParser getPageParser() {
+        return pageParser;
+    }
+
+    public void setPageParser(PageParser pageParser) {
+        this.pageParser = pageParser;
     }
 
     public Map<String, String> getParamMap() {
@@ -114,13 +160,5 @@ public class RunConf {
 
     public void setFailRetryCount(int failRetryCount) {
         this.failRetryCount = failRetryCount;
-    }
-
-    public PageParser getPageParser() {
-        return pageParser;
-    }
-
-    public void setPageParser(PageParser pageParser) {
-        this.pageParser = pageParser;
     }
 }

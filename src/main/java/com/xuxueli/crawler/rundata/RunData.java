@@ -29,20 +29,4 @@ public abstract class RunData {
      */
     public abstract int getUrlNum();
 
-    /**
-     * add white url regex
-     *
-     * @param link
-     * @return
-     */
-    public abstract boolean addWhiteUrlRegex(String link);
-
-    /**
-     * valid white url
-     *
-     * @param link
-     * @return
-     */
-    public abstract boolean validWhiteUrl(String link);
-
 }
