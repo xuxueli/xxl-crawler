@@ -97,7 +97,7 @@ XxlCrawler crawler = new XxlCrawler.Builder()
     .setThreadCount(3)
     .setPageParser(new PageParser<PageVo>() {
         @Override
-        public void parse(Document html, PageVo pageVo) {
+        public void parse(Document html, Element pageVoElement, PageVo pageVo) {
             // 解析封装 PageVo 对象
             String pageUrl = html.baseUri();
             System.out.println(pageUrl + "：" + pageVo.toString());
@@ -225,7 +225,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 - 11、单个页面支持抽取一个或多个PageVO；
 
-### 版本 V1.1.0，新特性[2017-18-06]
+### 版本 V1.1.0，新特性[2017-11-08]
 - 1、页面默认cssQuery调整为html标签；
 - 2、升级Jsoup至1.11.1版本；
 - 3、修复PageVO注解失效的问题；
@@ -233,7 +233,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 5、代理IP：对抗反采集策略规则WAF；
 - 6、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
 
-### 版本 V1.2.0，新特性[2017-17-28]
+### 版本 V1.2.0，新特性[2017-12-14]
 - 1、爬虫Builder底层API优化；
 - 2、支持设置请求Headers；
 - 3、支持设置多UserAgent轮询；

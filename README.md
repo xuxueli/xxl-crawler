@@ -4,7 +4,7 @@
     </a>
     <h3 align="center">XXL-CRAWLER</h3>
     <p align="center">
-        XXL-CRAWLER, a object-oriented web crawler framework..
+        XXL-CRAWLER, a object-oriented distributed web crawler framework..
         <br>
         <a href="http://www.xuxueli.com/xxl-crawler/"><strong>-- Browse website. --</strong></a>
         <br>
