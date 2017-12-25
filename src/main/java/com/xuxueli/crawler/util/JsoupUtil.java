@@ -52,12 +52,12 @@ public class JsoupUtil {
                 conn.referrer(pageLoadInfo.getReferrer());
             }
             conn.timeout(pageLoadInfo.getTimeoutMillis());
-
+            conn.validateTLSCertificates(pageLoadInfo.isValidateTLSCertificates());
             // 代理
             if (pageLoadInfo.getProxy() != null) {
                 conn.proxy(pageLoadInfo.getProxy());
             }
-
+            
             // 发出请求
             Document html = null;
             if (pageLoadInfo.getIfPost()) {

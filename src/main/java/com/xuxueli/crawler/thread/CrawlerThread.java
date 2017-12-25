@@ -110,6 +110,7 @@ public class CrawlerThread implements Runnable {
         pageLoadInfo.setIfPost(crawler.getRunConf().isIfPost());
         pageLoadInfo.setTimeoutMillis(crawler.getRunConf().getTimeoutMillis());
         pageLoadInfo.setProxy(proxy);
+        pageLoadInfo.setValidateTLSCertificates(crawler.getRunConf().isValidateTLSCertificates());
 
         // pre + load + post
         crawler.getRunConf().getPageParser().preLoad(pageLoadInfo);

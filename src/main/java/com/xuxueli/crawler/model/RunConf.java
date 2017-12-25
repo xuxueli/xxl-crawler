@@ -29,7 +29,7 @@ public class RunConf {
     private volatile int pauseMillis = 0;                                           // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
     private volatile ProxyMaker proxyMaker;                                         // 代理生成器
     private volatile int failRetryCount = 0;                                        // 失败重试次数，大于零时生效
-
+    private volatile boolean isValidateTLSCertificates;                             //是否验证https
     // util
     /**
      * valid url, include white url
@@ -161,4 +161,13 @@ public class RunConf {
     public void setFailRetryCount(int failRetryCount) {
         this.failRetryCount = failRetryCount;
     }
+
+	public boolean isValidateTLSCertificates() {
+		return isValidateTLSCertificates;
+	}
+
+	public void setValidateTLSCertificates(boolean isValidateTLSCertificates) {
+		this.isValidateTLSCertificates = isValidateTLSCertificates;
+	}
+    
 }
