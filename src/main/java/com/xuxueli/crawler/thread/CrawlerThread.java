@@ -82,6 +82,7 @@ public class CrawlerThread implements Runnable {
             } catch (Throwable e) {
                 if (e instanceof InterruptedException) {
                     logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. 1{}", e.getMessage());
+                    Thread.currentThread().interrupt();
                 } else {
                     logger.error(e.getMessage(), e);
                 }

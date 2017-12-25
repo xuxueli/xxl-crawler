@@ -52,13 +52,9 @@ public class LocalRunData extends RunData {
      * @throws InterruptedException
      */
     @Override
-    public String getUrl() {
+    public String getUrl() throws InterruptedException {
         String link = null;
-        try {
-            link = unVisitedUrlQueue.take();
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
-        }
+        link = unVisitedUrlQueue.take();
         if (link != null) {
             visitedUrlSet.add(link);
         }
