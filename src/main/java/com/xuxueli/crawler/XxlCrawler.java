@@ -282,6 +282,9 @@ public class XxlCrawler {
         if (threadCount<1 || threadCount>1000) {
             throw new RuntimeException("xxl crawler threadCount invalid, threadCount : " + threadCount);
         }
+        if (runConf.getPageLoader() == null) {
+            throw new RuntimeException("xxl crawler pageLoader can not be null.");
+        }
         if (runConf.getPageParser() == null) {
             throw new RuntimeException("xxl crawler pageParser can not be null.");
         }
