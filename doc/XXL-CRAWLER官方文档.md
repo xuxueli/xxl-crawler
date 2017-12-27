@@ -69,8 +69,10 @@ XXL-CRAWLER 是一个面向对象的分布式爬虫框架。一行代码开发�
 ```
 
 ### 第二步：定义 "PageVo/页面数据对象"（可选）
-> 在此推荐一款工具 "Chrome插件：Jquery Selector Helper"，可以直观迅速的获取页面元素的Jquery cssQuery表达式。
-
+> 在此推荐两款工具，可以直观迅速的获取页面元素的Jquery cssQuery表达式。
+- 1、Chrome DevTools：首先定位元素位置，然后从Element选中选中元素，点击右键选择“Copy + Copy selector”即可;
+- 2、Jquery Selector Helper（Chrome插件）：首先定位元素位置，然后从Element右侧打开Selector界面，然后定位元素即可；
+ 
 ```java
 // PageSelect 注解：从页面中抽取出一个或多个VO对象；
 @PageSelect(cssQuery = "body")
@@ -242,12 +244,13 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 6、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
 ### 版本 V1.2.1，新特性[迭代中]
-- 1、对抗爬虫蜜罐；
+- 1、设计PageLoader，方便定制页面下载功能，如JS渲染方式下载，默认提供JsoupPageLoader页面下载器；
 
 ### TODO LIST
 - 1、扩展SelectType；
 - 2、js渲染；
-
+- 3、bloomfilter去重；
+- 4、对抗爬虫蜜罐；
 
 ## 五、其他
 

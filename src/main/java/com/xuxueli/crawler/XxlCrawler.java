@@ -1,5 +1,6 @@
 package com.xuxueli.crawler;
 
+import com.xuxueli.crawler.loader.PageLoader;
 import com.xuxueli.crawler.model.RunConf;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.proxy.ProxyMaker;
@@ -49,18 +50,7 @@ public class XxlCrawler {
     public static class Builder {
         private XxlCrawler crawler = new XxlCrawler();
 
-        // spread
-        /**
-         * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
-         *
-         * @param allowSpread
-         * @return
-         */
-        public Builder setAllowSpread(boolean allowSpread) {
-            crawler.runConf.setAllowSpread(allowSpread);
-            return this;
-        }
-
+        // run data
         /**
          * 设置运行数据类型
          *
@@ -72,7 +62,6 @@ public class XxlCrawler {
             return this;
         }
 
-        // run data
         /**
          * 待爬的URL列表
          *
@@ -88,6 +77,18 @@ public class XxlCrawler {
             return this;
         }
 
+        // run conf
+        /**
+         * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+         *
+         * @param allowSpread
+         * @return
+         */
+        public Builder setAllowSpread(boolean allowSpread) {
+            crawler.runConf.setAllowSpread(allowSpread);
+            return this;
+        }
+
         /**
          * URL白名单正则，非空时进行URL白名单过滤页面
          *
@@ -100,6 +101,28 @@ public class XxlCrawler {
                     crawler.runConf.getWhiteUrlRegexs().add(whiteUrlRegex);
                 }
             }
+            return this;
+        }
+
+        /**
+         * 页面解析器
+         *
+         * @param pageParser
+         * @return
+         */
+        public Builder setPageParser(PageParser pageParser){
+            crawler.runConf.setPageParser(pageParser);
+            return this;
+        }
+
+        /**
+         * 页面下载器
+         *
+         * @param pageLoader
+         * @return
+         */
+        public Builder setPageLoader(PageLoader pageLoader){
+            crawler.runConf.setPageLoader(pageLoader);
             return this;
         }
 
@@ -233,20 +256,6 @@ public class XxlCrawler {
             crawler.threadCount = threadCount;
             return this;
         }
-
-        // parser
-        /**
-         * 页面解析器
-         *
-         * @param pageParser
-         * @return
-         */
-        public Builder setPageParser(PageParser pageParser){
-            crawler.runConf.setPageParser(pageParser);
-            return this;
-        }
-
-
 
         public XxlCrawler build() {
             return crawler;

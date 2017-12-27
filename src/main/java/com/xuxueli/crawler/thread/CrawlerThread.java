@@ -113,7 +113,7 @@ public class CrawlerThread implements Runnable {
 
         // pre + load + post
         crawler.getRunConf().getPageParser().preLoad(pageLoadInfo);
-        Document html = JsoupUtil.load(pageLoadInfo);
+        Document html = crawler.getRunConf().getPageLoader().load(pageLoadInfo);
         crawler.getRunConf().getPageParser().postLoad(html);
 
         if (html == null) {
