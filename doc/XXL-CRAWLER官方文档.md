@@ -251,6 +251,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 2、js渲染；
 - 3、bloomfilter去重；
 - 4、对抗爬虫蜜罐；
+- 5、对抗主动休眠防御；
 
 ## 五、其他
 
