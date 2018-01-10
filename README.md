@@ -1,7 +1,5 @@
 <p align="center">
-    <a href="http://www.xuxueli.com/xxl-crawler/">
-        <img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/xxl-logo.jpg" width="150">
-    </a>
+    <img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/xxl-logo.jpg" width="150">
     <h3 align="center">XXL-CRAWLER</h3>
     <p align="center">
         XXL-CRAWLER, a object-oriented distributed web crawler framework.
