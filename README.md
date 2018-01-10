@@ -6,7 +6,7 @@
     <p align="center">
         XXL-CRAWLER, a object-oriented distributed web crawler framework.
         <br>
-        <a href="http://www.xuxueli.com/xxl-crawler/"><strong>-- Browse website. --</strong></a>
+        <a href="http://www.xuxueli.com/xxl-crawler/"><strong>-- Home Page --</strong></a>
         <br>
         <br>
         <a href="https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/">
