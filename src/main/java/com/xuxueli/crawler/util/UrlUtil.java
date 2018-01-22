@@ -1,5 +1,7 @@
 package com.xuxueli.crawler.util;
 
+import java.util.regex.Pattern;
+
 /**
  * url tool
  *
@@ -11,7 +13,8 @@ public class UrlUtil {
      * url格式校验
      */
     public static boolean isUrl(String url) {
-        if (url!=null && url.trim().length()>0 && url.startsWith("http")) {
+        String urlPattern = "(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?";
+        if (url!=null && url.trim().length()>0 && Pattern.matches(urlPattern, url)) {
             return true;
         }
         return false;

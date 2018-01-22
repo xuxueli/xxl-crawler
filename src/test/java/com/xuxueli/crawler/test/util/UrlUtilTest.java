@@ -16,10 +16,22 @@ public class UrlUtilTest {
      */
     @Test
     public void isUrlTest(){
-        String url = "http://www.baidu.com/";
-
-        boolean ret = UrlUtil.isUrl(url);
-        Assert.assertTrue(ret);
+        String url1 = "http://www.baidu.com/";
+        String url2 = "http://www.baidu.com";
+        String url3 = "https://www.baidu.com/";
+        String url4 = "www.baidu.com";
+        String url5 = "www.baidu.com/";
+        String url6 = "http//www.baidu.com/";
+        String url7 = "http:///www.baidu.com/";
+        String url8 = "http:/www.baidu.com/";
+        Assert.assertTrue(UrlUtil.isUrl(url1));
+        Assert.assertTrue(UrlUtil.isUrl(url2));
+        Assert.assertTrue(UrlUtil.isUrl(url3));
+        Assert.assertFalse(UrlUtil.isUrl(url4));
+        Assert.assertFalse(UrlUtil.isUrl(url5));
+        Assert.assertFalse(UrlUtil.isUrl(url6));
+        Assert.assertFalse(UrlUtil.isUrl(url7));
+        Assert.assertFalse(UrlUtil.isUrl(url8));
     }
 
 }
