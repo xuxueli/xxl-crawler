@@ -52,6 +52,8 @@ public class JsoupUtil {
                 conn.referrer(pageLoadInfo.getReferrer());
             }
             conn.timeout(pageLoadInfo.getTimeoutMillis());
+            //页面内容限制,默认1M
+            conn.maxBodySize(0);
 
             // 代理
             if (pageLoadInfo.getProxy() != null) {
