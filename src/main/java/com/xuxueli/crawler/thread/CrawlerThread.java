@@ -4,6 +4,7 @@ import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.exception.XxlCrawlerException;
 import com.xuxueli.crawler.model.PageLoadInfo;
 import com.xuxueli.crawler.util.FieldReflectionUtil;
 import com.xuxueli.crawler.util.JsoupUtil;
@@ -81,7 +82,9 @@ public class CrawlerThread implements Runnable {
 
             } catch (Throwable e) {
                 if (e instanceof InterruptedException) {
-                    logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. 1{}", e.getMessage());
+                    logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. {}", e.getMessage());
+                } else if (e instanceof XxlCrawlerException) {
+                    logger.info(">>>>>>>>>>> xxl crawler thread {}", e.getMessage());
                 } else {
                     logger.error(e.getMessage(), e);
                 }
