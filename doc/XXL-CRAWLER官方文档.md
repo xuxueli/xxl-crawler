@@ -245,6 +245,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 
 ### 版本 V1.2.1，新特性[迭代中]
 - 1、设计PageLoader，方便定制页面下载功能，如JS渲染方式下载，默认提供JsoupPageLoader页面下载器；
+- 2、修复Jsoup默认加载1M的限制；
 
 ### TODO LIST
 - 1、扩展SelectType；
