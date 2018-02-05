@@ -20,7 +20,7 @@ public class RunConf {
     private volatile boolean allowSpread = true;                                    // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
     private Set<String> whiteUrlRegexs = Collections.synchronizedSet(new HashSet<String>());    // URL白名单正则，非空时进行URL白名单过滤页面
     private PageLoader pageLoader = new JsoupPageParser();                          // 页面下载器
-    private PageParser pageParser;                                                   // 页面解析器
+    private PageParser pageParser;                                                  // 页面解析器
 
     private volatile Map<String, String> paramMap;                                  // 请求参数
     private volatile Map<String, String> cookieMap;                                 // 请求Cookie
