@@ -17,6 +17,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.7</java.version>
 
+        <jsoup.version>1.11.1</jsoup.version>
+        <htmlunit.version>2.24</htmlunit.version>
+
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <junit.version>4.11</junit.version>
     </properties>
@@ -26,7 +29,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.11.1</version>
+            <version>${jsoup.version}</version>
         </dependency>
 
         <!-- slf4j -->
@@ -49,6 +52,14 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- htmlunit -->
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>${htmlunit.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
