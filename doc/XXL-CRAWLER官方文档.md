@@ -127,7 +127,7 @@ crawler.start(true);
 
 ### 3.1 功能定位
 
-XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。；
+XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。采用模块化设计，各个模块可灵活进行自定义和扩展。
 
 借助 XXL-CRAWLER，一行代码开发一个分布式爬虫。
 
@@ -137,6 +137,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。；
 --- | ---
 XxlCrawler | 爬虫对象，维护爬虫信息
 PageVo | 页面数据对象，一张Web页面可抽取一个或多个PageVo
+PageLoader | 页面加载器，负责加载页面数据，支持灵活的自定义和扩展
 PageParser | 页面解析器，绑定泛型PageVO后将会自动抽取页面数据对象，同时支持运行时调整请求参数信息
 
 ### 3.3 爬虫对象：XxlCrawler
