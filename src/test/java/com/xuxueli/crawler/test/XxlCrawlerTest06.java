@@ -23,7 +23,7 @@ public class XxlCrawlerTest06 {
     @PageSelect(cssQuery = "body")
     public static class PageVo {
 
-        @PageFieldSelect(cssQuery = "#J_StrPriceModBox > dd > span", selectType = XxlCrawlerConf.SelectType.TEXT)
+        @PageFieldSelect(cssQuery = "#jd-price", selectType = XxlCrawlerConf.SelectType.TEXT)
         private String data;
 
         public String getData() {
@@ -39,14 +39,14 @@ public class XxlCrawlerTest06 {
 
         // 构造爬虫
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://detail.tmall.com/item.htm?id=6153179052")
+                .setUrls("https://item.jd.com/12228194.html")
                 .setAllowSpread(false)
                 .setPageLoader(new HtmlUnitPageLoader())        // HtmlUnit 版本 PageLoader：支持 JS 渲染
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(Document html, Element pageVoElement, PageVo pageVo) {
                         if (pageVo.getData() != null) {
-                            logger.info("商品价格（JS动态渲染方式获取）:Y {}", pageVo.getData());
+                            logger.info("商品价格（JS动态渲染方式获取）: {}", pageVo.getData());
                         } else {
                             logger.info("商品价格（JS动态渲染方式获取）: 获取失败");
                         }
