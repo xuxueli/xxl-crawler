@@ -123,7 +123,7 @@ crawler.start(true);
 
 ### 架构图
 
-![输入图片说明](https://static.oschina.net/uploads/img/201712/14205637_EuXJ.png "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201802/07190457_ZKMu.png "在这里输入图片标题")
 
 ### 3.1 功能定位
 
