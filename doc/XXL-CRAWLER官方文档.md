@@ -264,18 +264,19 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 5、动态参数：支持运行时动态调整请求参数；
 - 6、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
-### 版本 V1.2.1，新特性[迭代中]
+### 版本 V1.2.1，新特性[2018-02-07]
 - 1、JS渲染：支持JS渲染方式采集数据，可参考 "爬虫示例6"；
 - 2、抽象并设计PageLoader，方便自定义和扩展页面加载逻辑，如JS渲染等。底层提供 "JsoupPageLoader(默认/推荐)"，"HtmlUnitPageLoader"两种实现，可自定义其他类型PageLoader如 "Selenium" 等；
 - 3、修复Jsoup默认加载1M的限制；
 - 4、爬虫线程中断处理优化；
 
+### 版本 V1.2.2，新特性[迭代中]
+
 ### TODO LIST
 - 1、扩展SelectType；
-- 2、js渲染；
-- 3、bloomfilter去重；
-- 4、对抗爬虫蜜罐；
-- 5、对抗主动休眠防御；
+- 3、bloomfilter去重，可选接入，大数据量下推荐；
+- 4、对抗爬虫蜜罐，成功率检测，历史数据学习；
+- 5、对抗主动休眠防御，Timeout即可；
 
 ## 五、其他
 
