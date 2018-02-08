@@ -1,4 +1,4 @@
-## 《面向对象的分布式爬虫框架XXL-CRAWLER》
+## 《分布式爬虫框架XXL-CRAWLER》
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/)
 [![GitHub release](https://img.shields.io/github/release/xuxueli/xxl-crawler.svg)](https://github.com/xuxueli/xxl-crawler/releases)
@@ -8,7 +8,7 @@
 ## 一、简介
 
 ### 1.1 概述
-XXL-CRAWLER 是一个面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式、JS渲染"等特性；
+XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式、JS渲染"等特性；
 
 ### 1.2 特性
 - 1、简洁：API直观简洁，可快速上手；
@@ -127,7 +127,7 @@ crawler.start(true);
 
 ### 3.1 功能定位
 
-XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。采用模块化设计，各个模块可灵活进行自定义和扩展。
+XXL-CRAWLER 是一个分布式Web爬虫框架。采用模块化设计，各个模块可灵活进行自定义和扩展。
 
 借助 XXL-CRAWLER，一行代码开发一个分布式爬虫。
 

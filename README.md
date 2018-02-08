@@ -2,7 +2,7 @@
     <img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/xxl-logo.jpg" width="150">
     <h3 align="center">XXL-CRAWLER</h3>
     <p align="center">
-        XXL-CRAWLER, a object-oriented distributed web crawler framework.
+        XXL-CRAWLER, a distributed web crawler framework.
         <br>
         <a href="http://www.xuxueli.com/xxl-crawler/"><strong>-- Home Page --</strong></a>
         <br>
@@ -25,9 +25,9 @@
 
 ## Introduction
 
-XXL-CRAWLER is a object-oriented distributed web crawler framework. One line of code develops a distributed crawler. Features such as "multithreaded、asynchronous、dynamic IP proxy、distributed".
+XXL-CRAWLER is a distributed web crawler framework. One line of code develops a distributed crawler. Features such as "multithreaded、asynchronous、dynamic IP proxy、distributed、javascript-rendering".
 
-XXL-CRAWLER 是一个面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式、JS渲染"等特性；
+XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式、JS渲染"等特性；
 
 ## Documentation
 - [中文文档](http://www.xuxueli.com/xxl-crawler/)
