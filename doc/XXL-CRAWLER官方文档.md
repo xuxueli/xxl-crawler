@@ -123,7 +123,7 @@ crawler.start(true);
 
 ### 架构图
 
-![输入图片说明](https://static.oschina.net/uploads/img/201802/07190457_ZKMu.png "在这里输入图片标题")
+![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-crawler/master/doc/images/img01.png "在这里输入图片标题")
 
 ### 3.1 功能定位
 
