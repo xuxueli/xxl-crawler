@@ -53,6 +53,8 @@ public class JsoupUtil {
             }
             conn.timeout(pageLoadInfo.getTimeoutMillis());
             conn.validateTLSCertificates(pageLoadInfo.isValidateTLSCertificates());
+            conn.maxBodySize(0);    // 取消默认1M限制
+
             // 代理
             if (pageLoadInfo.getProxy() != null) {
                 conn.proxy(pageLoadInfo.getProxy());

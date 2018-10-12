@@ -1,5 +1,6 @@
 package com.xuxueli.crawler.rundata.strategy;
 
+import com.xuxueli.crawler.exception.XxlCrawlerException;
 import com.xuxueli.crawler.rundata.RunData;
 import com.xuxueli.crawler.util.UrlUtil;
 import org.slf4j.Logger;
@@ -54,7 +55,13 @@ public class LocalRunData extends RunData {
     @Override
     public String getUrl() throws InterruptedException {
         String link = null;
-        link = unVisitedUrlQueue.take();
+
+        try {
+            link = unVisitedUrlQueue.take();
+        } catch (InterruptedException e) {
+            throw new XxlCrawlerException("LocalRunData.getUrl interrupted.");
+        }
+
         if (link != null) {
             visitedUrlSet.add(link);
         }

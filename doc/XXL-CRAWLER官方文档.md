@@ -1,4 +1,4 @@
-## 《面向对象的分布式爬虫框架XXL-CRAWLER》
+## 《分布式爬虫框架XXL-CRAWLER》
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/)
 [![GitHub release](https://img.shields.io/github/release/xuxueli/xxl-crawler.svg)](https://github.com/xuxueli/xxl-crawler/releases)
@@ -8,27 +8,30 @@
 ## 一、简介
 
 ### 1.1 概述
-XXL-CRAWLER 是一个面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式"等特性；
+XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式、JS渲染"等特性；
 
 ### 1.2 特性
-- 1、面向对象：通过VO对象描述页面信息，提供注解方便的映射页面数据，爬取结果主动封装Java对象返回；
-- 2、多线程；
-- 3、扩散全站：将会以现有URL为起点扩散爬取整站；
-- 4、去重：防止重复爬取；
-- 5、URL白名单：支持设置页面白名单正则，过滤URL；
-- 6、异步：支持同步、异步两种方式运行；
-- 7、自定义请求信息，如：请求参数、Cookie、Header、UserAgent轮询、Referrer等；
-- 8、轻量级：底层实现仅依赖jsoup，简洁高效；
-- 9、超时控制：支持设置爬虫请求的超时时间；
-- 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
-- 11、单个页面支持抽取一个或多个PageVO；
-- 12、代理IP：对抗反采集策略规则WAF；
-- 13、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
-- 14、失败重试：请求失败后重试，并支持设置重试次数；
-- 15、动态参数：支持运行时动态调整请求参数；
-- 16、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
+- 1、简洁：API直观简洁，可快速上手；
+- 2、轻量级：底层实现仅强依赖jsoup，简洁高效；
+- 3、模块化：模块化的结构设计，可轻松扩展
+- 4、面向对象：支持通过注解，方便的映射页面数据到PageVO对象，底层自动完成PageVO对象的数据抽取和封装返回；单个页面支持抽取一个或多个PageVO
+- 5、多线程：线程池方式运行，提高采集效率；
+- 6、分布式支持：通过扩展 "RunData" 模块，并结合Redis或DB共享运行数据可实现分布式。默认提供LocalRunData单机版爬虫。
+- 7、JS渲染：通过扩展 "PageLoader" 模块，支持采集JS动态渲染数据。原生提供Jsoup(快速、推荐)和HtmlUnit(较慢、JS渲染)两种实现，支持自由扩展其他实现。
+- 8、失败重试：请求失败后重试，并支持设置重试次数；
+- 9、代理IP：对抗反采集策略规则WAF；
+- 10、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
+- 11、异步：支持同步、异步两种方式运行；
+- 12、扩散全站：支持以现有URL为起点扩散爬取整站；
+- 13、去重：防止重复爬取；
+- 14、URL白名单：支持设置页面白名单正则，过滤URL；
+- 15、自定义请求信息，如：请求参数、Cookie、Header、UserAgent轮询、Referrer等；
+- 16、动态参数：支持运行时动态调整请求参数；
+- 17、超时控制：支持设置爬虫请求的超时时间；
+- 18、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 
-### 1.4 下载
+
+### 1.3 下载
 
 #### 文档地址
 
@@ -45,7 +48,7 @@ XXL-CRAWLER 是一个面向对象的分布式爬虫框架。一行代码开发�
 #### 技术交流
 - [社区交流](http://www.xuxueli.com/page/community.html)
 
-### 1.5 环境
+### 1.4 环境
 - JDK：1.7+
 
 
@@ -58,19 +61,23 @@ XXL-CRAWLER 是一个面向对象的分布式爬虫框架。一行代码开发�
 - 3、爬取页面，下载图片文件
 - 4、爬取页面，代理IP方式
 - 5、爬取公开的免费代理，生成动态代理池
+- 6、JS渲染方式采集数据
+- 7、分布式爬虫示例
 
 ### 第一步：引入Maven依赖
 ```
 <dependency>
     <groupId>com.xuxueli</groupId>
     <artifactId>xxl-crawler</artifactId>
-    <version>1.2.0</version>
+    <version>${最新稳定版}</version>
 </dependency>
 ```
 
 ### 第二步：定义 "PageVo/页面数据对象"（可选）
-> 在此推荐一款工具 "Chrome插件：Jquery Selector Helper"，可以直观迅速的获取页面元素的Jquery cssQuery表达式。
-
+> 在此推荐两款工具，可以直观迅速的获取页面元素的Jquery cssQuery表达式。
+- 1、Chrome DevTools：首先定位元素位置，然后从Element选中选中元素，点击右键选择“Copy + Copy selector”即可;
+- 2、Jquery Selector Helper（Chrome插件）：首先定位元素位置，然后从Element右侧打开Selector界面，然后定位元素即可；
+ 
 ```java
 // PageSelect 注解：从页面中抽取出一个或多个VO对象；
 @PageSelect(cssQuery = "body")
@@ -116,11 +123,11 @@ crawler.start(true);
 
 ### 架构图
 
-![输入图片说明](https://static.oschina.net/uploads/img/201712/14205637_EuXJ.png "在这里输入图片标题")
+![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-crawler/master/doc/images/img01.png "在这里输入图片标题")
 
 ### 3.1 功能定位
 
-XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。；
+XXL-CRAWLER 是一个分布式Web爬虫框架。采用模块化设计，各个模块可灵活进行自定义和扩展。
 
 借助 XXL-CRAWLER，一行代码开发一个分布式爬虫。
 
@@ -130,6 +137,7 @@ XXL-CRAWLER 是一个灵活高效、面向对象的Web爬虫框架。；
 --- | ---
 XxlCrawler | 爬虫对象，维护爬虫信息
 PageVo | 页面数据对象，一张Web页面可抽取一个或多个PageVo
+PageLoader | 页面加载器，负责加载页面数据，支持灵活的自定义和扩展
 PageParser | 页面解析器，绑定泛型PageVO后将会自动抽取页面数据对象，同时支持运行时调整请求参数信息
 
 ### 3.3 爬虫对象：XxlCrawler
@@ -149,6 +157,7 @@ setPauseMillis | 停顿时间，爬虫线程处理完页面之后进行主动停
 setProxyMaker | 代理生成器，支持设置代理IP，同时支持调整代理池实现动态代理；
 setThreadCount | 爬虫并发线程数
 setPageParser | 页面解析器
+setPageLoader | 页面加载器，默认提供 "JsoupPageParser" 和 "HtmlUnitPageLoader" 两种实现；
 setRunData  | 设置运行时数据模型，默认提供LocalRunData单机模型，支持扩展实现分布式模型；
 start   | 运行爬虫，可通过入参控制同步或异步方式运行
 stop    | 终止爬虫
@@ -211,6 +220,21 @@ public abstract boolean addUrl(String link); | 新增一个待采集的URL，接
 public abstract String getUrl(); | 获取一个待采集的URL，并且将它从"待采集URL池"中移除，并且添加到"已采集URL池"中；
 public abstract int getUrlNum(); | 获取待采集URL数量；
 
+### 3.11、JS动态渲染 & PageLoader
+页面数据通过 "PageLoader" 组件加载，默认使用以下两种实现：
+- JsoupPageLoader：速度最快，推荐采用这种方式（不支持JS动态渲染）；
+- HtmlUnitPageLoader：支持JS动态渲染，速度较慢。
+
+得益于模块化结构设计，可自由扩展其他 "PageLoader" 实现，如 "Selenium" 方式等；
+
+注意：
+- 1、HtmlUnitPageLoader 为扩展功能，因此maven依赖（htmlunit）scope为provided类型，使用时请单独引入；
+- 2、不推荐使用JS渲染方式采集数据：
+    - 2.1：JS渲染，速度较慢；
+    - 2.1：JS渲染，环境要求较高；
+    - 2.3：在需要JS渲染的场景下，推荐做法是：分析页面请求，模拟并主动发起Ajax请求来代替JS引擎自动请求渲染。因为速度更快，更可控；
+
+
 ## 四、版本更新日志
 ### 版本 V1.0.0，新特性[2017-09-13]
 - 1、面向对象：通过VO对象描述页面信息，提供注解方便的映射页面数据，爬取结果主动封装Java对象返回；
@@ -241,13 +265,19 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 5、动态参数：支持运行时动态调整请求参数；
 - 6、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
-### 版本 V1.2.1，新特性[迭代中]
-- 1、对抗爬虫蜜罐；
+### 版本 V1.2.1，新特性[2018-02-07]
+- 1、JS渲染：支持JS渲染方式采集数据，可参考 "爬虫示例6"；
+- 2、抽象并设计PageLoader，方便自定义和扩展页面加载逻辑，如JS渲染等。底层提供 "JsoupPageLoader(默认/推荐)"，"HtmlUnitPageLoader"两种实现，可自定义其他类型PageLoader如 "Selenium" 等；
+- 3、修复Jsoup默认加载1M的限制；
+- 4、爬虫线程中断处理优化；
+
+### 版本 V1.2.2，新特性[迭代中]
 
 ### TODO LIST
 - 1、扩展SelectType；
-- 2、js渲染；
-
+- 3、bloomfilter去重，可选接入，大数据量下推荐；
+- 4、对抗爬虫蜜罐，成功率检测，历史数据学习；
+- 5、对抗主动休眠防御，Timeout即可；
 
 ## 五、其他
 

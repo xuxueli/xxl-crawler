@@ -1,12 +1,10 @@
 <p align="center">
-    <a href="http://www.xuxueli.com/xxl-crawler/">
-        <img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/xxl-logo.jpg" width="150">
-    </a>
+    <img src="https://raw.githubusercontent.com/xuxueli/xxl-job/master/doc/images/xxl-logo.jpg" width="150">
     <h3 align="center">XXL-CRAWLER</h3>
     <p align="center">
-        XXL-CRAWLER, a object-oriented distributed web crawler framework.
+        XXL-CRAWLER, a distributed web crawler framework.
         <br>
-        <a href="http://www.xuxueli.com/xxl-crawler/"><strong>-- Browse website. --</strong></a>
+        <a href="http://www.xuxueli.com/xxl-crawler/"><strong>-- Home Page --</strong></a>
         <br>
         <br>
         <a href="https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/">
@@ -27,32 +25,33 @@
 
 ## Introduction
 
-XXL-CRAWLER is a object-oriented distributed web crawler framework. One line of code develops a distributed crawler. Features such as "multithreaded、asynchronous、dynamic IP proxy、distributed".
+XXL-CRAWLER is a distributed web crawler framework. One line of code develops a distributed crawler. Features such as "multithreaded、asynchronous、dynamic IP proxy、distributed、javascript-rendering".
 
-XXL-CRAWLER 是一个面向对象的分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式"等特性；
+XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式爬虫，拥有"多线程、异步、IP动态代理、分布式、JS渲染"等特性；
 
 ## Documentation
 - [中文文档](http://www.xuxueli.com/xxl-crawler/)
 
 
 ## Features
-- 1、面向对象：通过VO对象描述页面信息，提供注解方便的映射页面数据，爬取结果主动封装Java对象返回；
-- 2、多线程；
-- 3、扩散全站：将会以现有URL为起点扩散爬取整站；
-- 4、去重：防止重复爬取；
-- 5、URL白名单：支持设置页面白名单正则，过滤URL；
-- 6、异步：支持同步、异步两种方式运行；
-- 7、自定义请求信息，如：请求参数、Cookie、Header、UserAgent轮询、Referrer等；
-- 8、轻量级：底层实现仅依赖jsoup，简洁高效；
-- 9、超时控制：支持设置爬虫请求的超时时间；
-- 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
-- 11、单个页面支持抽取一个或多个PageVO；
-- 12、代理IP：对抗反采集策略规则WAF；
-- 13、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
-- 14、失败重试：请求失败后重试，并支持设置重试次数；
-- 15、动态参数：支持运行时动态调整请求参数；
-- 16、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
-
+- 1、简洁：API直观简洁，可快速上手；
+- 2、轻量级：底层实现仅强依赖jsoup，简洁高效；
+- 3、模块化：模块化的结构设计，可轻松扩展
+- 4、面向对象：支持通过注解，方便的映射页面数据到PageVO对象，底层自动完成PageVO对象的数据抽取和封装返回；单个页面支持抽取一个或多个PageVO
+- 5、多线程：线程池方式运行，提高采集效率；
+- 6、分布式支持：通过扩展 "RunData" 模块，并结合Redis或DB共享运行数据可实现分布式。默认提供LocalRunData单机版爬虫。
+- 7、JS渲染：通过扩展 "PageLoader" 模块，支持采集JS动态渲染数据。原生提供Jsoup(快速、推荐)和HtmlUnit(较慢、JS渲染)两种实现，支持自由扩展其他实现。
+- 8、失败重试：请求失败后重试，并支持设置重试次数；
+- 9、代理IP：对抗反采集策略规则WAF；
+- 10、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
+- 11、异步：支持同步、异步两种方式运行；
+- 12、扩散全站：支持以现有URL为起点扩散爬取整站；
+- 13、去重：防止重复爬取；
+- 14、URL白名单：支持设置页面白名单正则，过滤URL；
+- 15、自定义请求信息，如：请求参数、Cookie、Header、UserAgent轮询、Referrer等；
+- 16、动态参数：支持运行时动态调整请求参数；
+- 17、超时控制：支持设置爬虫请求的超时时间；
+- 18、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 
 ## Communication
 
