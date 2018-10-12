@@ -18,6 +18,7 @@ public class PageLoadInfo {
     private String referrer;
     private boolean ifPost;
     private int timeoutMillis;
+    private boolean isValidateTLSCertificates;
     private Proxy proxy;
 
     public PageLoadInfo() {
@@ -107,4 +108,12 @@ public class PageLoadInfo {
         this.proxy = proxy;
     }
 
+	public boolean isValidateTLSCertificates() {
+		return isValidateTLSCertificates;
+	}
+
+	public void setValidateTLSCertificates(boolean isValidateTLSCertificates) {
+		this.isValidateTLSCertificates = isValidateTLSCertificates;
+	}
+    
 }

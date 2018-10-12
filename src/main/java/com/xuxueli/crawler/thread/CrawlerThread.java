@@ -51,10 +51,9 @@ public class CrawlerThread implements Runnable {
 
     @Override
     public void run() {
-
+    	boolean interrupted=false;
         while (!toStop) {
             try {
-
                 // ------- url ----------
                 running = false;
                 crawler.tryFinish();
@@ -88,7 +87,10 @@ public class CrawlerThread implements Runnable {
                 } else {
                     logger.error(e.getMessage(), e);
                 }
-            }
+            } finally {
+				if (interrupted)
+					Thread.currentThread().interrupt();
+			}
 
         }
     }
@@ -113,6 +115,7 @@ public class CrawlerThread implements Runnable {
         pageLoadInfo.setIfPost(crawler.getRunConf().isIfPost());
         pageLoadInfo.setTimeoutMillis(crawler.getRunConf().getTimeoutMillis());
         pageLoadInfo.setProxy(proxy);
+        pageLoadInfo.setValidateTLSCertificates(crawler.getRunConf().isValidateTLSCertificates());
 
         // pre + load + post
         crawler.getRunConf().getPageParser().preLoad(pageLoadInfo);
