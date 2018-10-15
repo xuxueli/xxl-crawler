@@ -228,6 +228,10 @@ public class CrawlerThread implements Runnable {
                         }
 
                         if (fieldValue!=null) {
+                            /*PropertyDescriptor pd = new PropertyDescriptor(field.getName(), pageVoClassType);
+                            Method method = pd.getWriteMethod();
+                            method.invoke(pageVo, fieldValue);*/
+
                             field.setAccessible(true);
                             field.set(pageVo, fieldValue);
                         }
