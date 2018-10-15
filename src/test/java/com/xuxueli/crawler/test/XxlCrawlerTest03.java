@@ -23,7 +23,7 @@ public class XxlCrawlerTest03 {
     @PageSelect(cssQuery = "body")
     public static class PageVo {
 
-        @PageFieldSelect(cssQuery = "#blogBody img", selectType = XxlCrawlerConf.SelectType.ATTR, selectVal = "abs:src")
+        @PageFieldSelect(cssQuery = "img", selectType = XxlCrawlerConf.SelectType.ATTR, selectVal = "abs:src")
         private List<String> images;
 
         public List<String> getImages() {
@@ -45,8 +45,8 @@ public class XxlCrawlerTest03 {
     public static void main(String[] args) {
 
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://my.oschina.net/xuxueli/blog")
-                .setWhiteUrlRegexs("https://my\\.oschina\\.net/xuxueli/blog/\\d+")
+                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
+                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
                 .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override

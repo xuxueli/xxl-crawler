@@ -53,15 +53,13 @@ public class LocalRunData extends RunData {
      * @throws InterruptedException
      */
     @Override
-    public String getUrl() throws InterruptedException {
+    public String getUrl() {
         String link = null;
-
         try {
             link = unVisitedUrlQueue.take();
         } catch (InterruptedException e) {
             throw new XxlCrawlerException("LocalRunData.getUrl interrupted.");
         }
-
         if (link != null) {
             visitedUrlSet.add(link);
         }

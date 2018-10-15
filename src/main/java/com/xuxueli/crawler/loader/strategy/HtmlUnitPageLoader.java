@@ -1,4 +1,4 @@
-package com.xuxueli.crawler.parser.strategy;
+package com.xuxueli.crawler.loader.strategy;
 
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.ProxyConfig;
@@ -46,6 +46,7 @@ public class HtmlUnitPageLoader extends PageLoader {
             webClient.getOptions().setThrowExceptionOnScriptError(false);
             webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
             webClient.getOptions().setDoNotTrackEnabled(false);
+            webClient.getOptions().setUseInsecureSSL(!pageLoadInfo.isValidateTLSCertificates());
 
             if (pageLoadInfo.getParamMap() != null && !pageLoadInfo.getParamMap().isEmpty()) {
                 for (Map.Entry<String, String> paramItem : pageLoadInfo.getParamMap().entrySet()) {

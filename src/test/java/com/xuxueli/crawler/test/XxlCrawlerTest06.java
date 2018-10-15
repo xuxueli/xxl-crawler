@@ -5,7 +5,7 @@ import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.parser.strategy.HtmlUnitPageLoader;
+import com.xuxueli.crawler.loader.strategy.HtmlUnitPageLoader;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;

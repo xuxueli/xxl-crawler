@@ -20,7 +20,7 @@ public abstract class RunData {
      *
      * @return
      */
-    public abstract String getUrl() throws InterruptedException;
+    public abstract String getUrl();
 
     /**
      * get url num

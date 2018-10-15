@@ -59,7 +59,7 @@ public class JsoupUtil {
             if (pageLoadInfo.getProxy() != null) {
                 conn.proxy(pageLoadInfo.getProxy());
             }
-            
+
             // 发出请求
             Document html = null;
             if (pageLoadInfo.getIfPost()) {

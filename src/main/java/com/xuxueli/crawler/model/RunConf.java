@@ -3,7 +3,7 @@ package com.xuxueli.crawler.model;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.loader.PageLoader;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.parser.strategy.JsoupPageParser;
+import com.xuxueli.crawler.loader.strategy.JsoupPageLoader;
 import com.xuxueli.crawler.proxy.ProxyMaker;
 import com.xuxueli.crawler.util.RegexUtil;
 import com.xuxueli.crawler.util.UrlUtil;
@@ -19,7 +19,7 @@ public class RunConf {
 
     private volatile boolean allowSpread = true;                                    // 允许扩散爬取，将会以现有URL为起点扩散爬取整站
     private Set<String> whiteUrlRegexs = Collections.synchronizedSet(new HashSet<String>());    // URL白名单正则，非空时进行URL白名单过滤页面
-    private PageLoader pageLoader = new JsoupPageParser();                          // 页面下载器
+    private PageLoader pageLoader = new JsoupPageLoader();                          // 页面下载器
     private PageParser pageParser;                                                  // 页面解析器
 
     private volatile Map<String, String> paramMap;                                  // 请求参数
@@ -32,7 +32,8 @@ public class RunConf {
     private volatile int pauseMillis = 0;                                           // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
     private volatile ProxyMaker proxyMaker;                                         // 代理生成器
     private volatile int failRetryCount = 0;                                        // 失败重试次数，大于零时生效
-    private volatile boolean isValidateTLSCertificates;                             //是否验证https
+    private volatile boolean isValidateTLSCertificates = true;                      // 是否验证https
+
     // util
     /**
      * valid url, include white url

@@ -51,9 +51,10 @@ public class CrawlerThread implements Runnable {
 
     @Override
     public void run() {
-    	boolean interrupted=false;
+
         while (!toStop) {
             try {
+
                 // ------- url ----------
                 running = false;
                 crawler.tryFinish();
@@ -87,10 +88,7 @@ public class CrawlerThread implements Runnable {
                 } else {
                     logger.error(e.getMessage(), e);
                 }
-            } finally {
-				if (interrupted)
-					Thread.currentThread().interrupt();
-			}
+            }
 
         }
     }

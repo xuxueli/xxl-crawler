@@ -17,8 +17,8 @@ public class XxlCrawlerTest02 {
     public static void main(String[] args) {
 
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://my.oschina.net/xuxueli/blog")
-                .setWhiteUrlRegexs("https://my\\.oschina\\.net/xuxueli/blog/\\d+")
+                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
+                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
                 .setThreadCount(3)
                 .setPageParser(new PageParser<Object>() {
                     @Override

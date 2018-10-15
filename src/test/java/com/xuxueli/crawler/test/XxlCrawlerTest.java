@@ -7,8 +7,6 @@ import com.xuxueli.crawler.parser.PageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.List;
-
 /**
  * 爬虫示例01：爬取页面数据并封装VO对象
  *
@@ -16,48 +14,36 @@ import java.util.List;
  */
 public class XxlCrawlerTest {
 
-    @PageSelect(cssQuery = "body")
+    @PageSelect(cssQuery = "#search-projects-ulist .project")
     public static class PageVo {
 
-        @PageFieldSelect(cssQuery = ".blog-heading .title")
-        private String title;
+        @PageFieldSelect(cssQuery = ".repository")
+        private String repository;
 
-        @PageFieldSelect(cssQuery = "#read")
-        private int read;
+        @PageFieldSelect(cssQuery = ".description")
+        private String description;
 
-        @PageFieldSelect(cssQuery = ".comment-content")
-        private List<String> comment;
-
-        public String getTitle() {
-            return title;
+        public String getRepository() {
+            return repository;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
+        public void setRepository(String repository) {
+            this.repository = repository;
         }
 
-        public int getRead() {
-            return read;
+        public String getDescription() {
+            return description;
         }
 
-        public void setRead(int read) {
-            this.read = read;
-        }
-
-        public List<String> getComment() {
-            return comment;
-        }
-
-        public void setComment(List<String> comment) {
-            this.comment = comment;
+        public void setDescription(String description) {
+            this.description = description;
         }
 
         @Override
         public String toString() {
             return "PageVo{" +
-                    "title='" + title + '\'' +
-                    ", read=" + read +
-                    ", comment=" + comment +
+                    "repository='" + repository + '\'' +
+                    ", description='" + description + '\'' +
                     '}';
         }
     }
@@ -65,8 +51,8 @@ public class XxlCrawlerTest {
     public static void main(String[] args) {
 
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://my.oschina.net/xuxueli/blog")
-                .setWhiteUrlRegexs("https://my\\.oschina\\.net/xuxueli/blog/\\d+")
+                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
+                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
                 .setThreadCount(3)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
