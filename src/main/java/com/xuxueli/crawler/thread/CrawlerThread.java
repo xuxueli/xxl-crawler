@@ -137,8 +137,8 @@ public class CrawlerThread implements Runnable {
         }
 
         // ------- pagevo ----------
-        if (!crawler.getRunConf().validWhiteUrl(link)) {     // limit unvalid-page parse, only allow spread child
-            return false;
+        if (!crawler.getRunConf().validWhiteUrl(link)) {     // limit unvalid-page parse, only allow spread child, finish here
+            return true;
         }
 
         // pagevo class-field info
