@@ -19,14 +19,14 @@ import java.util.*;
 
 /**
  * 爬虫示例05：爬取公开的免费代理，生成动态代理池
- * (免费代理可从ip181或kxdaili获取，免费代理不稳定可以多试几个；仅供学习测试使用，如有侵犯请联系删除； )
+ * (免费代理可从搜索获取，免费代理不稳定可以多试几个；仅供学习测试使用，如有侵犯请联系删除； )
  *
  * @author xuxueli 2017-10-09 19:48:48
  */
 public class XxlCrawlerTest05 {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawlerTest05.class);
 
-    @PageSelect(cssQuery = ".row table tr")
+    @PageSelect(cssQuery = "#list > table > tbody > tr")
     public static class PageVo {
 
         @PageFieldSelect(cssQuery = "td:eq(0)", selectType = XxlCrawlerConf.SelectType.TEXT)
@@ -67,10 +67,10 @@ public class XxlCrawlerTest05 {
 
         // 构造爬虫
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("http://www.ip181.com/daili/1.html")
-                .setWhiteUrlRegexs("http://www.ip181.com/daili/\\b[1-2].html")      // 前2页数据
-                //.setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("http://www.ip181.com/daili/\\\\d+.html")))      // 全部数据
-                .setThreadCount(10)
+                .setUrls("https://www.kuaidaili.com/free/inha/1/")
+                .setWhiteUrlRegexs("https://www.kuaidaili.com/free/inha/\\b[1-2]/")      // 前2页数据
+                //.setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://www.kuaidaili.com/free/inha/\\\\d+/")))      // 全部数据
+                .setThreadCount(5)
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
                     public void parse(Document html, Element pageVoElement, PageVo pageVo) {
@@ -100,7 +100,7 @@ public class XxlCrawlerTest05 {
         if (proxyPool!=null && proxyPool.size()>0) {
             for (PageVo pageVo: proxyPool) {
                 try {
-                    Document html = JsoupUtil.load(new PageLoadInfo("http://2017.ip138.com/ic.asp",
+                    Document html = JsoupUtil.load(new PageLoadInfo("http://2018.ip138.com/ic.asp",
                             null,
                             null,
                             null,
