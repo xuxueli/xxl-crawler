@@ -75,7 +75,7 @@ public class CrawlerThread implements Runnable {
                         PageLoadInfo pageLoadInfo = makePageRequest(link);
 
                         // pre parse
-                        crawler.getRunConf().getPageParser().preLoad(pageLoadInfo);
+                        crawler.getRunConf().getPageParser().preParse(pageLoadInfo);
 
                         // parse
                         if (crawler.getRunConf().getPageParser() instanceof NonPageParser) {

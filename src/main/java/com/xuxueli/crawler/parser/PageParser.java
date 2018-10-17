@@ -14,11 +14,11 @@ import org.jsoup.nodes.Element;
 public abstract class PageParser<T> {
 
     /**
-     * pre page load
+     * pre parse page, before page load
      *
      * @param pageLoadInfo  page request params
      */
-    public void preLoad(PageLoadInfo pageLoadInfo) {
+    public void preParse(PageLoadInfo pageLoadInfo) {
         // TODO
     }
 
