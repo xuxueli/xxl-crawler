@@ -17,8 +17,9 @@ public abstract class NonPageParser extends PageParser {
     }
 
     /**
+     * @param url
      * @param pageSource
      */
-    public abstract void parse(String pageSource);
+    public abstract void parse(String url, String pageSource);
 
 }

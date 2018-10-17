@@ -154,7 +154,7 @@ public class CrawlerThread implements Runnable {
         if (pagesource == null) {
             return false;
         }
-        nonPageParser.parse(pagesource);
+        nonPageParser.parse(pageLoadInfo.getUrl(), pagesource);
         return true;
     }
 

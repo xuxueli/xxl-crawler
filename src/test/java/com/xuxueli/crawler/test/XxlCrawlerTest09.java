@@ -17,12 +17,11 @@ public class XxlCrawlerTest09 {
 
         // 构造爬虫
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://www.baidu.com/home/xman/data/tipspluslist")
-                .setAllowSpread(false)
+                .setUrls("http://news.baidu.com/widget?id=LocalNews&ajax=json")
                 .setPageParser(new NonPageParser() {
                     @Override
-                    public void parse(String pageSource) {
-                        System.out.println(pageSource);
+                    public void parse(String url, String pageSource) {
+                        System.out.println(url + ": " + pageSource);
                     }
                 })
                 .build();
