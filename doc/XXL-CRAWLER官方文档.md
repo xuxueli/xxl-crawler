@@ -139,8 +139,9 @@ XXL-CRAWLER 是一个分布式Web爬虫框架。采用模块化设计，各个�
 --- | ---
 XxlCrawler | 爬虫对象，维护爬虫信息
 PageVo | 页面数据对象，一张Web页面可抽取一个或多个PageVo
-PageLoader | 页面加载器，负责加载页面数据，支持灵活的自定义和扩展
-PageParser | 页面解析器，绑定泛型PageVO后将会自动抽取页面数据对象，同时支持运行时调整请求参数信息
+PageLoader | Wed页面加载器，负责加载页面数据，支持灵活的自定义和扩展
+PageParser | Wed页面解析器，绑定泛型PageVO后将会自动抽取页面数据对象，同时支持运行时调整请求参数信息；
+NonPageParser ： 非Web页面解析器，如JSON接口等，直接输出响应数据 
 
 ### 3.3 爬虫对象：XxlCrawler
 功能：爬虫对象，维护爬虫信息，可选属性如下。
