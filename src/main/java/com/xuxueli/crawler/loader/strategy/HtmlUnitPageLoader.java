@@ -8,7 +8,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.util.Cookie;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.xuxueli.crawler.loader.PageLoader;
-import com.xuxueli.crawler.model.PageLoadInfo;
+import com.xuxueli.crawler.model.PageRequest;
 import com.xuxueli.crawler.util.UrlUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,14 +30,14 @@ public class HtmlUnitPageLoader extends PageLoader {
     private static Logger logger = LoggerFactory.getLogger(HtmlUnitPageLoader.class);
 
     @Override
-    public Document load(PageLoadInfo pageLoadInfo) {
-        if (!UrlUtil.isUrl(pageLoadInfo.getUrl())) {
+    public Document load(PageRequest pageRequest) {
+        if (!UrlUtil.isUrl(pageRequest.getUrl())) {
             return null;
         }
 
         WebClient webClient = new WebClient();
         try {
-            WebRequest webRequest = new WebRequest(new URL(pageLoadInfo.getUrl()));
+            WebRequest webRequest = new WebRequest(new URL(pageRequest.getUrl()));
 
             // 请求设置
             webClient.getOptions().setUseInsecureSSL(true);
@@ -46,42 +46,42 @@ public class HtmlUnitPageLoader extends PageLoader {
             webClient.getOptions().setThrowExceptionOnScriptError(false);
             webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
             webClient.getOptions().setDoNotTrackEnabled(false);
-            webClient.getOptions().setUseInsecureSSL(!pageLoadInfo.isValidateTLSCertificates());
+            webClient.getOptions().setUseInsecureSSL(!pageRequest.isValidateTLSCertificates());
 
-            if (pageLoadInfo.getParamMap() != null && !pageLoadInfo.getParamMap().isEmpty()) {
-                for (Map.Entry<String, String> paramItem : pageLoadInfo.getParamMap().entrySet()) {
+            if (pageRequest.getParamMap() != null && !pageRequest.getParamMap().isEmpty()) {
+                for (Map.Entry<String, String> paramItem : pageRequest.getParamMap().entrySet()) {
                     webRequest.getRequestParameters().add(new NameValuePair(paramItem.getKey(), paramItem.getValue()));
                 }
             }
-            if (pageLoadInfo.getCookieMap() != null && !pageLoadInfo.getCookieMap().isEmpty()) {
+            if (pageRequest.getCookieMap() != null && !pageRequest.getCookieMap().isEmpty()) {
                 webClient.getCookieManager().setCookiesEnabled(true);
-                for (Map.Entry<String, String> cookieItem : pageLoadInfo.getCookieMap().entrySet()) {
+                for (Map.Entry<String, String> cookieItem : pageRequest.getCookieMap().entrySet()) {
                     webClient.getCookieManager().addCookie(new Cookie("", cookieItem.getKey(), cookieItem.getValue()));
                 }
             }
-            if (pageLoadInfo.getHeaderMap() != null && !pageLoadInfo.getHeaderMap().isEmpty()) {
-                webRequest.setAdditionalHeaders(pageLoadInfo.getHeaderMap());
+            if (pageRequest.getHeaderMap() != null && !pageRequest.getHeaderMap().isEmpty()) {
+                webRequest.setAdditionalHeaders(pageRequest.getHeaderMap());
             }
-            if (pageLoadInfo.getUserAgent() != null) {
-                webRequest.setAdditionalHeader("User-Agent", pageLoadInfo.getUserAgent());
+            if (pageRequest.getUserAgent() != null) {
+                webRequest.setAdditionalHeader("User-Agent", pageRequest.getUserAgent());
             }
-            if (pageLoadInfo.getReferrer() != null) {
-                webRequest.setAdditionalHeader("Referer", pageLoadInfo.getReferrer());
+            if (pageRequest.getReferrer() != null) {
+                webRequest.setAdditionalHeader("Referer", pageRequest.getReferrer());
             }
 
-            webClient.getOptions().setTimeout(pageLoadInfo.getTimeoutMillis());
-            webClient.setJavaScriptTimeout(pageLoadInfo.getTimeoutMillis());
-            webClient.waitForBackgroundJavaScript(pageLoadInfo.getTimeoutMillis());
+            webClient.getOptions().setTimeout(pageRequest.getTimeoutMillis());
+            webClient.setJavaScriptTimeout(pageRequest.getTimeoutMillis());
+            webClient.waitForBackgroundJavaScript(pageRequest.getTimeoutMillis());
 
             // 代理
-            if (pageLoadInfo.getProxy() != null) {
-                InetSocketAddress address = (InetSocketAddress) pageLoadInfo.getProxy().address();
-                boolean isSocks = pageLoadInfo.getProxy().type() == Proxy.Type.SOCKS;
+            if (pageRequest.getProxy() != null) {
+                InetSocketAddress address = (InetSocketAddress) pageRequest.getProxy().address();
+                boolean isSocks = pageRequest.getProxy().type() == Proxy.Type.SOCKS;
                 webClient.getOptions().setProxyConfig(new ProxyConfig(address.getHostName(), address.getPort(), isSocks));
             }
 
             // 发出请求
-            if (pageLoadInfo.isIfPost()) {
+            if (pageRequest.isIfPost()) {
                 webRequest.setHttpMethod(HttpMethod.POST);
             } else {
                 webRequest.setHttpMethod(HttpMethod.GET);

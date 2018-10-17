@@ -1,6 +1,6 @@
 package com.xuxueli.crawler.loader;
 
-import com.xuxueli.crawler.model.PageLoadInfo;
+import com.xuxueli.crawler.model.PageRequest;
 import org.jsoup.nodes.Document;
 
 /**
@@ -13,9 +13,9 @@ public abstract class PageLoader {
     /**
      * load page
      *
-     * @param pageLoadInfo
+     * @param pageRequest
      * @return
      */
-    public abstract Document load(PageLoadInfo pageLoadInfo);
+    public abstract Document load(PageRequest pageRequest);
 
 }

@@ -206,7 +206,7 @@ PageParser（页面解析器）：绑定泛型PageVO后将会自动抽取页面�
 
 内部方法 | 说明
 --- | ---
-public void preParse(PageLoadInfo pageLoadInfo) | 可选实现，发起页面请求之前触发调用，可基于此运行时调整请求参数；
+public void preParse(PageRequest pageRequest) | 可选实现，发起页面请求之前触发调用，可基于此运行时调整请求参数；
 public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必须实现，页面抽离封装每个PageVO之后触发调用，可基于此处理PageVO文档或数据；
 
 ### 3.10、分布式支持 & RunData

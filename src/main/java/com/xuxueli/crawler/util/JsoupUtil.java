@@ -1,7 +1,7 @@
 package com.xuxueli.crawler.util;
 
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
-import com.xuxueli.crawler.model.PageLoadInfo;
+import com.xuxueli.crawler.model.PageRequest;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,44 +25,44 @@ public class JsoupUtil {
     /**
      * 加载页面
      *
-     * @param pageLoadInfo
+     * @param pageRequest
      *
      * @return
      */
-    public static Document load(PageLoadInfo pageLoadInfo) {
-        if (!UrlUtil.isUrl(pageLoadInfo.getUrl())) {
+    public static Document load(PageRequest pageRequest) {
+        if (!UrlUtil.isUrl(pageRequest.getUrl())) {
             return null;
         }
         try {
             // 请求设置
-            Connection conn = Jsoup.connect(pageLoadInfo.getUrl());
-            if (pageLoadInfo.getParamMap() != null && !pageLoadInfo.getParamMap().isEmpty()) {
-                conn.data(pageLoadInfo.getParamMap());
+            Connection conn = Jsoup.connect(pageRequest.getUrl());
+            if (pageRequest.getParamMap() != null && !pageRequest.getParamMap().isEmpty()) {
+                conn.data(pageRequest.getParamMap());
             }
-            if (pageLoadInfo.getCookieMap() != null && !pageLoadInfo.getCookieMap().isEmpty()) {
-                conn.cookies(pageLoadInfo.getCookieMap());
+            if (pageRequest.getCookieMap() != null && !pageRequest.getCookieMap().isEmpty()) {
+                conn.cookies(pageRequest.getCookieMap());
             }
-            if (pageLoadInfo.getHeaderMap()!=null && !pageLoadInfo.getHeaderMap().isEmpty()) {
-                conn.headers(pageLoadInfo.getHeaderMap());
+            if (pageRequest.getHeaderMap()!=null && !pageRequest.getHeaderMap().isEmpty()) {
+                conn.headers(pageRequest.getHeaderMap());
             }
-            if (pageLoadInfo.getUserAgent()!=null) {
-                conn.userAgent(pageLoadInfo.getUserAgent());
+            if (pageRequest.getUserAgent()!=null) {
+                conn.userAgent(pageRequest.getUserAgent());
             }
-            if (pageLoadInfo.getReferrer() != null) {
-                conn.referrer(pageLoadInfo.getReferrer());
+            if (pageRequest.getReferrer() != null) {
+                conn.referrer(pageRequest.getReferrer());
             }
-            conn.timeout(pageLoadInfo.getTimeoutMillis());
-            conn.validateTLSCertificates(pageLoadInfo.isValidateTLSCertificates());
+            conn.timeout(pageRequest.getTimeoutMillis());
+            conn.validateTLSCertificates(pageRequest.isValidateTLSCertificates());
             conn.maxBodySize(0);    // 取消默认1M限制
 
             // 代理
-            if (pageLoadInfo.getProxy() != null) {
-                conn.proxy(pageLoadInfo.getProxy());
+            if (pageRequest.getProxy() != null) {
+                conn.proxy(pageRequest.getProxy());
             }
 
             // 发出请求
             Document html = null;
-            if (pageLoadInfo.isIfPost()) {
+            if (pageRequest.isIfPost()) {
                 html = conn.post();
             } else {
                 html = conn.get();
@@ -75,39 +75,39 @@ public class JsoupUtil {
     }
 
 
-    public static String loadPageSource(PageLoadInfo pageLoadInfo) {
-        if (!UrlUtil.isUrl(pageLoadInfo.getUrl())) {
+    public static String loadPageSource(PageRequest pageRequest) {
+        if (!UrlUtil.isUrl(pageRequest.getUrl())) {
             return null;
         }
         try {
             // 请求设置
-            Connection conn = Jsoup.connect(pageLoadInfo.getUrl());
-            if (pageLoadInfo.getParamMap() != null && !pageLoadInfo.getParamMap().isEmpty()) {
-                conn.data(pageLoadInfo.getParamMap());
+            Connection conn = Jsoup.connect(pageRequest.getUrl());
+            if (pageRequest.getParamMap() != null && !pageRequest.getParamMap().isEmpty()) {
+                conn.data(pageRequest.getParamMap());
             }
-            if (pageLoadInfo.getCookieMap() != null && !pageLoadInfo.getCookieMap().isEmpty()) {
-                conn.cookies(pageLoadInfo.getCookieMap());
+            if (pageRequest.getCookieMap() != null && !pageRequest.getCookieMap().isEmpty()) {
+                conn.cookies(pageRequest.getCookieMap());
             }
-            if (pageLoadInfo.getHeaderMap()!=null && !pageLoadInfo.getHeaderMap().isEmpty()) {
-                conn.headers(pageLoadInfo.getHeaderMap());
+            if (pageRequest.getHeaderMap()!=null && !pageRequest.getHeaderMap().isEmpty()) {
+                conn.headers(pageRequest.getHeaderMap());
             }
-            if (pageLoadInfo.getUserAgent()!=null) {
-                conn.userAgent(pageLoadInfo.getUserAgent());
+            if (pageRequest.getUserAgent()!=null) {
+                conn.userAgent(pageRequest.getUserAgent());
             }
-            if (pageLoadInfo.getReferrer() != null) {
-                conn.referrer(pageLoadInfo.getReferrer());
+            if (pageRequest.getReferrer() != null) {
+                conn.referrer(pageRequest.getReferrer());
             }
-            conn.timeout(pageLoadInfo.getTimeoutMillis());
-            conn.validateTLSCertificates(pageLoadInfo.isValidateTLSCertificates());
+            conn.timeout(pageRequest.getTimeoutMillis());
+            conn.validateTLSCertificates(pageRequest.isValidateTLSCertificates());
             conn.maxBodySize(0);    // 取消默认1M限制
 
             // 代理
-            if (pageLoadInfo.getProxy() != null) {
-                conn.proxy(pageLoadInfo.getProxy());
+            if (pageRequest.getProxy() != null) {
+                conn.proxy(pageRequest.getProxy());
             }
 
             conn.ignoreContentType(true);
-            conn.method(pageLoadInfo.isIfPost()?Connection.Method.POST:Connection.Method.GET);
+            conn.method(pageRequest.isIfPost()?Connection.Method.POST:Connection.Method.GET);
 
             // 发出请求
             Connection.Response resp = conn.execute();

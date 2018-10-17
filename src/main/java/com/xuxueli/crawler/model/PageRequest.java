@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @author xuxueli 2017-11-10 17:12:55
  */
-public class PageLoadInfo {
+public class PageRequest {
 
     private String url;
     private Map<String, String> paramMap;
@@ -21,19 +21,19 @@ public class PageLoadInfo {
     private boolean isValidateTLSCertificates;
     private Proxy proxy;
 
-    public PageLoadInfo() {
+    public PageRequest() {
     }
 
-    public PageLoadInfo(String url,
-                        Map<String, String> paramMap,
-                        Map<String, String> cookieMap,
-                        Map<String, String> headerMap,
-                        String userAgent,
-                        String referrer,
-                        boolean ifPost,
-                        int timeoutMillis,
-                        boolean isValidateTLSCertificates,
-                        Proxy proxy) {
+    public PageRequest(String url,
+                       Map<String, String> paramMap,
+                       Map<String, String> cookieMap,
+                       Map<String, String> headerMap,
+                       String userAgent,
+                       String referrer,
+                       boolean ifPost,
+                       int timeoutMillis,
+                       boolean isValidateTLSCertificates,
+                       Proxy proxy) {
         this.url = url;
         this.paramMap = paramMap;
         this.cookieMap = cookieMap;

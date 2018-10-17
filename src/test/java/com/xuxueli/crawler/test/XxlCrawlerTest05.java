@@ -4,7 +4,7 @@ import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
-import com.xuxueli.crawler.model.PageLoadInfo;
+import com.xuxueli.crawler.model.PageRequest;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.util.JsoupUtil;
 import com.xuxueli.crawler.util.ProxyIpUtil;
@@ -100,7 +100,7 @@ public class XxlCrawlerTest05 {
         if (proxyPool!=null && proxyPool.size()>0) {
             for (PageVo pageVo: proxyPool) {
                 try {
-                    Document html = JsoupUtil.load(new PageLoadInfo("http://2018.ip138.com/ic.asp",
+                    Document html = JsoupUtil.load(new PageRequest("http://2018.ip138.com/ic.asp",
                             null,
                             null,
                             null,

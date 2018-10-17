@@ -1,7 +1,7 @@
 package com.xuxueli.crawler.loader.strategy;
 
 import com.xuxueli.crawler.loader.PageLoader;
-import com.xuxueli.crawler.model.PageLoadInfo;
+import com.xuxueli.crawler.model.PageRequest;
 import com.xuxueli.crawler.util.UrlUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,14 +33,14 @@ public class SeleniumPhantomjsPageLoader extends PageLoader {
     }
 
     @Override
-    public Document load(PageLoadInfo pageLoadInfo) {
-        if (!UrlUtil.isUrl(pageLoadInfo.getUrl())) {
+    public Document load(PageRequest pageRequest) {
+        if (!UrlUtil.isUrl(pageRequest.getUrl())) {
             return null;
         }
 
         // driver init
         DesiredCapabilities dcaps = new DesiredCapabilities();
-        dcaps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, !pageLoadInfo.isValidateTLSCertificates());
+        dcaps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, !pageRequest.isValidateTLSCertificates());
         dcaps.setCapability(CapabilityType.TAKES_SCREENSHOT, false);
         dcaps.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
         dcaps.setJavascriptEnabled(true);
@@ -51,7 +51,7 @@ public class SeleniumPhantomjsPageLoader extends PageLoader {
         dcaps.setCapability(CapabilityType.ForSeleniumServer.AVOIDING_PROXY, true);
         dcaps.setCapability(CapabilityType.ForSeleniumServer.ONLY_PROXYING_SELENIUM_TRAFFIC, true);
         System.setProperty("http.nonProxyHosts", "localhost");
-        dcaps.setCapability(CapabilityType.PROXY, pageLoadInfo.getProxy());
+        dcaps.setCapability(CapabilityType.PROXY, pageRequest.getProxy());
 
         /*dcaps.setBrowserName(BrowserType.CHROME);
         dcaps.setVersion("70");
@@ -61,17 +61,17 @@ public class SeleniumPhantomjsPageLoader extends PageLoader {
 
         try {
             // driver run
-            webDriver.get(pageLoadInfo.getUrl());
+            webDriver.get(pageRequest.getUrl());
 
-            if (pageLoadInfo.getCookieMap() != null && !pageLoadInfo.getCookieMap().isEmpty()) {
-                for (Map.Entry<String, String> item: pageLoadInfo.getCookieMap().entrySet()) {
+            if (pageRequest.getCookieMap() != null && !pageRequest.getCookieMap().isEmpty()) {
+                for (Map.Entry<String, String> item: pageRequest.getCookieMap().entrySet()) {
                     webDriver.manage().addCookie(new Cookie(item.getKey(), item.getValue()));
                 }
             }
 
-            webDriver.manage().timeouts().implicitlyWait(pageLoadInfo.getTimeoutMillis(), TimeUnit.MILLISECONDS);
-            webDriver.manage().timeouts().pageLoadTimeout(pageLoadInfo.getTimeoutMillis(), TimeUnit.MILLISECONDS);
-            webDriver.manage().timeouts().setScriptTimeout(pageLoadInfo.getTimeoutMillis(), TimeUnit.MILLISECONDS);
+            webDriver.manage().timeouts().implicitlyWait(pageRequest.getTimeoutMillis(), TimeUnit.MILLISECONDS);
+            webDriver.manage().timeouts().pageLoadTimeout(pageRequest.getTimeoutMillis(), TimeUnit.MILLISECONDS);
+            webDriver.manage().timeouts().setScriptTimeout(pageRequest.getTimeoutMillis(), TimeUnit.MILLISECONDS);
 
             String pageSource = webDriver.getPageSource();
             if (pageSource != null) {

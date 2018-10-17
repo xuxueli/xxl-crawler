@@ -1,6 +1,6 @@
 package com.xuxueli.crawler.parser;
 
-import com.xuxueli.crawler.model.PageLoadInfo;
+import com.xuxueli.crawler.model.PageRequest;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -16,9 +16,9 @@ public abstract class PageParser<T> {
     /**
      * pre parse page, before page load
      *
-     * @param pageLoadInfo  page request params
+     * @param pageRequest  page request params
      */
-    public void preParse(PageLoadInfo pageLoadInfo) {
+    public void preParse(PageRequest pageRequest) {
         // TODO
     }
 

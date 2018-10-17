@@ -5,7 +5,7 @@ import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.exception.XxlCrawlerException;
-import com.xuxueli.crawler.model.PageLoadInfo;
+import com.xuxueli.crawler.model.PageRequest;
 import com.xuxueli.crawler.parser.strategy.NonPageParser;
 import com.xuxueli.crawler.util.FieldReflectionUtil;
 import com.xuxueli.crawler.util.JsoupUtil;
@@ -72,16 +72,16 @@ public class CrawlerThread implements Runnable {
                     boolean ret = false;
                     try {
                         // make request
-                        PageLoadInfo pageLoadInfo = makePageRequest(link);
+                        PageRequest pageRequest = makePageRequest(link);
 
                         // pre parse
-                        crawler.getRunConf().getPageParser().preParse(pageLoadInfo);
+                        crawler.getRunConf().getPageParser().preParse(pageRequest);
 
                         // parse
                         if (crawler.getRunConf().getPageParser() instanceof NonPageParser) {
-                            ret = processNonPage(pageLoadInfo);
+                            ret = processNonPage(pageRequest);
                         } else {
-                            ret = processPage(pageLoadInfo);
+                            ret = processPage(pageRequest);
                         }
                     } catch (Throwable e) {
                         logger.info(">>>>>>>>>>> xxl crawler proocess error.", e);
@@ -118,7 +118,7 @@ public class CrawlerThread implements Runnable {
      * @param link
      * @return
      */
-    private PageLoadInfo makePageRequest(String link){
+    private PageRequest makePageRequest(String link){
         String userAgent = crawler.getRunConf().getUserAgentList().size()>1
                 ?crawler.getRunConf().getUserAgentList().get(new Random().nextInt(crawler.getRunConf().getUserAgentList().size()))
                 :crawler.getRunConf().getUserAgentList().size()==1?crawler.getRunConf().getUserAgentList().get(0):null;
@@ -127,44 +127,44 @@ public class CrawlerThread implements Runnable {
             proxy = crawler.getRunConf().getProxyMaker().make();
         }
 
-        PageLoadInfo pageLoadInfo = new PageLoadInfo();
-        pageLoadInfo.setUrl(link);
-        pageLoadInfo.setParamMap(crawler.getRunConf().getParamMap());
-        pageLoadInfo.setCookieMap(crawler.getRunConf().getCookieMap());
-        pageLoadInfo.setHeaderMap(crawler.getRunConf().getHeaderMap());
-        pageLoadInfo.setUserAgent(userAgent);
-        pageLoadInfo.setReferrer(crawler.getRunConf().getReferrer());
-        pageLoadInfo.setIfPost(crawler.getRunConf().isIfPost());
-        pageLoadInfo.setTimeoutMillis(crawler.getRunConf().getTimeoutMillis());
-        pageLoadInfo.setProxy(proxy);
-        pageLoadInfo.setValidateTLSCertificates(crawler.getRunConf().isValidateTLSCertificates());
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setUrl(link);
+        pageRequest.setParamMap(crawler.getRunConf().getParamMap());
+        pageRequest.setCookieMap(crawler.getRunConf().getCookieMap());
+        pageRequest.setHeaderMap(crawler.getRunConf().getHeaderMap());
+        pageRequest.setUserAgent(userAgent);
+        pageRequest.setReferrer(crawler.getRunConf().getReferrer());
+        pageRequest.setIfPost(crawler.getRunConf().isIfPost());
+        pageRequest.setTimeoutMillis(crawler.getRunConf().getTimeoutMillis());
+        pageRequest.setProxy(proxy);
+        pageRequest.setValidateTLSCertificates(crawler.getRunConf().isValidateTLSCertificates());
 
-        return pageLoadInfo;
+        return pageRequest;
     }
 
     /**
      * process non page
-     * @param pageLoadInfo
+     * @param pageRequest
      * @return
      */
-    private boolean processNonPage(PageLoadInfo pageLoadInfo){
+    private boolean processNonPage(PageRequest pageRequest){
         NonPageParser nonPageParser = (NonPageParser) crawler.getRunConf().getPageParser();
 
-        String pagesource = JsoupUtil.loadPageSource(pageLoadInfo);
+        String pagesource = JsoupUtil.loadPageSource(pageRequest);
         if (pagesource == null) {
             return false;
         }
-        nonPageParser.parse(pageLoadInfo.getUrl(), pagesource);
+        nonPageParser.parse(pageRequest.getUrl(), pagesource);
         return true;
     }
 
     /**
      * process page
-     * @param pageLoadInfo
+     * @param pageRequest
      * @return
      */
-    private boolean processPage(PageLoadInfo pageLoadInfo) throws IllegalAccessException, InstantiationException {
-        Document html = crawler.getRunConf().getPageLoader().load(pageLoadInfo);
+    private boolean processPage(PageRequest pageRequest) throws IllegalAccessException, InstantiationException {
+        Document html = crawler.getRunConf().getPageLoader().load(pageRequest);
 
         if (html == null) {
             return false;
@@ -183,7 +183,7 @@ public class CrawlerThread implements Runnable {
         }
 
         // ------- pagevo ----------
-        if (!crawler.getRunConf().validWhiteUrl(pageLoadInfo.getUrl())) {     // limit unvalid-page parse, only allow spread child, finish here
+        if (!crawler.getRunConf().validWhiteUrl(pageRequest.getUrl())) {     // limit unvalid-page parse, only allow spread child, finish here
             return true;
         }
 
