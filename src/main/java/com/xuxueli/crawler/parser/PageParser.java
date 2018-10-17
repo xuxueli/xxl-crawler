@@ -23,14 +23,6 @@ public abstract class PageParser<T> {
     }
 
     /**
-     * post page load
-     * @param html  page html data
-     */
-    public void postLoad(Document html) {
-        // TODO
-    }
-
-    /**
      * parse pageVo
      *
      * @param html              page html data

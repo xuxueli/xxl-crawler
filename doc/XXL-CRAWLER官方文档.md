@@ -64,6 +64,7 @@ XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式�
 - 6、分布式爬虫示例
 - 7、JS渲染方式采集数据，"htmlUnit" 方案
 - 8、JS渲染方式采集数据，"selenisum + phantomjs" 方案
+- 9、采集非Web页面，如JSON接口等，直接输出响应数据
 
 ### 第一步：引入Maven依赖
 ```
@@ -205,7 +206,6 @@ PageParser（页面解析器）：绑定泛型PageVO后将会自动抽取页面�
 内部方法 | 说明
 --- | ---
 public void preLoad(PageLoadInfo pageLoadInfo) | 可选实现，发起页面请求之前触发调用，可基于此运行时调整请求参数；
-public void postLoad(Document html) | 可选实现，发起页面请求之后触发调用，可基于此运行时调整页面数据；
 public abstract void parse(Document html, Element pageVoElement, T pageVo) | 必须实现，页面抽离封装每个PageVO之后触发调用，可基于此处理PageVO文档或数据；
 
 ### 3.10、分布式支持 & RunData
@@ -278,7 +278,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 1、系统底层重构，规范包名；
 - 2、采集线程白名单过滤优化，避免冗余失败重试；
 - 3、增强JS渲染方式采集能力，原生新提供 "SeleniumPhantomjsPageLoader"，支持以 "selenisum + phantomjs" 方式采集页面数据；
-- 4、【ING】支持采集JSON接口，PageLoader 平级扩展 "JSONApiLoader"；
+- 4、支持采集非Web页面，如JSON接口等，直接输出响应数据；选择 "NonPageParser" 即可；
 
 
 ### TODO LIST

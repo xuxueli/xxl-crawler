@@ -74,6 +74,51 @@ public class JsoupUtil {
         }
     }
 
+
+    public static String loadPageSource(PageLoadInfo pageLoadInfo) {
+        if (!UrlUtil.isUrl(pageLoadInfo.getUrl())) {
+            return null;
+        }
+        try {
+            // 请求设置
+            Connection conn = Jsoup.connect(pageLoadInfo.getUrl());
+            if (pageLoadInfo.getParamMap() != null && !pageLoadInfo.getParamMap().isEmpty()) {
+                conn.data(pageLoadInfo.getParamMap());
+            }
+            if (pageLoadInfo.getCookieMap() != null && !pageLoadInfo.getCookieMap().isEmpty()) {
+                conn.cookies(pageLoadInfo.getCookieMap());
+            }
+            if (pageLoadInfo.getHeaderMap()!=null && !pageLoadInfo.getHeaderMap().isEmpty()) {
+                conn.headers(pageLoadInfo.getHeaderMap());
+            }
+            if (pageLoadInfo.getUserAgent()!=null) {
+                conn.userAgent(pageLoadInfo.getUserAgent());
+            }
+            if (pageLoadInfo.getReferrer() != null) {
+                conn.referrer(pageLoadInfo.getReferrer());
+            }
+            conn.timeout(pageLoadInfo.getTimeoutMillis());
+            conn.validateTLSCertificates(pageLoadInfo.isValidateTLSCertificates());
+            conn.maxBodySize(0);    // 取消默认1M限制
+
+            // 代理
+            if (pageLoadInfo.getProxy() != null) {
+                conn.proxy(pageLoadInfo.getProxy());
+            }
+
+            conn.ignoreContentType(true);
+            conn.method(pageLoadInfo.isIfPost()?Connection.Method.POST:Connection.Method.GET);
+
+            // 发出请求
+            Connection.Response resp = conn.execute();
+            String pageSource = resp.body();
+            return pageSource;
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
     /**
      * 抽取元素数据
      *
