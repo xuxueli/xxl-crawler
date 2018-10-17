@@ -1,63 +1,104 @@
 package com.xuxueli.crawler.test;
 
 import com.xuxueli.crawler.XxlCrawler;
-import com.xuxueli.crawler.annotation.PageFieldSelect;
-import com.xuxueli.crawler.annotation.PageSelect;
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.loader.strategy.HtmlUnitPageLoader;
+import com.xuxueli.crawler.rundata.RunData;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * 爬虫示例06：JS渲染方式采集数据，"htmlUnit" 方案
- * (仅供学习测试使用，如有侵犯请联系删除； )
+ * 爬虫示例06：分布式爬虫示例
  *
- * @author xuxueli 2017-12-29 23:29:48
+ * @author xuxueli 2018-02-08 16:56:46
  */
 public class XxlCrawlerTest06 {
-    private static Logger logger = LoggerFactory.getLogger(XxlCrawlerTest05.class);
-
-    @PageSelect(cssQuery = "body")
-    public static class PageVo {
-
-        @PageFieldSelect(cssQuery = "#jd-price", selectType = XxlCrawlerConf.SelectType.TEXT)
-        private String data;
-
-        public String getData() {
-            return data;
-        }
-
-        public void setData(String data) {
-            this.data = data;
-        }
-    }
 
     public static void main(String[] args) {
 
-        // 构造爬虫
-        XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://item.jd.com/12228194.html")
-                .setAllowSpread(false)
-                .setPageLoader(new HtmlUnitPageLoader())        // HtmlUnit 版本 PageLoader：支持 JS 渲染
-                .setPageParser(new PageParser<PageVo>() {
-                    @Override
-                    public void parse(Document html, Element pageVoElement, PageVo pageVo) {
-                        if (pageVo.getData() != null) {
-                            logger.info("商品价格（JS动态渲染方式获取）: {}", pageVo.getData());
-                        } else {
-                            logger.info("商品价格（JS动态渲染方式获取）: 获取失败");
-                        }
+        /**
+         * Redis RunData：通过Redis共享运行数据来实现分布式爬虫，也可以通过其他方式扩展实现，如DB等。（以伪代码进行讲解）
+         *
+         * 申请两个 Redis Key：
+         *
+         *      unVisitedUrl：待采集URL池
+         *      visitedUrl：已采集URL池
+         *
+         */
+        RunData redisRunData = new RunData() {
 
+            /**
+             * 新增一个待采集的URL，接口需要做URL去重，爬虫线程将会获取到并进行处理；
+             *
+             * @param link
+             * @return
+             */
+            @Override
+            public boolean addUrl(String link) {
+
+                /**
+                 * TODO:
+                 *
+                 * jedis.lpushx(unVisitedUrl, link);
+                 *
+                 */
+                return true;
+            }
+
+            /**
+             * 获取一个待采集的URL，并且将它从"待采集URL池"中移除，并且添加到"已采集URL池"中；
+             *
+             * @return
+             */
+            @Override
+            public String getUrl() {
+
+                /**
+                 * TODO:
+                 *
+                 * String link = jedis.rpop(unVisitedUrl);
+                 * jedis.lpushx(visitedUrl, link);
+                 *
+                 * return link;
+                 */
+                return null;
+            }
+
+            /**
+             * 获取待采集URL数量；
+             *
+             * @return
+             */
+            @Override
+            public int getUrlNum() {
+
+                /**
+                 * TODO:
+                 *
+                 * int length = jedis.llen(unVisitedUrl);
+                 * return length;
+                 */
+                return 0;
+            }
+
+        };
+
+        XxlCrawler crawler = new XxlCrawler.Builder()
+                .setRunData(redisRunData)
+                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
+                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
+                .setThreadCount(3)
+                .setPageParser(new PageParser<Object>() {
+                    @Override
+                    public void parse(Document html, Element pageVoElement, Object pageVo) {
+                        String pageUrl = html.baseUri();
+                        System.out.println(pageUrl + "：" + html.html());
                     }
                 })
                 .build();
 
-        // 启动
+        System.out.println("start");
         crawler.start(true);
-
+        System.out.println("end");
     }
 
 }

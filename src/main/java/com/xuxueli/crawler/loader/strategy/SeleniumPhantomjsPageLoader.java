@@ -9,6 +9,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,18 +38,27 @@ public class SeleniumPhantomjsPageLoader extends PageLoader {
 
         // driver init
         DesiredCapabilities dcaps = new DesiredCapabilities();
-        dcaps.setCapability("acceptSslCerts", pageLoadInfo.isValidateTLSCertificates());        // ssl证书支持
-        //dcaps.setCapability("takesScreenshot", false);                        // 截屏支持
-        dcaps.setCapability("cssSelectorsEnabled", true);   // css搜索支持
-        dcaps.setJavascriptEnabled(true);                                       // js支持
+        dcaps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, !pageLoadInfo.isValidateTLSCertificates());
+        dcaps.setCapability(CapabilityType.TAKES_SCREENSHOT, false);
+        dcaps.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
+        dcaps.setJavascriptEnabled(true);
         if (driverPath!=null && driverPath.trim().length()>0) {
-            dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);    //驱动支持
+            dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
         }
+
+        dcaps.setCapability(CapabilityType.ForSeleniumServer.AVOIDING_PROXY, true);
+        dcaps.setCapability(CapabilityType.ForSeleniumServer.ONLY_PROXYING_SELENIUM_TRAFFIC, true);
+        System.setProperty("http.nonProxyHosts", "localhost");
+        dcaps.setCapability(CapabilityType.PROXY, pageLoadInfo.getProxy());
+
+        /*dcaps.setBrowserName(BrowserType.CHROME);
+        dcaps.setVersion("70");
+        dcaps.setPlatform(Platform.WIN10);*/
+
         WebDriver webDriver = new PhantomJSDriver(dcaps);
 
         try {
-
-            // TODO, selenium not support feature like : paramMap、headerMap、userAgent、referrer、ifPost、proxy、、、、、、
+            // TODO, selenium not support feature like : paramMap、headerMap、userAgent、referrer、ifPost
 
             // driver run
             webDriver.get(pageLoadInfo.getUrl());

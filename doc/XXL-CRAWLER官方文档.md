@@ -61,8 +61,8 @@ XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式�
 - 3、爬取页面，下载图片文件
 - 4、爬取页面，代理IP方式
 - 5、爬取公开的免费代理，生成动态代理池
-- 6、JS渲染方式采集数据，"htmlUnit" 方案
-- 7、分布式爬虫示例
+- 6、分布式爬虫示例
+- 7、JS渲染方式采集数据，"htmlUnit" 方案
 - 8、JS渲染方式采集数据，"selenisum + phantomjs" 方案
 
 ### 第一步：引入Maven依赖
@@ -227,7 +227,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - HtmlUnitPageLoader：支持JS动态渲染；
 - SeleniumPhantomjsPageLoader：支持JS动态渲染，"selenisum + phantomjs" 方案，兼容性较高；
 
-得益于模块化结构设计，可自由扩展其他 "PageLoader" 实现，如 "Headless Chrome" 方式等；
+得益于模块化结构设计，可自由扩展其他 "PageLoader" 实现，如 "selenisum + chrome/headless" 方式等；
 
 注意：
 - 1、HtmlUnitPageLoader 为扩展功能，因此maven依赖（htmlunit）scope为provided类型，使用时请单独引入；
