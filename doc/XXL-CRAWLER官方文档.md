@@ -17,7 +17,7 @@ XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式�
 - 4、面向对象：支持通过注解，方便的映射页面数据到PageVO对象，底层自动完成PageVO对象的数据抽取和封装返回；单个页面支持抽取一个或多个PageVO
 - 5、多线程：线程池方式运行，提高采集效率；
 - 6、分布式支持：通过扩展 "RunData" 模块，并结合Redis或DB共享运行数据可实现分布式。默认提供LocalRunData单机版爬虫。
-- 7、JS渲染：通过扩展 "PageLoader" 模块，支持采集JS动态渲染数据。原生提供Jsoup(快速、推荐)和HtmlUnit(较慢、JS渲染)两种实现，支持自由扩展其他实现。
+- 7、JS渲染：通过扩展 "PageLoader" 模块，支持采集JS动态渲染数据。原生提供 Jsoup(非JS渲染，速度更快)、HtmlUnit(JS渲染)、Selenium+Phantomjs(JS渲染，兼容性高) 等多种实现，支持自由扩展其他实现。
 - 8、失败重试：请求失败后重试，并支持设置重试次数；
 - 9、代理IP：对抗反采集策略规则WAF；
 - 10、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
@@ -61,8 +61,9 @@ XXL-CRAWLER 是一个分布式爬虫框架。一行代码开发一个分布式�
 - 3、爬取页面，下载图片文件
 - 4、爬取页面，代理IP方式
 - 5、爬取公开的免费代理，生成动态代理池
-- 6、JS渲染方式采集数据
+- 6、JS渲染方式采集数据，"htmlUnit" 方案
 - 7、分布式爬虫示例
+- 8、JS渲染方式采集数据，"selenisum + phantomjs" 方案
 
 ### 第一步：引入Maven依赖
 ```
@@ -223,13 +224,15 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 ### 3.11、JS动态渲染 & PageLoader
 页面数据通过 "PageLoader" 组件加载，默认使用以下两种实现：
 - JsoupPageLoader：速度最快，推荐采用这种方式（不支持JS动态渲染）；
-- HtmlUnitPageLoader：支持JS动态渲染，速度较慢。
+- HtmlUnitPageLoader：支持JS动态渲染；
+- SeleniumPhantomjsPageLoader：支持JS动态渲染，"selenisum + phantomjs" 方案，兼容性较高；
 
-得益于模块化结构设计，可自由扩展其他 "PageLoader" 实现，如 "Selenium" 方式等；
+得益于模块化结构设计，可自由扩展其他 "PageLoader" 实现，如 "Headless Chrome" 方式等；
 
 注意：
 - 1、HtmlUnitPageLoader 为扩展功能，因此maven依赖（htmlunit）scope为provided类型，使用时请单独引入；
-- 2、不推荐使用JS渲染方式采集数据：
+- 2、SeleniumPhantomjsPageLoader 为扩展功能，因此maven依赖（selenisum + phantomjs）scope为provided类型，使用时请单独引入；
+- 3、JS渲染方式采集数据实用性广，但是也存在缺点，如下：
     - 2.1：JS渲染，速度较慢；
     - 2.1：JS渲染，环境要求较高；
     - 2.3：在需要JS渲染的场景下，推荐做法是：分析页面请求，模拟并主动发起Ajax请求来代替JS引擎自动请求渲染。因为速度更快，更可控；
@@ -274,6 +277,9 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 ### 版本 V1.2.2，新特性[迭代中]
 - 1、系统底层重构，规范包名；
 - 2、采集线程白名单过滤优化，避免冗余失败重试；
+- 3、增强JS渲染方式采集能力，原生新提供 "SeleniumPhantomjsPageLoader"，支持以 "selenisum + phantomjs" 方式采集页面数据；
+- 4、【ING】支持采集JSON接口，PageLoader 平级扩展 "JSONApiLoader"；
+
 
 ### TODO LIST
 - 1、扩展SelectType；

@@ -24,7 +24,16 @@ public class PageLoadInfo {
     public PageLoadInfo() {
     }
 
-    public PageLoadInfo(String url, Map<String, String> paramMap, Map<String, String> cookieMap, Map<String, String> headerMap, String userAgent, String referrer, boolean ifPost, int timeoutMillis, Proxy proxy) {
+    public PageLoadInfo(String url,
+                        Map<String, String> paramMap,
+                        Map<String, String> cookieMap,
+                        Map<String, String> headerMap,
+                        String userAgent,
+                        String referrer,
+                        boolean ifPost,
+                        int timeoutMillis,
+                        boolean isValidateTLSCertificates,
+                        Proxy proxy) {
         this.url = url;
         this.paramMap = paramMap;
         this.cookieMap = cookieMap;
@@ -33,6 +42,7 @@ public class PageLoadInfo {
         this.referrer = referrer;
         this.ifPost = ifPost;
         this.timeoutMillis = timeoutMillis;
+        this.isValidateTLSCertificates = isValidateTLSCertificates;
         this.proxy = proxy;
     }
 
@@ -84,7 +94,7 @@ public class PageLoadInfo {
         this.referrer = referrer;
     }
 
-    public boolean getIfPost() {
+    public boolean isIfPost() {
         return ifPost;
     }
 
@@ -100,6 +110,14 @@ public class PageLoadInfo {
         this.timeoutMillis = timeoutMillis;
     }
 
+    public boolean isValidateTLSCertificates() {
+        return isValidateTLSCertificates;
+    }
+
+    public void setValidateTLSCertificates(boolean validateTLSCertificates) {
+        isValidateTLSCertificates = validateTLSCertificates;
+    }
+
     public Proxy getProxy() {
         return proxy;
     }
@@ -107,13 +125,4 @@ public class PageLoadInfo {
     public void setProxy(Proxy proxy) {
         this.proxy = proxy;
     }
-
-	public boolean isValidateTLSCertificates() {
-		return isValidateTLSCertificates;
-	}
-
-	public void setValidateTLSCertificates(boolean isValidateTLSCertificates) {
-		this.isValidateTLSCertificates = isValidateTLSCertificates;
-	}
-    
 }

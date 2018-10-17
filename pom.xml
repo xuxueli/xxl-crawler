@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -15,6 +15,8 @@
     <properties>
         <jsoup.version>1.11.2</jsoup.version>
         <htmlunit.version>2.24</htmlunit.version>
+        <selenium-java.version>2.53.1</selenium-java.version>
+        <phantomjs.version>1.3.0</phantomjs.version>
 
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <junit.version>4.11</junit.version>
@@ -48,6 +50,7 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <!-- htmlunit -->
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
@@ -55,6 +58,23 @@
             <version>${htmlunit.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium-java.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- phantomjs -->
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>${phantomjs.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 

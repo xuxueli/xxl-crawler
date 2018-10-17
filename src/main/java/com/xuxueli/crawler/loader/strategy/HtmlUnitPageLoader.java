@@ -81,7 +81,7 @@ public class HtmlUnitPageLoader extends PageLoader {
             }
 
             // 发出请求
-            if (pageLoadInfo.getIfPost()) {
+            if (pageLoadInfo.isIfPost()) {
                 webRequest.setHttpMethod(HttpMethod.POST);
             } else {
                 webRequest.setHttpMethod(HttpMethod.GET);

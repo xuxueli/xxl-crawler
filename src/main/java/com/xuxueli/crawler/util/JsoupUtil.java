@@ -62,7 +62,7 @@ public class JsoupUtil {
 
             // 发出请求
             Document html = null;
-            if (pageLoadInfo.getIfPost()) {
+            if (pageLoadInfo.isIfPost()) {
                 html = conn.post();
             } else {
                 html = conn.get();
