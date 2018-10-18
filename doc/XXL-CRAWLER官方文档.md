@@ -288,6 +288,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 3、bloomfilter去重，可选接入，大数据量下推荐；
 - 4、对抗爬虫蜜罐，成功率检测，历史数据学习；
 - 5、对抗主动休眠防御，Timeout即可；
+- 6、页面生僻字中文乱码处理；
 
 ## 五、其他
 

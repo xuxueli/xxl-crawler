@@ -188,8 +188,13 @@ public class CrawlerThread implements Runnable {
         }
 
         // pagevo class-field info
-        Type[] pageVoClassTypes = ((ParameterizedType)crawler.getRunConf().getPageParser().getClass().getGenericSuperclass()).getActualTypeArguments();
-        Class pageVoClassType = (Class) pageVoClassTypes[0];
+        Class pageVoClassType = Object.class;
+
+        Type pageVoParserClass = crawler.getRunConf().getPageParser().getClass().getGenericSuperclass();
+        if (pageVoParserClass instanceof ParameterizedType) {
+            Type[] pageVoClassTypes = ((ParameterizedType)pageVoParserClass).getActualTypeArguments();
+            pageVoClassType = (Class) pageVoClassTypes[0];
+        }
 
         PageSelect pageVoSelect = (PageSelect) pageVoClassType.getAnnotation(PageSelect.class);
         String pageVoCssQuery = (pageVoSelect!=null && pageVoSelect.cssQuery()!=null && pageVoSelect.cssQuery().trim().length()>0)?pageVoSelect.cssQuery():"html";
