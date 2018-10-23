@@ -38,11 +38,12 @@ public class XxlCrawlerTest08 {
     public static void main(String[] args) {
 
         /**
-         * phantomjs driver （驱动文件地址作为入参传入；或者加入环境变量，此处传 null；）
+         * phantomjs driver （驱动设置：方式一、驱动文件地址作为入参传入；方式二：加入环境变量 'System.setProperty("phantomjs.binary.path", driverPath);'，入参可空；）
          *
          * http://phantomjs.org/download.html
          */
         String driverPath = "/Users/xuxueli/Downloads/phantomjs-2.1.1-macosx/bin/phantomjs";
+
 
         // 构造爬虫
         XxlCrawler crawler = new XxlCrawler.Builder()

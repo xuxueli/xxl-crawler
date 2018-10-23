@@ -48,10 +48,12 @@ public class SeleniumPhantomjsPageLoader extends PageLoader {
             dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
         }
 
-        dcaps.setCapability(CapabilityType.ForSeleniumServer.AVOIDING_PROXY, true);
-        dcaps.setCapability(CapabilityType.ForSeleniumServer.ONLY_PROXYING_SELENIUM_TRAFFIC, true);
-        System.setProperty("http.nonProxyHosts", "localhost");
-        dcaps.setCapability(CapabilityType.PROXY, pageRequest.getProxy());
+        if (pageRequest.getProxy() != null) {
+            dcaps.setCapability(CapabilityType.ForSeleniumServer.AVOIDING_PROXY, true);
+            dcaps.setCapability(CapabilityType.ForSeleniumServer.ONLY_PROXYING_SELENIUM_TRAFFIC, true);
+            System.setProperty("http.nonProxyHosts", "localhost");
+            dcaps.setCapability(CapabilityType.PROXY, pageRequest.getProxy());
+        }
 
         /*dcaps.setBrowserName(BrowserType.CHROME);
         dcaps.setVersion("70");
