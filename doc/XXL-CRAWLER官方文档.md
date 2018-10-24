@@ -275,7 +275,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 3、修复Jsoup默认加载1M的限制；
 - 4、爬虫线程中断处理优化；
 
-### 版本 V1.2.2，新特性[迭代中]
+### 版本 V1.2.2，新特性[2018-10-24]
 - 1、系统底层重构，规范包名；
 - 2、采集线程白名单过滤优化，避免冗余失败重试；
 - 3、增强JS渲染方式采集能力，原生新提供 "SeleniumPhantomjsPageLoader"，支持以 "selenisum + phantomjs" 方式采集页面数据；
