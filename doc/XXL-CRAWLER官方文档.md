@@ -281,6 +281,10 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 3、增强JS渲染方式采集能力，原生新提供 "SeleniumPhantomjsPageLoader"，支持以 "selenisum + phantomjs" 方式采集页面数据；
 - 4、支持采集非Web页面，如JSON接口等，直接输出响应数据；选择 "NonPageParser" 即可；
 
+### 版本 V1.3.0，新特性[迭代中]
+- 1、[ING]增强JS渲染采集能力，原生提供 "selenium chrome headless" 方案实现，并提供开箱即用的 PageLoader ；
+- 2、[ING]进一步优化 selenium 特性兼容问题；
+
 
 ### TODO LIST
 - 1、扩展SelectType；
