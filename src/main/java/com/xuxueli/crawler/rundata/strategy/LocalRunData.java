@@ -49,7 +49,7 @@ public class LocalRunData extends RunData {
 
     /**
      * url take
-     * @return
+     * @return String
      * @throws InterruptedException
      */
     @Override

@@ -39,7 +39,7 @@ public class RunConf {
      * valid url, include white url
      *
      * @param link
-     * @return
+     * @return boolean
      */
     public boolean validWhiteUrl(String link){
         if (!UrlUtil.isUrl(link)) {

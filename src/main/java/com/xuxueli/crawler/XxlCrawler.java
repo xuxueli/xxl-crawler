@@ -55,7 +55,7 @@ public class XxlCrawler {
          * 设置运行数据类型
          *
          * @param runData
-         * @return
+         * @return Builder
          */
         public Builder setRunData(RunData runData){
             crawler.runData = runData;
@@ -66,7 +66,7 @@ public class XxlCrawler {
          * 待爬的URL列表
          *
          * @param urls
-         * @return
+         * @return Builder
          */
         public Builder setUrls(String... urls) {
             if (urls!=null && urls.length>0) {
@@ -82,7 +82,7 @@ public class XxlCrawler {
          * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
          *
          * @param allowSpread
-         * @return
+         * @return Builder
          */
         public Builder setAllowSpread(boolean allowSpread) {
             crawler.runConf.setAllowSpread(allowSpread);
@@ -93,7 +93,7 @@ public class XxlCrawler {
          * URL白名单正则，非空时进行URL白名单过滤页面
          *
          * @param whiteUrlRegexs
-         * @return
+         * @return Builder
          */
         public Builder setWhiteUrlRegexs(String... whiteUrlRegexs) {
             if (whiteUrlRegexs!=null && whiteUrlRegexs.length>0) {
@@ -108,7 +108,7 @@ public class XxlCrawler {
          * 页面解析器
          *
          * @param pageParser
-         * @return
+         * @return Builder
          */
         public Builder setPageParser(PageParser pageParser){
             crawler.runConf.setPageParser(pageParser);
@@ -119,7 +119,7 @@ public class XxlCrawler {
          * 页面下载器
          *
          * @param pageLoader
-         * @return
+         * @return Builder
          */
         public Builder setPageLoader(PageLoader pageLoader){
             crawler.runConf.setPageLoader(pageLoader);
@@ -131,7 +131,7 @@ public class XxlCrawler {
          * 请求参数
          *
          * @param paramMap
-         * @return
+         * @return Builder
          */
         public Builder setParamMap(Map<String, String> paramMap){
             crawler.runConf.setParamMap(paramMap);
@@ -142,7 +142,7 @@ public class XxlCrawler {
          * 请求Cookie
          *
          * @param cookieMap
-         * @return
+         * @return Builder
          */
         public Builder setCookieMap(Map<String, String> cookieMap){
             crawler.runConf.setCookieMap(cookieMap);
@@ -153,7 +153,7 @@ public class XxlCrawler {
          * 请求Header
          *
          * @param headerMap
-         * @return
+         * @return Builder
          */
         public Builder setHeaderMap(Map<String, String> headerMap){
             crawler.runConf.setHeaderMap(headerMap);
@@ -164,7 +164,7 @@ public class XxlCrawler {
          * 请求UserAgent
          *
          * @param userAgents
-         * @return
+         * @return Builder
          */
         public Builder setUserAgent(String... userAgents){
             if (userAgents!=null && userAgents.length>0) {
@@ -181,7 +181,7 @@ public class XxlCrawler {
          * 请求Referrer
          *
          * @param referrer
-         * @return
+         * @return Builder
          */
         public Builder setReferrer(String referrer){
             crawler.runConf.setReferrer(referrer);
@@ -192,7 +192,7 @@ public class XxlCrawler {
          * 请求方式：true=POST请求、false=GET请求
          *
          * @param ifPost
-         * @return
+         * @return Builder
          */
         public Builder setIfPost(boolean ifPost){
             crawler.runConf.setIfPost(ifPost);
@@ -203,7 +203,7 @@ public class XxlCrawler {
          * 超时时间，毫秒
          *
          * @param timeoutMillis
-         * @return
+         * @return Builder
          */
         public Builder setTimeoutMillis(int timeoutMillis){
             crawler.runConf.setTimeoutMillis(timeoutMillis);
@@ -214,7 +214,7 @@ public class XxlCrawler {
          * 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
          *
          * @param pauseMillis
-         * @return
+         * @return Builder
          */
         public Builder setPauseMillis(int pauseMillis){
             crawler.runConf.setPauseMillis(pauseMillis);
@@ -225,7 +225,7 @@ public class XxlCrawler {
          * 代理生成器
          *
          * @param proxyMaker
-         * @return
+         * @return Builder
          */
         public Builder setProxyMaker(ProxyMaker proxyMaker){
             crawler.runConf.setProxyMaker(proxyMaker);
@@ -236,7 +236,7 @@ public class XxlCrawler {
          * 失败重试次数，大于零时生效
          *
          * @param failRetryCount
-         * @return
+         * @return Builder
          */
         public Builder setFailRetryCount(int failRetryCount){
             if (failRetryCount > 0) {
@@ -250,7 +250,7 @@ public class XxlCrawler {
          * 爬虫并发线程数
          *
          * @param threadCount
-         * @return
+         * @return Builder
          */
         public Builder setThreadCount(int threadCount) {
             crawler.threadCount = threadCount;

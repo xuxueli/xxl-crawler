@@ -13,7 +13,7 @@ public class RegexUtil {
 	 * 正则匹配
 	 * @param regex	: 正则表达式
 	 * @param str	: 待匹配字符串
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean matches(String regex, String str) {
 		Pattern pattern = Pattern.compile(regex);
@@ -27,7 +27,7 @@ public class RegexUtil {
 	 * url格式校验
 	 *
 	 * @param str
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isUrl(String str) {
 		if (str==null || str.trim().length()==0) {

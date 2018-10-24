@@ -17,7 +17,7 @@ public class IOUtil {
      * String 2 InputStream
      *
      * @param str
-     * @return
+     * @return InputStream
      */
     public static InputStream toInputStream(String str, String encoding) {
         try {
@@ -33,7 +33,7 @@ public class IOUtil {
      * InputStream 2 String
      *
      * @param inputStream
-     * @return
+     * @return String
      * @throws IOException
      */
     public static String toString(InputStream inputStream, String encoding){

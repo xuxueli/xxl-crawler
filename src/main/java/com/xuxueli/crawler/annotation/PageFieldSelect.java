@@ -21,7 +21,7 @@ public @interface PageFieldSelect {
      *
      * CSS选择器, 如 "#title"
      *
-     * @return
+     * @return String
      */
     public String cssQuery() default "";
 
@@ -32,7 +32,7 @@ public @interface PageFieldSelect {
      *
      * @see com.xuxueli.crawler.conf.XxlCrawlerConf.SelectType
      *
-     * @return
+     * @return SelectType
      */
     public XxlCrawlerConf.SelectType selectType() default XxlCrawlerConf.SelectType.TEXT;
 
@@ -41,7 +41,7 @@ public @interface PageFieldSelect {
      *
      * jquery 数据抽取参数，SelectType=ATTR/HAS_CLASS 时有效，如 ".attr("abs:src")"
      *
-     * @return
+     * @return String
      */
     public String selectVal() default "";
 
@@ -50,7 +50,7 @@ public @interface PageFieldSelect {
      *
      * 时间格式化，日期类型数据有效
      *
-     * @return
+     * @return String
      */
     String datePattern() default "yyyy-MM-dd HH:mm:ss";
 

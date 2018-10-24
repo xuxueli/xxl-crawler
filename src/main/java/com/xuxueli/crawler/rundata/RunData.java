@@ -11,21 +11,21 @@ public abstract class RunData {
      * add link
      *
      * @param link
-     * @return
+     * @return boolean
      */
     public abstract boolean addUrl(String link);
 
     /**
      * get link, remove from unVisitedUrlQueue and add to visitedUrlSet
      *
-     * @return
+     * @return String
      */
     public abstract String getUrl();
 
     /**
      * get url num
      *
-     * @return
+     * @return int
      */
     public abstract int getUrlNum();
 

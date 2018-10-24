@@ -30,7 +30,6 @@ public class XxlCrawlerTest06 {
              * 新增一个待采集的URL，接口需要做URL去重，爬虫线程将会获取到并进行处理；
              *
              * @param link
-             * @return
              */
             @Override
             public boolean addUrl(String link) {
@@ -46,8 +45,6 @@ public class XxlCrawlerTest06 {
 
             /**
              * 获取一个待采集的URL，并且将它从"待采集URL池"中移除，并且添加到"已采集URL池"中；
-             *
-             * @return
              */
             @Override
             public String getUrl() {
@@ -65,8 +62,6 @@ public class XxlCrawlerTest06 {
 
             /**
              * 获取待采集URL数量；
-             *
-             * @return
              */
             @Override
             public int getUrlNum() {

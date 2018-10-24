@@ -19,7 +19,7 @@ public @interface PageSelect {
      *
      * CSS选择器, 如 "#body"
      *
-     * @return
+     * @return String
      */
     public String cssQuery() default "";
 

@@ -31,7 +31,7 @@ public abstract class ProxyMaker {
     /**
      * make proxy
      *
-     * @return
+     * @return Proxy
      */
     public abstract Proxy make();
 

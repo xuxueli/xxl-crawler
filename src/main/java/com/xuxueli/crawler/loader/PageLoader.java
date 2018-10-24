@@ -14,7 +14,7 @@ public abstract class PageLoader {
      * load page
      *
      * @param pageRequest
-     * @return
+     * @return Document
      */
     public abstract Document load(PageRequest pageRequest);
 

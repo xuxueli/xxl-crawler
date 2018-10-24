@@ -116,7 +116,7 @@ public class CrawlerThread implements Runnable {
      * make page request
      *
      * @param link
-     * @return
+     * @return PageRequest
      */
     private PageRequest makePageRequest(String link){
         String userAgent = crawler.getRunConf().getUserAgentList().size()>1
@@ -145,7 +145,7 @@ public class CrawlerThread implements Runnable {
     /**
      * process non page
      * @param pageRequest
-     * @return
+     * @return boolean
      */
     private boolean processNonPage(PageRequest pageRequest){
         NonPageParser nonPageParser = (NonPageParser) crawler.getRunConf().getPageParser();
@@ -161,7 +161,7 @@ public class CrawlerThread implements Runnable {
     /**
      * process page
      * @param pageRequest
-     * @return
+     * @return boolean
      */
     private boolean processPage(PageRequest pageRequest) throws IllegalAccessException, InstantiationException {
         Document html = crawler.getRunConf().getPageLoader().load(pageRequest);

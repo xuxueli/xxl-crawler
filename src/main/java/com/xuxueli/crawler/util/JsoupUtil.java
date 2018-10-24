@@ -27,7 +27,7 @@ public class JsoupUtil {
      *
      * @param pageRequest
      *
-     * @return
+     * @return Document
      */
     public static Document load(PageRequest pageRequest) {
         if (!UrlUtil.isUrl(pageRequest.getUrl())) {
@@ -125,7 +125,7 @@ public class JsoupUtil {
      * @param fieldElement
      * @param selectType
      * @param selectVal
-     * @return
+     * @return String
      */
     public static String parseElement(Element fieldElement, XxlCrawlerConf.SelectType selectType, String selectVal) {
         String fieldElementOrigin = null;
@@ -149,7 +149,7 @@ public class JsoupUtil {
      * 获取页面上所有超链接地址 （<a>标签的href值）
      *
      * @param html  页面文档
-     * @return
+     * @return Set<String>
      */
     public static Set<String> findLinks(Document html) {
 
@@ -185,7 +185,7 @@ public class JsoupUtil {
      * 获取页面上所有图片地址 （<a>标签的href值）
      *
      * @param html
-     * @return
+     * @return Set<String>
      */
     public static Set<String> findImages(Document html) {
 

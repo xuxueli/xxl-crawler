@@ -22,7 +22,7 @@ public class ProxyIpUtil {
      *
      * @param proxy
      * @param validSite
-     * @return
+     * @return int
      */
     public static int checkProxy(Proxy proxy, String validSite){
         try {
@@ -55,7 +55,7 @@ public class ProxyIpUtil {
      *
      * @param proxy
      * @param validSite
-     * @return
+     * @return int
      */
     public static int checkProxyRepeat(Proxy proxy, String validSite){
         for (int i = 0; i < 3; i++) {

@@ -22,7 +22,7 @@ public class FileUtil {
 	 *
 	 * @param url
 	 * @param contentType
-	 * @return
+	 * @return String
 	 */
 	public static String getFileNameByUrl(String url, String contentType) {
 		url = url.replaceAll("[\\?/:*|<>\"]", "_");
