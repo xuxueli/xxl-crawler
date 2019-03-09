@@ -91,6 +91,7 @@ public class HtmlUnitPageLoader extends PageLoader {
             String pageAsXml = page.asXml();
             if (pageAsXml != null) {
                 Document html = Jsoup.parse(pageAsXml);
+                html.setBaseUri(pageRequest.getUrl());
                 return html;
             }
         } catch (IOException e) {
