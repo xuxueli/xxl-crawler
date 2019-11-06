@@ -10,7 +10,7 @@
 
     <name>${project.artifactId}</name>
     <description>A distributed web crawler framework.</description>
-    <url>http://www.xuxueli.com/</url>
+    <url>https://www.xuxueli.com/</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
