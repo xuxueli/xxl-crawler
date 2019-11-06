@@ -125,7 +125,7 @@ crawler.start(true);
 
 ### 架构图
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-crawler/master/doc/images/img01.png "在这里输入图片标题")
+![输入图片说明](https://www.xuxueli.com/doc/static/xxl-crawler/images/img01.png "在这里输入图片标题")
 
 ### 3.1 功能定位
 
