@@ -3,8 +3,11 @@ package com.xuxueli.crawler.test;
 import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.rundata.RunData;
+import com.xuxueli.crawler.util.JsoupUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+
+import java.util.Set;
 
 /**
  * 爬虫示例06：分布式爬虫示例
@@ -73,6 +76,11 @@ public class XxlCrawlerTest06 {
                  * return length;
                  */
                 return 0;
+            }
+
+            @Override
+            public Set<String> findUrls(Document html) {
+                return JsoupUtil.findLinks(html);
             }
 
         };

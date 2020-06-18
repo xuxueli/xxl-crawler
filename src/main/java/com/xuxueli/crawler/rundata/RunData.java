@@ -1,5 +1,9 @@
 package com.xuxueli.crawler.rundata;
 
+import org.jsoup.nodes.Document;
+
+import java.util.Set;
+
 /**
  * run data
  *
@@ -28,5 +32,12 @@ public abstract class RunData {
      * @return int
      */
     public abstract int getUrlNum();
+
+    /**
+     * support custom make findUrls
+     * @param html
+     * @return set
+     */
+    public abstract Set<String> findUrls(Document html);
 
 }
