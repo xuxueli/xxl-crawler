@@ -2,7 +2,9 @@ package com.xuxueli.crawler.rundata.strategy;
 
 import com.xuxueli.crawler.exception.XxlCrawlerException;
 import com.xuxueli.crawler.rundata.RunData;
+import com.xuxueli.crawler.util.JsoupUtil;
 import com.xuxueli.crawler.util.UrlUtil;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +71,11 @@ public class LocalRunData extends RunData {
     @Override
     public int getUrlNum() {
         return unVisitedUrlQueue.size();
+    }
+
+    @Override
+    public Set<String> findUrls(Document html) {
+        return JsoupUtil.findLinks(html);
     }
 
 }
