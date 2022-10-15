@@ -2,7 +2,7 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/)
 [![GitHub release](https://img.shields.io/github/release/xuxueli/xxl-crawler.svg)](https://github.com/xuxueli/xxl-crawler/releases)
-[![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
+![License](https://img.shields.io/github/license/xuxueli/xxl-crawler.svg)
 [![donate](https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square)](https://www.xuxueli.com/page/donate.html)
 
 [TOCM]
@@ -244,7 +244,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 
 
 ## 四、版本更新日志
-### 版本 V1.0.0，新特性[2017-09-13]
+### v1.0.0 Release Notes[2017-09-13]
 - 1、面向对象：通过VO对象描述页面信息，提供注解方便的映射页面数据，爬取结果主动封装Java对象返回；
 - 2、多线程：线程池方式并行运行；
 - 3、异步：支持同步、异步两种方式运行；
@@ -257,7 +257,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 10、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
 - 11、单个页面支持抽取一个或多个PageVO；
 
-### 版本 V1.1.0，新特性[2017-11-08]
+### v1.1.0 Release Notes[2017-11-08]
 - 1、页面默认cssQuery调整为html标签；
 - 2、升级Jsoup至1.11.1版本；
 - 3、修复PageVO注解失效的问题；
@@ -265,7 +265,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 5、代理IP：对抗反采集策略规则WAF；
 - 6、动态代理：支持运行时动态调整代理池，以及自定义代理池路由策略；
 
-### 版本 V1.2.0，新特性[2017-12-14]
+### v1.2.0 Release Notes[2017-12-14]
 - 1、爬虫Builder底层API优化；
 - 2、支持设置请求Headers；
 - 3、支持设置多UserAgent轮询；
@@ -273,22 +273,25 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 5、动态参数：支持运行时动态调整请求参数；
 - 6、分布式支持：支持自定义RunData(运行时数据模型)并结合Redis或DB共享运行数据来实现分布式。默认提供LocalRunData单机版爬虫。
 
-### 版本 V1.2.1，新特性[2018-02-07]
+### v1.2.1 Release Notes[2018-02-07]
 - 1、JS渲染：支持JS渲染方式采集数据，可参考 "爬虫示例6"；
 - 2、抽象并设计PageLoader，方便自定义和扩展页面加载逻辑，如JS渲染等。底层提供 "JsoupPageLoader(默认/推荐)"，"HtmlUnitPageLoader"两种实现，可自定义其他类型PageLoader如 "Selenium" 等；
 - 3、修复Jsoup默认加载1M的限制；
 - 4、爬虫线程中断处理优化；
 
-### 版本 V1.2.2，新特性[2018-10-24]
+### v1.2.2 Release Notes[2018-10-24]
 - 1、系统底层重构，规范包名；
 - 2、采集线程白名单过滤优化，避免冗余失败重试；
 - 3、增强JS渲染方式采集能力，原生新提供 "SeleniumPhantomjsPageLoader"，支持以 "selenisum + phantomjs" 方式采集页面数据；
 - 4、支持采集非Web页面，如JSON接口等，直接输出响应数据；选择 "NonPageParser" 即可；
 
-### 版本 V1.3.0，新特性[迭代中]
+### v1.3.0 Release Notes[2022-10-16]
+- 1、开源协议：由 GPLv3 调整为 Apache2.0 开源协议；
+- 2、版本升级：依赖版本升级，如jsoup、htmlunit、selenium等;
+
+### v1.3.1 Release Notes[规划中]
 - 1、[ING]增强JS渲染采集能力，原生提供 "selenium chrome headless" 方案实现，并提供开箱即用的 PageLoader ；
 - 2、[ING]进一步优化 selenium 特性兼容问题；
-
 
 ### TODO LIST
 - 1、扩展SelectType；
@@ -310,7 +313,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 ### 5.3 开源协议和版权
 产品开源免费，并且将持续提供免费的社区技术支持。个人或企业内部可自由的接入和使用。
 
-- Licensed under the GNU General Public License (GPL) v3.
+- Licensed under the Apache License, Version 2.0.
 - Copyright (c) 2015-present, xuxueli.
 
 ---

@@ -13,9 +13,7 @@
          <a href="https://github.com/xuxueli/xxl-crawler/releases">
              <img src="https://img.shields.io/github/release/xuxueli/xxl-crawler.svg" >
          </a>
-         <a href="http://www.gnu.org/licenses/gpl-3.0.html">
-             <img src="https://img.shields.io/badge/license-GPLv3-blue.svg" >
-         </a>
+         <img src="https://img.shields.io/github/license/xuxueli/xxl-crawler.svg" >
          <a href="https://www.xuxueli.com/page/donate.html">
             <img src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square" >
          </a>
@@ -71,7 +69,7 @@ Contributions are welcome! Open a pull request to fix a bug, or open an [Issue](
 ## Copyright and License
 This product is open source and free, and will continue to provide free community technical support. Individual or enterprise users are free to access and use.
 
-- Licensed under the GNU General Public License (GPL) v3.
+- Licensed under the Apache License, Version 2.0.
 - Copyright (c) 2015-present, xuxueli.
 
 产品开源免费，并且将持续提供免费的社区技术支持。个人或企业内部可自由的接入和使用。
