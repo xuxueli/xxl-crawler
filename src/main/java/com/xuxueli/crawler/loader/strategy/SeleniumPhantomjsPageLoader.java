@@ -14,8 +14,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * "selenisum + phantomjs" page loader
@@ -40,17 +40,15 @@ public class SeleniumPhantomjsPageLoader extends PageLoader {
 
         // driver init
         DesiredCapabilities dcaps = new DesiredCapabilities();
-        dcaps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, !pageRequest.isValidateTLSCertificates());
-        dcaps.setCapability(CapabilityType.TAKES_SCREENSHOT, false);
-        dcaps.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
-        dcaps.setJavascriptEnabled(true);
+        dcaps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, !pageRequest.isValidateTLSCertificates());
+        //dcaps.setCapability(CapabilityType.TAKES_SCREENSHOT, false);  // Deprecated
         if (driverPath!=null && driverPath.trim().length()>0) {
             dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
         }
 
         if (pageRequest.getProxy() != null) {
-            dcaps.setCapability(CapabilityType.ForSeleniumServer.AVOIDING_PROXY, true);
-            dcaps.setCapability(CapabilityType.ForSeleniumServer.ONLY_PROXYING_SELENIUM_TRAFFIC, true);
+            /*dcaps.setCapability(CapabilityType.ForSeleniumServer.AVOIDING_PROXY, true);   // Deprecated
+            dcaps.setCapability(CapabilityType.ForSeleniumServer.ONLY_PROXYING_SELENIUM_TRAFFIC, true);*/
             System.setProperty("http.nonProxyHosts", "localhost");
             dcaps.setCapability(CapabilityType.PROXY, pageRequest.getProxy());
         }
@@ -71,9 +69,9 @@ public class SeleniumPhantomjsPageLoader extends PageLoader {
                 }
             }
 
-            webDriver.manage().timeouts().implicitlyWait(pageRequest.getTimeoutMillis(), TimeUnit.MILLISECONDS);
-            webDriver.manage().timeouts().pageLoadTimeout(pageRequest.getTimeoutMillis(), TimeUnit.MILLISECONDS);
-            webDriver.manage().timeouts().setScriptTimeout(pageRequest.getTimeoutMillis(), TimeUnit.MILLISECONDS);
+            webDriver.manage().timeouts().implicitlyWait(Duration.ofMillis(pageRequest.getTimeoutMillis()));
+            webDriver.manage().timeouts().pageLoadTimeout(Duration.ofMillis(pageRequest.getTimeoutMillis()));
+            webDriver.manage().timeouts().setScriptTimeout(Duration.ofMillis(pageRequest.getTimeoutMillis()));
 
             String pageSource = webDriver.getPageSource();
             if (pageSource != null) {

@@ -1,8 +1,8 @@
 package com.xuxueli.crawler.test.util;
 
 import com.xuxueli.crawler.util.RegexUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * regex tool test
@@ -21,7 +21,7 @@ public class RegexUtilTest {
         String url = "https://my.oschina.net/xuxueli/blog/690978";
 
         boolean ret = RegexUtil.matches(regex, url);
-        Assert.assertTrue(ret);
+        Assertions.assertTrue(ret);
     }
 
     /**
@@ -32,7 +32,7 @@ public class RegexUtilTest {
         String url = "http://www.baidu.com/";
 
         boolean ret = RegexUtil.isUrl(url);
-        Assert.assertTrue(ret);
+        Assertions.assertTrue(ret);
     }
 
 }

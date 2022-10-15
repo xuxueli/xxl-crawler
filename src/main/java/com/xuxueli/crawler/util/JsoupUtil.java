@@ -10,7 +10,14 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,7 +59,9 @@ public class JsoupUtil {
                 conn.referrer(pageRequest.getReferrer());
             }
             conn.timeout(pageRequest.getTimeoutMillis());
-            conn.validateTLSCertificates(pageRequest.isValidateTLSCertificates());
+            if (pageRequest.isValidateTLSCertificates()) {
+                conn.sslSocketFactory(generateSSLSocketFactory());
+            }
             conn.maxBodySize(0);    // 取消默认1M限制
 
             // 代理
@@ -71,6 +80,25 @@ public class JsoupUtil {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             return null;
+        }
+    }
+    private static SSLSocketFactory generateSSLSocketFactory() {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {
+            }
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {
+            }
+        } };
+        try {
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            SSLSocketFactory result = sslContext.getSocketFactory();
+            return result;
+        } catch (KeyManagementException | NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to create a SSL socket factory", e);
         }
     }
 
@@ -98,7 +126,9 @@ public class JsoupUtil {
                 conn.referrer(pageRequest.getReferrer());
             }
             conn.timeout(pageRequest.getTimeoutMillis());
-            conn.validateTLSCertificates(pageRequest.isValidateTLSCertificates());
+            if (pageRequest.isValidateTLSCertificates()) {
+                conn.sslSocketFactory(generateSSLSocketFactory());
+            }
             conn.maxBodySize(0);    // 取消默认1M限制
 
             // 代理

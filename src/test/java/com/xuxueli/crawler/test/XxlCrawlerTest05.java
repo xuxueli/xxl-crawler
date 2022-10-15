@@ -100,7 +100,7 @@ public class XxlCrawlerTest05 {
         if (proxyPool!=null && proxyPool.size()>0) {
             for (PageVo pageVo: proxyPool) {
                 try {
-                    Document html = JsoupUtil.load(new PageRequest("http://2018.ip138.com/ic.asp",
+                    Document html = JsoupUtil.load(new PageRequest("http://pv.sohu.com/cityjson",
                             null,
                             null,
                             null,

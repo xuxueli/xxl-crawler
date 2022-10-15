@@ -4,7 +4,7 @@ import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.model.PageRequest;
 import com.xuxueli.crawler.util.JsoupUtil;
 import org.jsoup.nodes.Document;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

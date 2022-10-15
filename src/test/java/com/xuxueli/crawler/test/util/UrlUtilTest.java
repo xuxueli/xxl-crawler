@@ -1,8 +1,8 @@
 package com.xuxueli.crawler.test.util;
 
 import com.xuxueli.crawler.util.UrlUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * url tool test
@@ -19,7 +19,7 @@ public class UrlUtilTest {
         String url = "http://www.baidu.com/";
 
         boolean ret = UrlUtil.isUrl(url);
-        Assert.assertTrue(ret);
+        Assertions.assertTrue(ret);
     }
 
 }

@@ -2,7 +2,7 @@ package com.xuxueli.crawler.test.util;
 
 import com.xuxueli.crawler.conf.XxlCrawlerConf;
 import com.xuxueli.crawler.util.FileUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * page downloader test

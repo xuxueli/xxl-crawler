@@ -27,8 +27,8 @@
         <selenium-java.version>4.5.0</selenium-java.version>
         <phantomjsdriver.version>1.5.0</phantomjsdriver.version>
 
-        <slf4j-api.version>1.7.25</slf4j-api.version>
-        <junit.version>4.11</junit.version>
+        <slf4j-api.version>2.0.3</slf4j-api.version>
+        <junit-jupiter.version>5.8.2</junit-jupiter.version>
     </properties>
 
     <dependencies>
@@ -78,9 +78,9 @@
 
         <!-- junit -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
 

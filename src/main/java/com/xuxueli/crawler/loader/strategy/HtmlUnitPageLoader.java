@@ -77,7 +77,8 @@ public class HtmlUnitPageLoader extends PageLoader {
             if (pageRequest.getProxy() != null) {
                 InetSocketAddress address = (InetSocketAddress) pageRequest.getProxy().address();
                 boolean isSocks = pageRequest.getProxy().type() == Proxy.Type.SOCKS;
-                webClient.getOptions().setProxyConfig(new ProxyConfig(address.getHostName(), address.getPort(), isSocks));
+                String proxyScheme = null;
+                webClient.getOptions().setProxyConfig(new ProxyConfig(address.getHostName(), address.getPort(), proxyScheme, isSocks));
             }
 
             // 发出请求

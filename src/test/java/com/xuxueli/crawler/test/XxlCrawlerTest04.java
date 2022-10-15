@@ -23,11 +23,11 @@ public class XxlCrawlerTest04 {
 
         // 设置代理池
         ProxyMaker proxyMaker = new RoundProxyMaker()
-                .addProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("---", 80)));
+                .addProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("{自定义代理信息}", 80)));
 
         // 构造爬虫     (代理方式请求IP地址查询网IP138，可从页面响应确认代理是否生效)
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("http://2018.ip138.com/ic.asp")
+                .setUrls("http://pv.sohu.com/cityjson")
                 .setAllowSpread(false)
                 .setProxyMaker(proxyMaker)
                 .setPageParser(new PageParser<Object>() {
