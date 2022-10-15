@@ -288,6 +288,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 ### v1.3.0 Release Notes[2022-10-16]
 - 1、开源协议：由 GPLv3 调整为 Apache2.0 开源协议；
 - 2、版本升级：依赖版本升级，如jsoup、htmlunit、selenium等;
+- 3、代码重构：优化代码结构，提升系统可维护性；
 
 ### v1.3.1 Release Notes[规划中]
 - 1、[ING]增强JS渲染采集能力，原生提供 "selenium chrome headless" 方案实现，并提供开箱即用的 PageLoader ；
