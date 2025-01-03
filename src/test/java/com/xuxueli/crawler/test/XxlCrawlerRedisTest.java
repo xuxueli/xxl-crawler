@@ -5,15 +5,20 @@ import com.xuxueli.crawler.parser.PageParser;
 import com.xuxueli.crawler.rundata.RunData;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.junit.jupiter.api.Test;
 
 /**
- * 爬虫示例06：分布式爬虫示例
+ * 爬虫示例：分布式用法
  *
  * @author xuxueli 2018-02-08 16:56:46
  */
-public class XxlCrawlerTest06 {
+public class XxlCrawlerRedisTest {
 
-    public static void main(String[] args) {
+    /**
+     * 爬虫示例01：分页爬取页面 + Redis结合方式
+     */
+    @Test
+    public void test01() {
 
         /**
          * Redis RunData：通过Redis共享运行数据来实现分布式爬虫，也可以通过其他方式扩展实现，如DB等。（以伪代码进行讲解）
