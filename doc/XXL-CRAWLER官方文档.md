@@ -290,9 +290,11 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 2、版本升级：依赖版本升级，如jsoup、htmlunit、selenium等;
 - 3、代码重构：优化代码结构，提升系统可维护性；
 
-### v1.3.1 Release Notes[规划中]
-- 1、[ING]增强JS渲染采集能力，原生提供 "selenium chrome headless" 方案实现，并提供开箱即用的 PageLoader ；
-- 2、[ING]进一步优化 selenium 特性兼容问题；
+### v1.4.0 Release Notes[规划中]
+- 1、增强JS渲染采集能力，原生提供 "selenium chrome headless" 方案实现，并提供开箱即用的 PageLoader ；
+- 2、进一步优化 selenium 特性兼容问题；
+- 3、版本升级：依赖版本升级，如jsoup、selenium等;
+
 
 ### TODO LIST
 - 1、扩展SelectType；
