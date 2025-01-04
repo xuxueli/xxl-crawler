@@ -183,7 +183,7 @@ setPauseMillis | 停顿时间，爬虫线程处理完页面之后进行主动停
 setProxyMaker | 代理生成器，支持设置代理IP，同时支持调整代理池实现动态代理；
 setThreadCount | 爬虫并发线程数
 setPageParser | 页面解析器
-setPageLoader | 页面加载器，默认提供 "JsoupPageParser" 和 "HtmlUnitPageLoader" 两种实现；
+setPageLoader | 页面加载器，默认提供 "JsoupPageLoader" 和 "SeleniumChromePageLoader" 两种实现；
 setRunUrlPool  | 设置运行时数据模型，默认提供LocalRunUrlPool单机模型，支持扩展实现分布式模型；
 start   | 运行爬虫，可通过入参控制同步或异步方式运行
 stop    | 终止爬虫
@@ -248,17 +248,15 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 ### 3.11、JS动态渲染 & PageLoader
 页面数据通过 "PageLoader" 组件加载，默认使用以下两种实现：
 - JsoupPageLoader：速度最快，推荐采用这种方式（不支持JS动态渲染）；
-- HtmlUnitPageLoader：支持JS动态渲染；
-- SeleniumPhantomjsPageLoader：支持JS动态渲染，"selenisum + phantomjs" 方案，兼容性较高；
+- SeleniumChromePageLoader：支持JS动态渲染，"selenisum + chromedriver" 方案，兼容性较高；
 
-得益于模块化结构设计，可自由扩展其他 "PageLoader" 实现，如 "selenisum + chrome/headless" 方式等；
+得益于模块化结构设计，可自由扩展其他 "PageLoader" 实现；
 
 注意：
-- 1、HtmlUnitPageLoader 为扩展功能，因此maven依赖（htmlunit）scope为provided类型，使用时请单独引入；
-- 2、SeleniumPhantomjsPageLoader 为扩展功能，因此maven依赖（selenisum + phantomjs）scope为provided类型，使用时请单独引入；
-- 3、JS渲染方式采集数据实用性广，但是也存在缺点，如下：
+- 1、SeleniumChromePageLoader 为扩展功能，因此maven依赖（selenisum + chromedriver）scope为provided类型，使用时请单独引入；
+- 2、JS渲染方式采集数据实用性广，但是也存在缺点，如下：
     - 2.1：JS渲染，速度较慢；
-    - 2.1：JS渲染，环境要求较高；
+    - 2.2：JS渲染，环境要求较高；
     - 2.3：在需要JS渲染的场景下，推荐做法是：分析页面请求，模拟并主动发起Ajax请求来代替JS引擎自动请求渲染。因为速度更快，更可控；
 
 
