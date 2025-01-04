@@ -1,4 +1,4 @@
-package com.xxl.crawler.parser;
+package com.xxl.crawler.pageparser;
 
 import com.xxl.crawler.pageloader.param.Request;
 import com.xxl.crawler.pageloader.param.Response;

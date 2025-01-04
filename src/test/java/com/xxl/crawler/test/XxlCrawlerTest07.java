@@ -3,7 +3,7 @@ package com.xxl.crawler.test;
 import com.xxl.crawler.XxlCrawler;
 import com.xxl.crawler.exception.XxlCrawlerException;
 import com.xxl.crawler.pageloader.param.Response;
-import com.xxl.crawler.parser.PageParser;
+import com.xxl.crawler.pageparser.PageParser;
 import com.xxl.crawler.rundata.RunUrlPool;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

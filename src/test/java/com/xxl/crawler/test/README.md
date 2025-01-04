@@ -8,8 +8,8 @@
 | 3  | 网易图片下载爬虫【图片下载】              | 爬取“网易新闻文章图片”，下载图片文件至本地；                                                             | XxlCrawlerTest03 |
 | 4  | 百度新闻爬虫【接口提取数据】              | 爬取非Web页面，本案例为JSON接口，直接输出响应数据                                                        | XxlCrawlerTest04 |
 | 5  | 电商商品价格爬虫【JS渲染方式；Selenium集成】 | 爬虫获取电商商品价格，由于价格异步渲染；该方案使用 Selenium + ChromeDriver 方式JS渲染，模拟浏览器行为采集数据；               | XxlCrawlerTest05 |
-| 5  | 代理方式爬取数据【Proxy代理方式】         | 爬取目标页面数据，通过代理进行；可突破访问限制、保障数据安全；                                                     | XxlCrawlerTest06 |
-| 5  | 集群方式爬取数据【Redis集群方式】       | 爬取目标页面数据，通过集群方式进行；集群中多个XxlCrawler共享RunUrlPool，协同扩散URL并消费待采集任务，提升采集效率。               | XxlCrawlerTest07 |
+| 6  | 代理方式爬取数据【Proxy代理方式】         | 爬取目标页面数据，通过代理进行；可突破访问限制、保障数据安全；                                                     | XxlCrawlerTest06 |
+| 7  | 集群方式爬取数据【Redis集群方式】       | 爬取目标页面数据，通过集群方式进行；集群中多个XxlCrawler共享RunUrlPool，协同扩散URL并消费待采集任务，提升采集效率。               | XxlCrawlerTest07 |
 
 
 **注意：仅供学习测试使用，如有侵犯请联系删除**

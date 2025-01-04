@@ -1,8 +1,8 @@
-package com.xxl.crawler.parser.strategy;
+package com.xxl.crawler.pageparser.strategy;
 
 import com.xxl.crawler.pageloader.param.Request;
 import com.xxl.crawler.pageloader.param.Response;
-import com.xxl.crawler.parser.PageParser;
+import com.xxl.crawler.pageparser.PageParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

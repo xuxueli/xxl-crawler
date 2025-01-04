@@ -2,9 +2,9 @@ package com.xxl.crawler.runconf;
 
 import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.PageLoader;
-import com.xxl.crawler.parser.PageParser;
+import com.xxl.crawler.pageparser.PageParser;
 import com.xxl.crawler.pageloader.strategy.JsoupPageLoader;
-import com.xxl.crawler.parser.strategy.PrintPageParser;
+import com.xxl.crawler.pageparser.strategy.PrintPageParser;
 import com.xxl.crawler.proxy.ProxyPool;
 
 import java.util.*;

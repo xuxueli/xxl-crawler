@@ -80,7 +80,6 @@ XXL-CRAWLER 是一个轻量级爬虫框架。一行代码开发一个多线程�
 ```
 
 ### 第二步：定义 "PageVo/页面数据对象"（可选）
-下文测试代码可以前往仓库查看：[测试代码目录](https://github.com/xuxueli/xxl-crawler/tree/master/src/test/java/com/xxl/crawler/test)
 
 ```java
 /**
@@ -139,6 +138,22 @@ XxlCrawler crawler = new XxlCrawler.Builder()
 
 crawler.start(true);
 ```
+
+### 更多代码示例  
+>注意：仅供学习测试使用，如有侵犯请联系删除
+
+如下测试代码可以前往仓库查看：[测试代码目录](https://github.com/xuxueli/xxl-crawler/tree/master/src/test/java/com/xxl/crawler/test)
+
+| 序号 | 爬虫名称                        | 功能描述                                                                                | 测试用例代码文件         |
+|----|-----------------------------|-------------------------------------------------------------------------------------|------------------|
+| 1  | Gitee高星项目数据爬虫【页面提取数据】       | 一行代码启动多线程爬虫，分页方式扩散爬取“Gitee开源项目列表”，通过“注解式”自动提取页面数据，封装成PageVo输出；                      | XxlCrawlerTest01 |
+| 2  | Gitee页面下载爬虫【页面下载】           | 爬取“Gitee开源项目列表”，获取相关页面html原始数据，下载本地生成html文件；                                        | XxlCrawlerTest02 |
+| 3  | 网易图片下载爬虫【图片下载】              | 爬取“网易新闻文章图片”，下载图片文件至本地；                                                             | XxlCrawlerTest03 |
+| 4  | 百度新闻爬虫【接口提取数据】              | 爬取非Web页面，本案例为JSON接口，直接输出响应数据                                                        | XxlCrawlerTest04 |
+| 5  | 电商商品价格爬虫【JS渲染方式；Selenium集成】 | 爬虫获取电商商品价格，由于价格异步渲染；该方案使用 Selenium + ChromeDriver 方式JS渲染，模拟浏览器行为采集数据；               | XxlCrawlerTest05 |
+| 6  | 代理方式爬取数据【Proxy代理方式】         | 爬取目标页面数据，通过代理进行；可突破访问限制、保障数据安全；                                                     | XxlCrawlerTest06 |
+| 7  | 集群方式爬取数据【Redis集群方式】       | 爬取目标页面数据，通过集群方式进行；集群中多个XxlCrawler共享RunUrlPool，协同扩散URL并消费待采集任务，提升采集效率。               | XxlCrawlerTest07 |
+
 
 
 ## 三、总体设计
@@ -322,6 +337,10 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 6、页面生僻字中文乱码处理；
 - 7、HTTPS站点支持；
 - 8、爬虫扩散规则抽象，支持自定义；包括深度、URL正则、以及自定义编码等；
+- 9、jsoup支持json请求，如 “Jsoup.connect(url).requestBody(jsonString).execute().body();”
+- 10、JsoupUtil.findLinks 可扩展；不限制http前缀；支持业务自定设置link；
+- 11、支持登陆态；给出示例；
+- 12、afterParse更开放，支持添加URL等；
 
 ## 五、其他
 

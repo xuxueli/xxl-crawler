@@ -5,7 +5,7 @@ import com.xxl.crawler.annotation.PageFieldSelect;
 import com.xxl.crawler.annotation.PageSelect;
 import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.param.Response;
-import com.xxl.crawler.parser.PageParser;
+import com.xxl.crawler.pageparser.PageParser;
 import com.xxl.crawler.util.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

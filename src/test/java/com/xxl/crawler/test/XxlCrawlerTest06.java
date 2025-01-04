@@ -1,25 +1,16 @@
 package com.xxl.crawler.test;
 
 import com.xxl.crawler.XxlCrawler;
-import com.xxl.crawler.annotation.PageFieldSelect;
-import com.xxl.crawler.annotation.PageSelect;
-import com.xxl.crawler.constant.Const;
-import com.xxl.crawler.pageloader.param.Request;
 import com.xxl.crawler.pageloader.param.Response;
-import com.xxl.crawler.pageloader.strategy.SeleniumChromePageLoader;
-import com.xxl.crawler.parser.PageParser;
+import com.xxl.crawler.pageparser.PageParser;
 import com.xxl.crawler.proxy.ProxyPool;
 import com.xxl.crawler.proxy.strategy.RoundProxyPool;
-import com.xxl.crawler.util.JsoupUtil;
-import com.xxl.crawler.util.ProxyIpUtil;
-import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.*;
 
 /**
  * 爬虫示例01：

@@ -2,7 +2,7 @@ package com.xxl.crawler;
 
 import com.xxl.crawler.pageloader.PageLoader;
 import com.xxl.crawler.runconf.RunConf;
-import com.xxl.crawler.parser.PageParser;
+import com.xxl.crawler.pageparser.PageParser;
 import com.xxl.crawler.proxy.ProxyPool;
 import com.xxl.crawler.rundata.RunUrlPool;
 import com.xxl.crawler.rundata.strategy.LocalRunUrlPool;
