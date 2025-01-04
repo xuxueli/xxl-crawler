@@ -1,4 +1,4 @@
-## 《分布式爬虫框架XXL-CRAWLER》
+## 《Java爬虫框架XXL-CRAWLER》
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/)
 [![GitHub release](https://img.shields.io/github/release/xuxueli/xxl-crawler.svg)](https://github.com/xuxueli/xxl-crawler/releases)
@@ -12,7 +12,7 @@
 ## 一、简介
 
 ### 1.1 概述
-XXL-CRAWLER 是一个轻量级爬虫框架。一行代码开发一个多线程爬虫，全注解方式采集页面数据至Java对象，拥有"多线程、全注解、JS渲染、代理、分布式扩展"等特性；
+XXL-CRAWLER 是一个轻量级Java爬虫框架。一行代码开发一个多线程爬虫，全注解方式采集页面数据至Java对象，拥有"多线程、全注解、JS渲染、代理、分布式扩展"等特性；
 
 ### 1.2 特性
 - 1、简洁：API直观简洁，可快速上手；
