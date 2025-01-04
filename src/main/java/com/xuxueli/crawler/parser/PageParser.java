@@ -1,6 +1,7 @@
 package com.xuxueli.crawler.parser;
 
-import com.xuxueli.crawler.model.PageRequest;
+import com.xuxueli.crawler.pageloader.param.Request;
+import com.xuxueli.crawler.pageloader.param.Response;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -14,21 +15,28 @@ import org.jsoup.nodes.Element;
 public abstract class PageParser<T> {
 
     /**
-     * pre parse page, before page load
+     * pre parse, before "page-load and page-parse"
      *
-     * @param pageRequest  page request params
+     * @param request  request
      */
-    public void preParse(PageRequest pageRequest) {
-        // TODO
+    public void preParse(Request request) {
+        // do nothing, can be customized
     }
 
     /**
-     * parse pageVo
+     * after parse pageVo, only for success response
      *
-     * @param html              page html data
-     * @param pageVoElement     pageVo html data
-     * @param pageVo            pageVo object
+     * @param response  response
      */
-    public abstract void parse(Document html, Element pageVoElement, T pageVo);
+    public abstract void afterParse(Response<T> response);
+
+    /**
+     * parse pageVo, only for fail response
+     *
+     * @param response
+     */
+    public void afterParseFail(Response<T> response){
+        // default do nothing
+    }
 
 }

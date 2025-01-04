@@ -3,8 +3,9 @@ package com.xuxueli.crawler.test;
 import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
-import com.xuxueli.crawler.loader.strategy.SeleniumChromePageLoader;
+import com.xuxueli.crawler.constant.Const;
+import com.xuxueli.crawler.pageloader.param.Response;
+import com.xuxueli.crawler.pageloader.strategy.SeleniumChromePageLoader;
 import com.xuxueli.crawler.parser.PageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,21 +20,6 @@ import org.slf4j.LoggerFactory;
  */
 public class XxlCrawlerSeleniumTest {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawlerProxyTest.class);
-
-    @PageSelect(cssQuery = "body")
-    public static class PageVo {
-
-        @PageFieldSelect(cssQuery = ".text--Mdqy24Ex", selectType = XxlCrawlerConf.SelectType.TEXT)
-        private String data;
-
-        public String getData() {
-            return data;
-        }
-
-        public void setData(String data) {
-            this.data = data;
-        }
-    }
 
     /**
      * 爬虫示例08：JS渲染方式采集数据，"selenisum + phantomjs" 方案
@@ -60,9 +46,9 @@ public class XxlCrawlerSeleniumTest {
                 .setPageLoader(new SeleniumChromePageLoader(driverPath))                // "selenisum + chrome" 版本 PageLoader：支持 JS 渲染
                 .setPageParser(new PageParser<PageVo>() {
                     @Override
-                    public void parse(Document html, Element pageVoElement, PageVo pageVo) {
-                        if (pageVo.getData() != null) {
-                            logger.info("商品价格（JS动态渲染方式获取）: {}", pageVo.getData());
+                    public void afterParse(Response<PageVo> response) {
+                        if (response.getParseVoList() != null && response.getParseVoList().size() > 0) {
+                            logger.info("商品价格（JS动态渲染方式获取）: {}", response.getParseVoList());
                         } else {
                             logger.info("商品价格（JS动态渲染方式获取）: 获取失败");
                         }
@@ -74,6 +60,28 @@ public class XxlCrawlerSeleniumTest {
         // 启动
         crawler.start(true);
 
+    }
+
+    @PageSelect(cssQuery = "body")
+    public static class PageVo {
+
+        @PageFieldSelect(cssQuery = ".text--Mdqy24Ex", selectType = Const.SelectType.TEXT)
+        private String data;
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "PageVo{" +
+                    "data='" + data + '\'' +
+                    '}';
+        }
     }
 
 }

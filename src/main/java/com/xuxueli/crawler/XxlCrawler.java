@@ -1,11 +1,11 @@
 package com.xuxueli.crawler;
 
-import com.xuxueli.crawler.loader.PageLoader;
-import com.xuxueli.crawler.model.RunConf;
+import com.xuxueli.crawler.pageloader.PageLoader;
+import com.xuxueli.crawler.runconf.RunConf;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.proxy.ProxyMaker;
-import com.xuxueli.crawler.rundata.RunData;
-import com.xuxueli.crawler.rundata.strategy.LocalRunData;
+import com.xuxueli.crawler.proxy.ProxyPool;
+import com.xuxueli.crawler.rundata.RunUrlPool;
+import com.xuxueli.crawler.rundata.strategy.LocalRunUrlPool;
 import com.xuxueli.crawler.thread.CrawlerThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,21 +25,21 @@ import java.util.concurrent.TimeUnit;
 public class XxlCrawler {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawler.class);
 
-    // run data
-    private volatile RunData runData = new LocalRunData();                          // 运行时数据模型
+    // run UrlPool
+    private volatile RunUrlPool runUrlPool = new LocalRunUrlPool();                                     // 运行时 UrlPool
 
     // run conf
-    private volatile RunConf runConf = new RunConf();                               // 运行时配置
+    private volatile RunConf runConf = new RunConf();                                                   // 运行时配置
 
     // thread
-    private int threadCount = 1;                                                    // 爬虫线程数量
-    private ExecutorService crawlers = Executors.newCachedThreadPool();             // 爬虫线程池
-    private List<CrawlerThread> crawlerThreads = new CopyOnWriteArrayList<CrawlerThread>();     // 爬虫线程引用镜像
+    private volatile int threadCount = 1;                                                               // 爬虫线程数量
+    private volatile ExecutorService crawlers = Executors.newCachedThreadPool();                        // 爬虫线程池
+    private volatile List<CrawlerThread> crawlerThreads = new CopyOnWriteArrayList<CrawlerThread>();    // 爬虫线程引用镜像
 
     // ---------------------- get ----------------------
 
-    public RunData getRunData() {
-        return runData;
+    public RunUrlPool getRunUrlPool() {
+        return runUrlPool;
     }
 
     public RunConf getRunConf() {
@@ -50,20 +50,19 @@ public class XxlCrawler {
     public static class Builder {
         private XxlCrawler crawler = new XxlCrawler();
 
-        // run data
         /**
-         * 设置运行数据类型
+         * set RunUrlPool
          *
          * @param runData
          * @return Builder
          */
-        public Builder setRunData(RunData runData){
-            crawler.runData = runData;
+        public Builder setRunUrlPool(RunUrlPool runData){
+            crawler.runUrlPool = runData;
             return this;
         }
 
         /**
-         * 待爬的URL列表
+         * add url to RunUrlPool
          *
          * @param urls
          * @return Builder
@@ -71,21 +70,9 @@ public class XxlCrawler {
         public Builder setUrls(String... urls) {
             if (urls!=null && urls.length>0) {
                 for (String url: urls) {
-                    crawler.runData.addUrl(url);
+                    crawler.runUrlPool.addUrl(url, false);
                 }
             }
-            return this;
-        }
-
-        // run conf
-        /**
-         * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
-         *
-         * @param allowSpread
-         * @return Builder
-         */
-        public Builder setAllowSpread(boolean allowSpread) {
-            crawler.runConf.setAllowSpread(allowSpread);
             return this;
         }
 
@@ -98,9 +85,31 @@ public class XxlCrawler {
         public Builder setWhiteUrlRegexs(String... whiteUrlRegexs) {
             if (whiteUrlRegexs!=null && whiteUrlRegexs.length>0) {
                 for (String whiteUrlRegex: whiteUrlRegexs) {
-                    crawler.runConf.getWhiteUrlRegexs().add(whiteUrlRegex);
+                    crawler.runUrlPool.addWhiteUrlRegex(whiteUrlRegex);
                 }
             }
+            return this;
+        }
+
+        /**
+         * 允许扩散爬取，将会以现有URL为起点扩散爬取整站
+         *
+         * @param allowSpread
+         * @return Builder
+         */
+        public Builder setAllowSpread(boolean allowSpread) {
+            crawler.runConf.setAllowSpread(allowSpread);
+            return this;
+        }
+
+        /**
+         * 页面下载器
+         *
+         * @param pageLoader
+         * @return Builder
+         */
+        public Builder setPageLoader(PageLoader pageLoader){
+            crawler.runConf.setPageLoader(pageLoader);
             return this;
         }
 
@@ -116,18 +125,6 @@ public class XxlCrawler {
         }
 
         /**
-         * 页面下载器
-         *
-         * @param pageLoader
-         * @return Builder
-         */
-        public Builder setPageLoader(PageLoader pageLoader){
-            crawler.runConf.setPageLoader(pageLoader);
-            return this;
-        }
-
-        // site
-        /**
          * 请求参数
          *
          * @param paramMap
@@ -139,17 +136,6 @@ public class XxlCrawler {
         }
 
         /**
-         * 请求Cookie
-         *
-         * @param cookieMap
-         * @return Builder
-         */
-        public Builder setCookieMap(Map<String, String> cookieMap){
-            crawler.runConf.setCookieMap(cookieMap);
-            return this;
-        }
-
-        /**
          * 请求Header
          *
          * @param headerMap
@@ -157,6 +143,17 @@ public class XxlCrawler {
          */
         public Builder setHeaderMap(Map<String, String> headerMap){
             crawler.runConf.setHeaderMap(headerMap);
+            return this;
+        }
+
+        /**
+         * 请求Cookie
+         *
+         * @param cookieMap
+         * @return Builder
+         */
+        public Builder setCookieMap(Map<String, String> cookieMap){
+            crawler.runConf.setCookieMap(cookieMap);
             return this;
         }
 
@@ -211,6 +208,28 @@ public class XxlCrawler {
         }
 
         /**
+         * 是否验证https
+         *
+         * @param validateTLSCertificates
+         * @return
+         */
+        public Builder setValidateTLSCertificates(boolean validateTLSCertificates){
+            crawler.runConf.setValidateTLSCertificates(validateTLSCertificates);
+            return this;
+        }
+
+        /**
+         * 代理生成器
+         *
+         * @param proxyPool
+         * @return Builder
+         */
+        public Builder setProxyPool(ProxyPool proxyPool){
+            crawler.runConf.setProxyPool(proxyPool);
+            return this;
+        }
+
+        /**
          * 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
          *
          * @param pauseMillis
@@ -218,17 +237,6 @@ public class XxlCrawler {
          */
         public Builder setPauseMillis(int pauseMillis){
             crawler.runConf.setPauseMillis(pauseMillis);
-            return this;
-        }
-
-        /**
-         * 代理生成器
-         *
-         * @param proxyMaker
-         * @return Builder
-         */
-        public Builder setProxyMaker(ProxyMaker proxyMaker){
-            crawler.runConf.setProxyMaker(proxyMaker);
             return this;
         }
 
@@ -245,7 +253,6 @@ public class XxlCrawler {
             return this;
         }
 
-        // thread
         /**
          * 爬虫并发线程数
          *
@@ -262,18 +269,19 @@ public class XxlCrawler {
         }
     }
 
+
     // ---------------------- crawler thread ----------------------
 
     /**
-     * 启动
+     * start crawler thread-pool
      *
      * @param sync  true=同步方式、false=异步方式
      */
     public void start(boolean sync){
-        if (runData == null) {
-            throw new RuntimeException("xxl crawler runData can not be null.");
+        if (runUrlPool == null) {
+            throw new RuntimeException("xxl crawler runUrlPool can not be null.");
         }
-        if (runData.getUrlNum() <= 0) {
+        if (runUrlPool.getUrlNum() <= 0) {
             throw new RuntimeException("xxl crawler indexUrl can not be empty.");
         }
         if (runConf == null) {
@@ -288,6 +296,15 @@ public class XxlCrawler {
         if (runConf.getPageParser() == null) {
             throw new RuntimeException("xxl crawler pageParser can not be null.");
         }
+        if (!(runConf.getTimeoutMillis()>0 && runConf.getTimeoutMillis() <= 5 * 60 * 1000)) {
+            throw new RuntimeException("xxl crawler timeoutMillis invalid.");
+        }
+        if (!(runConf.getPauseMillis()>=0 && runConf.getPauseMillis() <= 10 * 60 * 1000)) {
+            throw new RuntimeException("xxl crawler pauseMillis invalid.");
+        }
+        if (!(runConf.getFailRetryCount()>=0 && runConf.getFailRetryCount() <= 100)) {
+            throw new RuntimeException("xxl crawler failRetryCount invalid.");
+        }
 
         logger.info(">>>>>>>>>>> xxl crawler start ...");
         for (int i = 0; i < threadCount; i++) {
@@ -297,7 +314,7 @@ public class XxlCrawler {
         for (CrawlerThread crawlerThread: crawlerThreads) {
             crawlers.execute(crawlerThread);
         }
-        crawlers.shutdown();
+        crawlers.shutdown();        // stop accept new thread, until all thread done
 
         if (sync) {
             try {
@@ -311,7 +328,7 @@ public class XxlCrawler {
     }
 
     /**
-     * 尝试终止
+     * try stop, may be fail
      */
     public void tryFinish(){
         boolean isRunning = false;
@@ -321,21 +338,21 @@ public class XxlCrawler {
                 break;
             }
         }
-        boolean isEnd = runData.getUrlNum()==0 && !isRunning;
+        boolean isEnd = runUrlPool.getUrlNum()==0 && !isRunning;
         if (isEnd) {
-            logger.info(">>>>>>>>>>> xxl crawler is finished.");
+            //logger.info(">>>>>>>>>>> xxl crawler is finished.");
             stop();
         }
     }
 
     /**
-     * 终止
+     * stop now
      */
     public void stop(){
         for (CrawlerThread crawlerThread: crawlerThreads) {
             crawlerThread.toStop();
         }
-        crawlers.shutdownNow();
+        crawlers.shutdownNow();     // stop all thread now
         logger.info(">>>>>>>>>>> xxl crawler stop.");
     }
 

@@ -3,10 +3,10 @@ package com.xuxueli.crawler.thread;
 import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.constant.Const;
 import com.xuxueli.crawler.exception.XxlCrawlerException;
-import com.xuxueli.crawler.model.PageRequest;
-import com.xuxueli.crawler.parser.strategy.NonPageParser;
+import com.xuxueli.crawler.pageloader.param.Request;
+import com.xuxueli.crawler.pageloader.param.Response;
 import com.xuxueli.crawler.util.FieldReflectionUtil;
 import com.xuxueli.crawler.util.JsoupUtil;
 import com.xuxueli.crawler.util.UrlUtil;
@@ -35,9 +35,9 @@ import java.util.concurrent.TimeUnit;
 public class CrawlerThread implements Runnable {
     private static Logger logger = LoggerFactory.getLogger(CrawlerThread.class);
 
-    private XxlCrawler crawler;
-    private boolean running;
-    private boolean toStop;
+    private final XxlCrawler crawler;
+    private volatile boolean running;       // wait or parse page
+    private volatile boolean toStop;        // thread stop signal
     public CrawlerThread(XxlCrawler crawler) {
         this.crawler = crawler;
         this.running = true;
@@ -56,54 +56,59 @@ public class CrawlerThread implements Runnable {
         while (!toStop) {
             try {
 
-                // ------- url ----------
+                // cycle run, check if stop
                 running = false;
                 crawler.tryFinish();
-                String link = crawler.getRunData().getUrl();
+
+                // tail url, will block if empty
+                String link = crawler.getRunUrlPool().getUrl();
+
+                // process url
                 running = true;
-                logger.info(">>>>>>>>>>> xxl crawler, process link : {}", link);
                 if (!UrlUtil.isUrl(link)) {
                     continue;
                 }
 
-                // failover
-                for (int i = 0; i < (1 + crawler.getRunConf().getFailRetryCount()); i++) {
+                // process with failcount
+                logger.info(">>>>>>>>>>> xxl crawler, process link : {}", link);
+                int runCount = crawler.getRunConf().getFailRetryCount() + 1;
+                for (int i = 0; i < runCount; i++) {
 
-                    boolean ret = false;
+                    Response response = null;
                     try {
-                        // make request
-                        PageRequest pageRequest = makePageRequest(link);
+                        // build request
+                        Request request = buildRequest(link);
 
-                        // pre parse
-                        crawler.getRunConf().getPageParser().preParse(pageRequest);
+                        // 1、pre-parse
+                        crawler.getRunConf().getPageParser().preParse(request);
 
-                        // parse
-                        if (crawler.getRunConf().getPageParser() instanceof NonPageParser) {
-                            ret = processNonPage(pageRequest);
+                        // 2、load and parse
+                        response = loadAndParsePage(request);
+
+                        // 3、after-parse
+                        if (response.isSuccess()) {
+                            crawler.getRunConf().getPageParser().afterParse(response);
                         } else {
-                            ret = processPage(pageRequest);
+                            crawler.getRunConf().getPageParser().afterParseFail(response);
                         }
                     } catch (Throwable e) {
-                        logger.info(">>>>>>>>>>> xxl crawler proocess error.", e);
+                        logger.error(">>>>>>>>>>> xxl crawler proocess error.", e);
                     }
-
                     if (crawler.getRunConf().getPauseMillis() > 0) {
                         try {
                             TimeUnit.MILLISECONDS.sleep(crawler.getRunConf().getPauseMillis());
                         } catch (InterruptedException e) {
-                            logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. 2{}", e.getMessage());
+                            logger.error(">>>>>>>>>>> xxl crawler thread is interrupted. {}", e.getMessage());
                         }
                     }
-                    if (ret) {
+                    if (response!=null && response.isSuccess()) {
                         break;
                     }
                 }
 
             } catch (Throwable e) {
-                if (e instanceof InterruptedException) {
-                    logger.info(">>>>>>>>>>> xxl crawler thread is interrupted. {}", e.getMessage());
-                } else if (e instanceof XxlCrawlerException) {
-                    logger.info(">>>>>>>>>>> xxl crawler thread {}", e.getMessage());
+                if (e instanceof XxlCrawlerException) {
+                    logger.error(">>>>>>>>>>> xxl crawler thread {}", e.getMessage(), e);
                 } else {
                     logger.error(e.getMessage(), e);
                 }
@@ -113,136 +118,129 @@ public class CrawlerThread implements Runnable {
     }
 
     /**
-     * make page request
+     * build request
      *
-     * @param link
-     * @return PageRequest
+     * @param url
+     * @return Request
      */
-    private PageRequest makePageRequest(String link){
+    private Request buildRequest(String url){
         String userAgent = crawler.getRunConf().getUserAgentList().size()>1
                 ?crawler.getRunConf().getUserAgentList().get(new Random().nextInt(crawler.getRunConf().getUserAgentList().size()))
                 :crawler.getRunConf().getUserAgentList().size()==1?crawler.getRunConf().getUserAgentList().get(0):null;
         Proxy proxy = null;
-        if (crawler.getRunConf().getProxyMaker() != null) {
-            proxy = crawler.getRunConf().getProxyMaker().make();
+        if (crawler.getRunConf().getProxyPool() != null) {
+            proxy = crawler.getRunConf().getProxyPool().getProxy();
         }
 
-        PageRequest pageRequest = new PageRequest();
-        pageRequest.setUrl(link);
+        Request pageRequest = new Request();
+        pageRequest.setUrl(url);
         pageRequest.setParamMap(crawler.getRunConf().getParamMap());
-        pageRequest.setCookieMap(crawler.getRunConf().getCookieMap());
         pageRequest.setHeaderMap(crawler.getRunConf().getHeaderMap());
+        pageRequest.setCookieMap(crawler.getRunConf().getCookieMap());
         pageRequest.setUserAgent(userAgent);
         pageRequest.setReferrer(crawler.getRunConf().getReferrer());
         pageRequest.setIfPost(crawler.getRunConf().isIfPost());
         pageRequest.setTimeoutMillis(crawler.getRunConf().getTimeoutMillis());
-        pageRequest.setProxy(proxy);
         pageRequest.setValidateTLSCertificates(crawler.getRunConf().isValidateTLSCertificates());
+        pageRequest.setProxy(proxy);
 
         return pageRequest;
     }
 
     /**
-     * process non page
-     * @param pageRequest
+     * load and parse page
+     *
+     * @param request
      * @return boolean
      */
-    private boolean processNonPage(PageRequest pageRequest){
-        NonPageParser nonPageParser = (NonPageParser) crawler.getRunConf().getPageParser();
+    private Response loadAndParsePage(Request request) throws IllegalAccessException, InstantiationException {
 
-        String pagesource = JsoupUtil.loadPageSource(pageRequest);
-        if (pagesource == null) {
-            return false;
+        // load page
+        Document html = null;
+        try {
+            html = crawler.getRunConf().getPageLoader().load(request);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
-        nonPageParser.parse(pageRequest.getUrl(), pagesource);
-        return true;
-    }
-
-    /**
-     * process page
-     * @param pageRequest
-     * @return boolean
-     */
-    private boolean processPage(PageRequest pageRequest) throws IllegalAccessException, InstantiationException {
-        Document html = crawler.getRunConf().getPageLoader().load(pageRequest);
-
         if (html == null) {
-            return false;
+            return new Response(request, false, null, null, null);
         }
 
-        // ------- child link list (FIFO队列,广度优先) ----------
+        // spread find url (FIFO队列,广度优先)
         if (crawler.getRunConf().isAllowSpread()) {     // limit child spread
-            Set<String> links = JsoupUtil.findLinks(html);
-            if (links != null && links.size() > 0) {
-                for (String item : links) {
-                    if (crawler.getRunConf().validWhiteUrl(item)) {      // limit unvalid-child spread
-                        crawler.getRunData().addUrl(item);
-                    }
+            Set<String> urlSet = JsoupUtil.findLinks(html);
+            if (urlSet != null && !urlSet.isEmpty()) {
+                for (String item : urlSet) {
+                    crawler.getRunUrlPool().addUrl(item, true);
                 }
             }
         }
 
-        // ------- pagevo ----------
-        if (!crawler.getRunConf().validWhiteUrl(pageRequest.getUrl())) {     // limit unvalid-page parse, only allow spread child, finish here
-            return true;
+        // parse page
+        if (!crawler.getRunUrlPool().validUrlRegex(request.getUrl())) {     // limit unvalid-page parse, only allow spread child, finish here
+            return new Response(request, true, html, null, null);
         }
 
-        // pagevo class-field info
+        // pageVo ClassType
         Class pageVoClassType = Object.class;
-
         Type pageVoParserClass = crawler.getRunConf().getPageParser().getClass().getGenericSuperclass();
         if (pageVoParserClass instanceof ParameterizedType) {
             Type[] pageVoClassTypes = ((ParameterizedType)pageVoParserClass).getActualTypeArguments();
             pageVoClassType = (Class) pageVoClassTypes[0];
         }
 
+        // result
+        List<Element> parseElementList = new ArrayList<>();
+        List<Object> parseVoList = new ArrayList<>();
+
+        // parseElementList 2 parseVoList
         PageSelect pageVoSelect = (PageSelect) pageVoClassType.getAnnotation(PageSelect.class);
         String pageVoCssQuery = (pageVoSelect!=null && pageVoSelect.cssQuery()!=null && pageVoSelect.cssQuery().trim().length()>0)?pageVoSelect.cssQuery():"html";
-
-        // pagevo document 2 object
         Elements pageVoElements = html.select(pageVoCssQuery);
 
-        if (pageVoElements != null && pageVoElements.hasText()) {
+        if (pageVoElements!=null && pageVoElements.hasText()) {
             for (Element pageVoElement : pageVoElements) {
 
+                // build pageVo
                 Object pageVo = pageVoClassType.newInstance();
 
+                // parse pageVo-field
                 Field[] fields = pageVoClassType.getDeclaredFields();
-                if (fields!=null) {
+                if (fields!=null && fields.length>0) {
                     for (Field field: fields) {
                         if (Modifier.isStatic(field.getModifiers())) {
                             continue;
                         }
 
-
                         // field origin value
                         PageFieldSelect fieldSelect = field.getAnnotation(PageFieldSelect.class);
                         String cssQuery = null;
-                        XxlCrawlerConf.SelectType selectType = null;
+                        Const.SelectType selectType = null;
                         String selectVal = null;
                         if (fieldSelect != null) {
                             cssQuery = fieldSelect.cssQuery();
                             selectType = fieldSelect.selectType();
                             selectVal = fieldSelect.selectVal();
                         }
-                        if (cssQuery==null || cssQuery.trim().length()==0) {
+                        if (cssQuery==null || cssQuery.trim().isEmpty()) {
                             continue;
                         }
 
                         // field value
                         Object fieldValue = null;
-
                         if (field.getGenericType() instanceof ParameterizedType) {
+                            // parse field-list
                             ParameterizedType fieldGenericType = (ParameterizedType) field.getGenericType();
                             if (fieldGenericType.getRawType().equals(List.class)) {
 
-                                //Type gtATA = fieldGenericType.getActualTypeArguments()[0];
+                                // Type gtATA = fieldGenericType.getActualTypeArguments()[0];
                                 Elements fieldElementList = pageVoElement.select(cssQuery);
-                                if (fieldElementList!=null && fieldElementList.size()>0) {
+                                if (fieldElementList!=null && !fieldElementList.isEmpty()) {
 
                                     List<Object> fieldValueTmp = new ArrayList<Object>();
                                     for (Element fieldElement: fieldElementList) {
 
+                                        // get field-value
                                         String fieldElementOrigin = JsoupUtil.parseElement(fieldElement, selectType, selectVal);
                                         if (fieldElementOrigin==null || fieldElementOrigin.length()==0) {
                                             continue;
@@ -254,16 +252,16 @@ public class CrawlerThread implements Runnable {
                                         }
                                     }
 
-                                    if (fieldValueTmp.size() > 0) {
+                                    if (!fieldValueTmp.isEmpty()) {
                                         fieldValue = fieldValueTmp;
                                     }
                                 }
                             }
                         } else {
-
+                            // parse field-item
                             Elements fieldElements = pageVoElement.select(cssQuery);
                             String fieldValueOrigin = null;
-                            if (fieldElements!=null && fieldElements.size()>0) {
+                            if (fieldElements!=null && !fieldElements.isEmpty()) {
                                 fieldValueOrigin = JsoupUtil.parseElement(fieldElements.get(0), selectType, selectVal);
                             }
 
@@ -289,12 +287,13 @@ public class CrawlerThread implements Runnable {
                     }
                 }
 
-                // pagevo output
-                crawler.getRunConf().getPageParser().parse(html, pageVoElement, pageVo);
+                // fill result
+                parseElementList.add(pageVoElement);
+                parseVoList.add(pageVo);
             }
         }
 
-        return true;
+        return new Response(request, true, html, parseElementList, parseVoList);
     }
 
 }

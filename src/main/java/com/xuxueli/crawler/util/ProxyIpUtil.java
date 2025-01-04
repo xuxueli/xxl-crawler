@@ -1,6 +1,6 @@
 package com.xuxueli.crawler.util;
 
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.constant.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,12 +26,12 @@ public class ProxyIpUtil {
      */
     public static int checkProxy(Proxy proxy, String validSite){
         try {
-            URL url = new URL(validSite!=null?validSite:XxlCrawlerConf.SITE_BAIDU);
+            URL url = new URL(validSite!=null?validSite: Const.SITE_BAIDU);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection(proxy);
-            httpURLConnection.setRequestProperty("User-Agent", XxlCrawlerConf.USER_AGENT_CHROME);
-            httpURLConnection.setConnectTimeout(XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT);
-            httpURLConnection.setReadTimeout(XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT);
+            httpURLConnection.setRequestProperty("User-Agent", Const.USER_AGENT_CHROME);
+            httpURLConnection.setConnectTimeout(Const.TIMEOUT_MILLIS_DEFAULT);
+            httpURLConnection.setReadTimeout(Const.TIMEOUT_MILLIS_DEFAULT);
 
             httpURLConnection.connect();
             int statusCode = httpURLConnection.getResponseCode();

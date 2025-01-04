@@ -8,6 +8,9 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * page downloader
@@ -40,15 +43,20 @@ public class FileUtil {
 	 * @param fileName
 	 */
 	public static void saveFile(String fileData, String filePath, String fileName) {
-		try {
-			DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(filePath, fileName)));
-			out.writeChars(fileData);
-			out.flush();
-			out.close();
+        // create file dir
+        File filePathDir = new File(filePath);
+        if (!filePathDir.exists()) {
+            filePathDir.mkdirs();
+        }
+
+		// write file data
+		File file = new File(filePathDir, fileName);		// Paths.get(filePath) 	//	file.toPath()
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8))) {
+			writer.write(fileData);
 		} catch (IOException e) {
-			logger.error("", e);
+			throw new RuntimeException(e);
 		}
-	}
+    }
 
 	/**
 	 * 下载文件

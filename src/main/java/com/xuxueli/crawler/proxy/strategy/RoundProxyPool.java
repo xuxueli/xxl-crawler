@@ -1,17 +1,22 @@
 package com.xuxueli.crawler.proxy.strategy;
 
-import com.xuxueli.crawler.proxy.ProxyMaker;
+import com.xuxueli.crawler.proxy.ProxyPool;
 
 import java.net.Proxy;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RoundProxyMaker extends ProxyMaker {
+/**
+ * round proxy pool
+ *
+ * @author xuxueli 2017-11-07 20:06:54
+ */
+public class RoundProxyPool extends ProxyPool {
 
     private AtomicInteger count = new AtomicInteger(0);
 
     @Override
-    public Proxy make() {
-        if (super.proxyList==null || super.proxyList.size()==0) {
+    public Proxy getProxy() {
+        if (super.proxyList==null || super.proxyList.isEmpty()) {
             return null;
         }
 

@@ -1,6 +1,6 @@
 package com.xuxueli.crawler.test.util;
 
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.constant.Const;
 import com.xuxueli.crawler.util.FileUtil;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public class FileUtilTest {
 
         String htmlData = "<html>Hello world.</html>";
         String filePath = "/Users/xuxueli/Downloads/tmp";
-        String fileName = FileUtil.getFileNameByUrl("http://www.baidu.com/",	XxlCrawlerConf.CONTENT_TYPE_HTML);
+        String fileName = FileUtil.getFileNameByUrl("http://www.baidu.com/",	Const.CONTENT_TYPE_HTML);
 
         FileUtil.saveFile(htmlData, filePath, fileName);
     }

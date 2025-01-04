@@ -294,6 +294,7 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 1、增强JS渲染采集能力，原生提供 "selenium chrome headless" 方案实现，并提供开箱即用的 PageLoader ；
 - 2、进一步优化 selenium 特性兼容问题；
 - 3、版本升级：依赖版本升级，如jsoup、selenium等;
+- 4、重构核心功能模块，提升扩展性；
 
 
 ### TODO LIST

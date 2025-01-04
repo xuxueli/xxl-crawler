@@ -1,22 +1,22 @@
 package com.xuxueli.crawler.proxy.strategy;
 
-import com.xuxueli.crawler.proxy.ProxyMaker;
+import com.xuxueli.crawler.proxy.ProxyPool;
 
 import java.net.Proxy;
 import java.util.Random;
 
 /**
- * proxy macker, rancom strategy
+ * random proxy pool
  *
  * @author xuxueli 2017-11-07 20:06:54
  */
-public class RandomProxyMaker extends ProxyMaker {
+public class RandomProxyPool extends ProxyPool {
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     @Override
-    public Proxy make() {
-        if (super.proxyList==null || super.proxyList.size()==0) {
+    public Proxy getProxy() {
+        if (super.proxyList==null || super.proxyList.isEmpty()) {
             return null;
         }
 

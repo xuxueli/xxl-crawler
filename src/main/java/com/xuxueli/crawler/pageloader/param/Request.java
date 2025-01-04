@@ -1,4 +1,4 @@
-package com.xuxueli.crawler.model;
+package com.xuxueli.crawler.pageloader.param;
 
 import java.net.Proxy;
 import java.util.Map;
@@ -8,32 +8,32 @@ import java.util.Map;
  *
  * @author xuxueli 2017-11-10 17:12:55
  */
-public class PageRequest {
+public class Request {
 
     private String url;
-    private Map<String, String> paramMap;
+    private Map<String, String> paramMap;       // only support jsoup
+    private Map<String, String> headerMap;      // only support jsoup
     private Map<String, String> cookieMap;
-    private Map<String, String> headerMap;
     private String userAgent;
     private String referrer;
-    private boolean ifPost;
+    private boolean ifPost;                     // only support jsoup
     private int timeoutMillis;
     private boolean isValidateTLSCertificates;
     private Proxy proxy;
 
-    public PageRequest() {
+    public Request() {
     }
 
-    public PageRequest(String url,
-                       Map<String, String> paramMap,
-                       Map<String, String> cookieMap,
-                       Map<String, String> headerMap,
-                       String userAgent,
-                       String referrer,
-                       boolean ifPost,
-                       int timeoutMillis,
-                       boolean isValidateTLSCertificates,
-                       Proxy proxy) {
+    public Request(String url,
+                   Map<String, String> paramMap,
+                   Map<String, String> cookieMap,
+                   Map<String, String> headerMap,
+                   String userAgent,
+                   String referrer,
+                   boolean ifPost,
+                   int timeoutMillis,
+                   boolean isValidateTLSCertificates,
+                   Proxy proxy) {
         this.url = url;
         this.paramMap = paramMap;
         this.cookieMap = cookieMap;
@@ -125,4 +125,21 @@ public class PageRequest {
     public void setProxy(Proxy proxy) {
         this.proxy = proxy;
     }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "url='" + url + '\'' +
+                ", paramMap=" + paramMap +
+                ", cookieMap=" + cookieMap +
+                ", headerMap=" + headerMap +
+                ", userAgent='" + userAgent + '\'' +
+                ", referrer='" + referrer + '\'' +
+                ", ifPost=" + ifPost +
+                ", timeoutMillis=" + timeoutMillis +
+                ", isValidateTLSCertificates=" + isValidateTLSCertificates +
+                ", proxy=" + proxy +
+                '}';
+    }
+
 }

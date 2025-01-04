@@ -1,7 +1,7 @@
 package com.xuxueli.crawler.util;
 
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
-import com.xuxueli.crawler.model.PageRequest;
+import com.xuxueli.crawler.constant.Const;
+import com.xuxueli.crawler.pageloader.param.Request;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,53 +30,54 @@ public class JsoupUtil {
     private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
 
     /**
-     * 加载页面
+     * load page
      *
-     * @param pageRequest
+     * @param request
      *
      * @return Document
      */
-    public static Document load(PageRequest pageRequest) {
-        if (!UrlUtil.isUrl(pageRequest.getUrl())) {
+    public static Document load(Request request) {
+        if (!UrlUtil.isUrl(request.getUrl())) {
+            logger.debug("url is invalid, request="+request.toString());
             return null;
         }
         try {
             // 请求设置
-            Connection conn = Jsoup.connect(pageRequest.getUrl());
-            if (pageRequest.getParamMap() != null && !pageRequest.getParamMap().isEmpty()) {
-                conn.data(pageRequest.getParamMap());
+            Connection conn = Jsoup.connect(request.getUrl());
+            if (request.getParamMap() != null && !request.getParamMap().isEmpty()) {
+                conn.data(request.getParamMap());
             }
-            if (pageRequest.getCookieMap() != null && !pageRequest.getCookieMap().isEmpty()) {
-                conn.cookies(pageRequest.getCookieMap());
+            if (request.getHeaderMap()!=null && !request.getHeaderMap().isEmpty()) {
+                conn.headers(request.getHeaderMap());
             }
-            if (pageRequest.getHeaderMap()!=null && !pageRequest.getHeaderMap().isEmpty()) {
-                conn.headers(pageRequest.getHeaderMap());
+            if (request.getCookieMap() != null && !request.getCookieMap().isEmpty()) {
+                conn.cookies(request.getCookieMap());
             }
-            if (pageRequest.getUserAgent()!=null) {
-                conn.userAgent(pageRequest.getUserAgent());
+            if (request.getUserAgent()!=null) {
+                conn.userAgent(request.getUserAgent());
             }
-            if (pageRequest.getReferrer() != null) {
-                conn.referrer(pageRequest.getReferrer());
+            if (request.getReferrer() != null) {
+                conn.referrer(request.getReferrer());
             }
-            conn.timeout(pageRequest.getTimeoutMillis());
-            if (pageRequest.isValidateTLSCertificates()) {
+            conn.method(request.isIfPost()?Connection.Method.POST:Connection.Method.GET);
+            conn.timeout(request.getTimeoutMillis());
+            if (request.isValidateTLSCertificates()) {
                 conn.sslSocketFactory(generateSSLSocketFactory());
             }
-            conn.maxBodySize(0);    // 取消默认1M限制
+            conn.maxBodySize(0);          // 取消默认1M限制
+            conn.ignoreContentType(true);       // ignore ContentType
 
             // 代理
-            if (pageRequest.getProxy() != null) {
-                conn.proxy(pageRequest.getProxy());
+            if (request.getProxy() != null) {
+                conn.proxy(request.getProxy());
             }
 
-            // 发出请求
-            Document html = null;
-            if (pageRequest.isIfPost()) {
-                html = conn.post();
-            } else {
-                html = conn.get();
-            }
-            return html;
+            // execute
+            Connection.Response resp = conn.execute();
+
+            // parse
+            Document document = resp.parse();
+            return document;
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             return null;
@@ -102,51 +103,15 @@ public class JsoupUtil {
         }
     }
 
-
-    public static String loadPageSource(PageRequest pageRequest) {
-        if (!UrlUtil.isUrl(pageRequest.getUrl())) {
-            return null;
-        }
-        try {
-            // 请求设置
-            Connection conn = Jsoup.connect(pageRequest.getUrl());
-            if (pageRequest.getParamMap() != null && !pageRequest.getParamMap().isEmpty()) {
-                conn.data(pageRequest.getParamMap());
-            }
-            if (pageRequest.getCookieMap() != null && !pageRequest.getCookieMap().isEmpty()) {
-                conn.cookies(pageRequest.getCookieMap());
-            }
-            if (pageRequest.getHeaderMap()!=null && !pageRequest.getHeaderMap().isEmpty()) {
-                conn.headers(pageRequest.getHeaderMap());
-            }
-            if (pageRequest.getUserAgent()!=null) {
-                conn.userAgent(pageRequest.getUserAgent());
-            }
-            if (pageRequest.getReferrer() != null) {
-                conn.referrer(pageRequest.getReferrer());
-            }
-            conn.timeout(pageRequest.getTimeoutMillis());
-            if (pageRequest.isValidateTLSCertificates()) {
-                conn.sslSocketFactory(generateSSLSocketFactory());
-            }
-            conn.maxBodySize(0);    // 取消默认1M限制
-
-            // 代理
-            if (pageRequest.getProxy() != null) {
-                conn.proxy(pageRequest.getProxy());
-            }
-
-            conn.ignoreContentType(true);
-            conn.method(pageRequest.isIfPost()?Connection.Method.POST:Connection.Method.GET);
-
-            // 发出请求
-            Connection.Response resp = conn.execute();
-            String pageSource = resp.body();
-            return pageSource;
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-            return null;
-        }
+    /**
+     * load PageSource
+     *
+     * @param request
+     * @return
+     */
+    public static String loadPageSource(Request request) {
+        Document html = load(request);
+        return html!=null?html.outerHtml():null;
     }
 
     /**
@@ -157,17 +122,17 @@ public class JsoupUtil {
      * @param selectVal
      * @return String
      */
-    public static String parseElement(Element fieldElement, XxlCrawlerConf.SelectType selectType, String selectVal) {
+    public static String parseElement(Element fieldElement, Const.SelectType selectType, String selectVal) {
         String fieldElementOrigin = null;
-        if (XxlCrawlerConf.SelectType.HTML == selectType) {
+        if (Const.SelectType.HTML == selectType) {
             fieldElementOrigin = fieldElement.html();
-        } else if (XxlCrawlerConf.SelectType.VAL == selectType) {
+        } else if (Const.SelectType.VAL == selectType) {
             fieldElementOrigin = fieldElement.val();
-        } else if (XxlCrawlerConf.SelectType.TEXT == selectType) {
+        } else if (Const.SelectType.TEXT == selectType) {
             fieldElementOrigin = fieldElement.text();
-        } else if (XxlCrawlerConf.SelectType.ATTR == selectType) {
+        } else if (Const.SelectType.ATTR == selectType) {
             fieldElementOrigin = fieldElement.attr(selectVal);
-        }  else if (XxlCrawlerConf.SelectType.HAS_CLASS == selectType) {
+        }  else if (Const.SelectType.HAS_CLASS == selectType) {
             fieldElementOrigin = String.valueOf(fieldElement.hasClass(selectVal));
         }  else {
             fieldElementOrigin = fieldElement.toString();
@@ -176,33 +141,33 @@ public class JsoupUtil {
     }
 
     /**
-     * 获取页面上所有超链接地址 （<a>标签的href值）
+     * find links("<a href=XX ></>") from Document
      *
-     * @param html  页面文档
+     * @param html
      * @return Set<String>
      */
     public static Set<String> findLinks(Document html) {
-
+        // valid
         if (html == null) {
             return null;
         }
 
-        // element
+        // parse element
         /**
          *
-         * Elements resultSelect = html.select(tagName);	// 选择器方式
-         * Element resultId = html.getElementById(tagName);	// 元素ID方式
-         * Elements resultClass = html.getElementsByClass(tagName);	// ClassName方式
-         * Elements resultTag = html.getElementsByTag(tagName);	// html标签方式 "body"
+         * Elements resultSelect = html.select(tagName);	            // 选择器方式
+         * Element resultId = html.getElementById(tagName);	            // 元素ID方式
+         * Elements resultClass = html.getElementsByClass(tagName);	    // ClassName方式
+         * Elements resultTag = html.getElementsByTag(tagName);	        // html标签方式 "body"
          *
          */
         Elements hrefElements = html.select("a[href]");
 
-        // 抽取数据
+        // parse url
         Set<String> links = new HashSet<String>();
-        if (hrefElements!=null && hrefElements.size() > 0) {
+        if (hrefElements!=null && !hrefElements.isEmpty()) {
             for (Element item : hrefElements) {
-                String href = item.attr("abs:href");    // href、abs:href
+                String href = item.attr("abs:href");        // href、abs:href
                 if (UrlUtil.isUrl(href)) {
                     links.add(href);
                 }
@@ -212,7 +177,7 @@ public class JsoupUtil {
     }
 
     /**
-     * 获取页面上所有图片地址 （<a>标签的href值）
+     *  find imgs("<img src=XX ></>") from Document
      *
      * @param html
      * @return Set<String>
@@ -222,7 +187,7 @@ public class JsoupUtil {
         Elements imgs = html.getElementsByTag("img");
 
         Set<String> images = new HashSet<String>();
-        if (imgs!=null && imgs.size() > 0) {
+        if (imgs!=null && !imgs.isEmpty()) {
             for (Element element: imgs) {
                 String imgSrc = element.attr("abs:src");
                 images.add(imgSrc);

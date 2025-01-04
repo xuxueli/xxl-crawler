@@ -3,17 +3,15 @@ package com.xuxueli.crawler.test;
 import com.xuxueli.crawler.XxlCrawler;
 import com.xuxueli.crawler.annotation.PageFieldSelect;
 import com.xuxueli.crawler.annotation.PageSelect;
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.constant.Const;
+import com.xuxueli.crawler.pageloader.param.Response;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.parser.strategy.NonPageParser;
 import com.xuxueli.crawler.util.FileUtil;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 爬虫示例：常规用法
@@ -21,6 +19,32 @@ import java.util.Set;
  * @author xuxueli 2017-10-09 19:48:48
  */
 public class XxlCrawlerNormalTest {
+    private static Logger logger = LoggerFactory.getLogger(XxlCrawlerNormalTest.class);
+
+    /**
+     * 爬虫示例01：分页爬取页面 + 注解式VO数据识别
+     */
+    @Test
+    public void test01() {
+
+        XxlCrawler crawler = new XxlCrawler.Builder()
+                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
+                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
+                .setThreadCount(3)
+                .setPageParser(new PageParser<PageDataVo>() {
+                    @Override
+                    public void afterParse(Response<PageDataVo> response) {
+                        // 解析封装 PageVo 对象
+                        String pageUrl = response.getHtml().baseUri();
+                        for (PageDataVo pageVo: response.getParseVoList()) {
+                            logger.info("pageUrl={}, PageDataVo={}", pageUrl, pageVo);
+                        }
+                    }
+                })
+                .build();
+
+        crawler.start(true);
+    }
 
     @PageSelect(cssQuery = "#search-projects-ulist .project")
     public static class PageDataVo {
@@ -56,30 +80,6 @@ public class XxlCrawlerNormalTest {
         }
     }
 
-    /**
-     * 爬虫示例01：分页爬取页面 + 注解式VO数据识别
-     */
-    @Test
-    public void test01() {
-
-        XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
-                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
-                .setThreadCount(3)
-                .setPageParser(new PageParser<PageDataVo>() {
-                    @Override
-                    public void parse(Document html, Element pageVoElement, PageDataVo pageVo) {
-                        // 解析封装 PageVo 对象
-                        String pageUrl = html.baseUri();
-                        System.out.println(pageUrl + "：" + pageVo.toString());
-                    }
-                })
-                .build();
-
-        System.out.println("start");
-        crawler.start(true);
-        System.out.println("end");
-    }
 
     /**
      * 爬虫示例02：分页爬取页面 + 下载Html文件
@@ -89,32 +89,66 @@ public class XxlCrawlerNormalTest {
 
         XxlCrawler crawler = new XxlCrawler.Builder()
                 .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
-                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
+                .setWhiteUrlRegexs("^https:\\/\\/gitee\\.com\\/xuxueli0323\\/projects\\?page=\\d+$")
                 .setThreadCount(3)
                 .setPageParser(new PageParser<Object>() {
                     @Override
-                    public void parse(Document html, Element pageVoElement, Object pageVo) {
-
+                    public void afterParse(Response<Object> response) {
                         // 文件信息
-                        String htmlData = html.html();
-                        String filePath = "/Users/admin/Downloads/tmp";
-                        String fileName = FileUtil.getFileNameByUrl(html.baseUri(), XxlCrawlerConf.CONTENT_TYPE_HTML);
+                        String htmlData = response.getHtml().html();
+                        String filePath = "/Users/admin/Downloads/tmp/html";
+                        String fileName = FileUtil.getFileNameByUrl(response.getHtml().baseUri(), Const.CONTENT_TYPE_HTML);
 
                         // 下载Html文件
                         FileUtil.saveFile(htmlData, filePath, fileName);
+                        logger.info("saveFile success, url = {}, file={}", response.getRequest().getUrl(), filePath + "/" + fileName);
                     }
                 })
                 .build();
 
-        System.out.println("start");
         crawler.start(true);
-        System.out.println("end");
+    }
+
+
+    /**
+     * 爬虫示例03：分页爬取页面 + 下载图片
+     */
+    @Test
+    public void test03() {
+
+        XxlCrawler crawler = new XxlCrawler.Builder()
+                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
+                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
+                .setThreadCount(3)
+                .setPageParser(new PageParser<PageImgVo>() {
+                    @Override
+                    public void afterParse(Response<PageImgVo> response) {
+
+                        // 文件信息
+                        String filePath = "/Users/admin/Downloads/tmp";
+
+                        for (PageImgVo pageImgVo: response.getParseVoList()) {
+                            if (pageImgVo.getImages()!=null && !pageImgVo.getImages().isEmpty()) {
+                                for (String img: pageImgVo.getImages()) {
+                                    // 下载图片文件
+                                    String fileName = FileUtil.getFileNameByUrl(img, null);
+                                    boolean ret = FileUtil.downFile(img, Const.TIMEOUT_MILLIS_DEFAULT, filePath, fileName);
+                                    logger.info("down images " + (ret?"success":"fail") + "：" + img);
+                                }
+                            }
+                        }
+
+                    }
+                })
+                .build();
+
+        crawler.start(true);
     }
 
     @PageSelect(cssQuery = "body")
     public static class PageImgVo {
 
-        @PageFieldSelect(cssQuery = "img", selectType = XxlCrawlerConf.SelectType.ATTR, selectVal = "abs:src")
+        @PageFieldSelect(cssQuery = "img", selectType = Const.SelectType.ATTR, selectVal = "abs:src")
         private List<String> images;
 
         public List<String> getImages() {
@@ -135,42 +169,6 @@ public class XxlCrawlerNormalTest {
 
 
     /**
-     * 爬虫示例03：分页爬取页面 + 下载图片
-     */
-    @Test
-    public void test03() {
-
-        XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
-                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
-                .setThreadCount(3)
-                .setPageParser(new PageParser<PageImgVo>() {
-                    @Override
-                    public void parse(Document html, Element pageVoElement, PageImgVo pageVo) {
-
-                        // 文件信息
-                        String filePath = "/Users/admin/Downloads/tmp";
-
-                        if (pageVo.getImages()!=null && pageVo.getImages().size() > 0) {
-                            Set<String> imagesSet = new HashSet<>(pageVo.getImages());
-                            for (String img: imagesSet) {
-
-                                // 下载图片文件
-                                String fileName = FileUtil.getFileNameByUrl(img, null);
-                                boolean ret = FileUtil.downFile(img, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, filePath, fileName);
-                                System.out.println("down images " + (ret?"success":"fail") + "：" + img);
-                            }
-                        }
-                    }
-                })
-                .build();
-
-        System.out.println("start");
-        crawler.start(true);
-        System.out.println("end");
-    }
-
-    /**
      * 爬虫示例04：采集非Web页面，如JSON接口等，直接输出响应数据
      */
     @Test
@@ -180,18 +178,15 @@ public class XxlCrawlerNormalTest {
         XxlCrawler crawler = new XxlCrawler.Builder()
                 .setUrls("http://news.baidu.com/widget?id=LocalNews&ajax=json")
                 .setTimeoutMillis(5000)
-                .setPageParser(new NonPageParser() {
+                .setPageParser(new PageParser<Object>() {
                     @Override
-                    public void parse(String url, String pageSource) {
-                        System.out.println(url + ": " + pageSource);
+                    public void afterParse(Response<Object> response) {
+                        logger.info(response.getRequest().getUrl() + ": " + response.getHtml().outerHtml());
                     }
                 })
                 .build();
 
-        // 启动
         crawler.start(true);
-
     }
-
 
 }

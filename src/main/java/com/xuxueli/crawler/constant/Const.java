@@ -1,11 +1,11 @@
-package com.xuxueli.crawler.conf;
+package com.xuxueli.crawler.constant;
 
 /**
  * xxl craw conf
  *
  * @author xuxueli 2017-10-31 11:55:32
  */
-public class XxlCrawlerConf {
+public class Const {
 
     // userAgent
     public static final String USER_AGENT_CHROME = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";

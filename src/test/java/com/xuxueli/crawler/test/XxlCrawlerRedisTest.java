@@ -1,11 +1,14 @@
 package com.xuxueli.crawler.test;
 
 import com.xuxueli.crawler.XxlCrawler;
+import com.xuxueli.crawler.pageloader.param.Response;
 import com.xuxueli.crawler.parser.PageParser;
-import com.xuxueli.crawler.rundata.RunData;
+import com.xuxueli.crawler.rundata.RunUrlPool;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 爬虫示例：分布式用法
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.Test;
  * @author xuxueli 2018-02-08 16:56:46
  */
 public class XxlCrawlerRedisTest {
+    private static final Logger logger = LoggerFactory.getLogger(XxlCrawlerRedisTest.class);
 
     /**
      * 爬虫示例01：分页爬取页面 + Redis结合方式
@@ -29,15 +33,15 @@ public class XxlCrawlerRedisTest {
          *      visitedUrl：已采集URL池
          *
          */
-        RunData redisRunData = new RunData() {
+        RunUrlPool redisRunData = new RunUrlPool() {
 
             /**
              * 新增一个待采集的URL，接口需要做URL去重，爬虫线程将会获取到并进行处理；
              *
-             * @param link
+             * @param url
              */
             @Override
-            public boolean addUrl(String link) {
+            public boolean addUrl(String url, boolean validUrlRegex){
 
                 /**
                  * TODO:
@@ -83,22 +87,19 @@ public class XxlCrawlerRedisTest {
         };
 
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setRunData(redisRunData)
+                .setRunUrlPool(redisRunData)
                 .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
                 .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
                 .setThreadCount(3)
                 .setPageParser(new PageParser<Object>() {
                     @Override
-                    public void parse(Document html, Element pageVoElement, Object pageVo) {
-                        String pageUrl = html.baseUri();
-                        System.out.println(pageUrl + "：" + html.html());
+                    public void afterParse(Response<Object> response) {
+                        logger.info(response.getHtml().baseUri() + "：" + response.getHtml().html());
                     }
                 })
                 .build();
 
-        System.out.println("start");
         crawler.start(true);
-        System.out.println("end");
     }
 
 }

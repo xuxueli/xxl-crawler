@@ -1,7 +1,7 @@
 package com.xuxueli.crawler.test.util;
 
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
-import com.xuxueli.crawler.model.PageRequest;
+import com.xuxueli.crawler.constant.Const;
+import com.xuxueli.crawler.pageloader.param.Request;
 import com.xuxueli.crawler.util.JsoupUtil;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
@@ -25,8 +25,8 @@ public class JsoupUtilTest {
     public void loadParseTest(){
         String url = "http://www.baidu.com/";
 
-        Document html = JsoupUtil.load(new PageRequest(url, null, null, null,
-                XxlCrawlerConf.USER_AGENT_CHROME, null, false, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, false, null));
+        Document html = JsoupUtil.load(new Request(url, null, null, null,
+                Const.USER_AGENT_CHROME, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false, null));
         logger.info(html.html());
     }
 
@@ -37,8 +37,8 @@ public class JsoupUtilTest {
     public void findLinksTest() {
         String url = "http://www.baidu.com/";
 
-        Document html = JsoupUtil.load(new PageRequest(url, null, null, null,
-                XxlCrawlerConf.USER_AGENT_CHROME, null, false, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, false,null));
+        Document html = JsoupUtil.load(new Request(url, null, null, null,
+                Const.USER_AGENT_CHROME, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false,null));
         Set<String> linkList = JsoupUtil.findLinks(html);
 
         logger.info("link num {}", linkList.size());
@@ -57,8 +57,8 @@ public class JsoupUtilTest {
     public void findImagesTest() {
         String url = "http://www.baidu.com/";
 
-        Document html = JsoupUtil.load(new PageRequest(url, null, null, null,
-                XxlCrawlerConf.USER_AGENT_CHROME, null, false, XxlCrawlerConf.TIMEOUT_MILLIS_DEFAULT, false,null));
+        Document html = JsoupUtil.load(new Request(url, null, null, null,
+                Const.USER_AGENT_CHROME, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false,null));
         Set<String> linkList = JsoupUtil.findImages(html);
 
         logger.info("images num {}", linkList.size());

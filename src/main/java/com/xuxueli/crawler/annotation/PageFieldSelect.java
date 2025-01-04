@@ -1,6 +1,6 @@
 package com.xuxueli.crawler.annotation;
 
-import com.xuxueli.crawler.conf.XxlCrawlerConf;
+import com.xuxueli.crawler.constant.Const;
 
 import java.lang.annotation.*;
 
@@ -30,11 +30,11 @@ public @interface PageFieldSelect {
      *
      * jquery 数据抽取方式，如 ".html()/.text()/.val()/.attr() ..."等
      *
-     * @see com.xuxueli.crawler.conf.XxlCrawlerConf.SelectType
+     * @see Const.SelectType
      *
      * @return SelectType
      */
-    public XxlCrawlerConf.SelectType selectType() default XxlCrawlerConf.SelectType.TEXT;
+    public Const.SelectType selectType() default Const.SelectType.TEXT;
 
     /**
      * jquery data-extraction-value, effect when SelectType=ATTR/HAS_CLASS, like ".attr("abs:src")"
