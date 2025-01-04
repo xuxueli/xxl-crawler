@@ -27,21 +27,6 @@ XXL-CRAWLER is a lightweight web crawler framework. A line of code to develop a 
 
 XXL-CRAWLER 是一个轻量级Java爬虫框架。一行代码开发一个多线程爬虫，全注解方式采集页面数据至Java对象，拥有"多线程、全注解、JS渲染、代理、分布式扩展"等特性；
 
-## Example code 
->注意：仅供学习测试使用，如有侵犯请联系删除
-
-如下测试代码可以前往仓库查看：[测试代码目录](https://github.com/xuxueli/xxl-crawler/tree/master/src/test/java/com/xxl/crawler/test)
-
-| 序号 | 爬虫名称                        | 功能描述                                                                                | 测试用例代码文件         |
-|----|-----------------------------|-------------------------------------------------------------------------------------|------------------|
-| 1  | Gitee高星项目数据爬虫【页面提取数据】       | 一行代码启动多线程爬虫，分页方式扩散爬取“Gitee开源项目列表”，通过“注解式”自动提取页面数据，封装成PageVo输出；                      | XxlCrawlerTest01 |
-| 2  | Gitee页面下载爬虫【页面下载】           | 爬取“Gitee开源项目列表”，获取相关页面html原始数据，下载本地生成html文件；                                        | XxlCrawlerTest02 |
-| 3  | 网易图片下载爬虫【图片下载】              | 爬取“网易新闻文章图片”，下载图片文件至本地；                                                             | XxlCrawlerTest03 |
-| 4  | 百度新闻爬虫【接口提取数据】              | 爬取非Web页面，本案例为JSON接口，直接输出响应数据                                                        | XxlCrawlerTest04 |
-| 5  | 电商商品价格爬虫【JS渲染方式；Selenium集成】 | 爬虫获取电商商品价格，由于价格异步渲染；该方案使用 Selenium + ChromeDriver 方式JS渲染，模拟浏览器行为采集数据；               | XxlCrawlerTest05 |
-| 6  | 代理方式爬取数据【Proxy代理方式】         | 爬取目标页面数据，通过代理进行；可突破访问限制、保障数据安全；                                                     | XxlCrawlerTest06 |
-| 7  | 集群方式爬取数据【Redis集群方式】       | 爬取目标页面数据，通过集群方式进行；集群中多个XxlCrawler共享RunUrlPool，协同扩散URL并消费待采集任务，提升采集效率。               | XxlCrawlerTest07 |
-
 
 ## Documentation
 - [中文文档](https://www.xuxueli.com/xxl-crawler/)
@@ -66,6 +51,22 @@ XXL-CRAWLER 是一个轻量级Java爬虫框架。一行代码开发一个多线�
 - 16、动态参数：支持运行时动态调整请求参数；
 - 17、超时控制：支持设置爬虫请求的超时时间；
 - 18、主动停顿：爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；
+
+
+## Example code
+>注意：仅供学习测试使用，如有侵犯请联系删除
+
+如下测试代码可以前往仓库查看：[测试代码目录](https://github.com/xuxueli/xxl-crawler/tree/master/src/test/java/com/xxl/crawler/test)
+
+| 序号 | 爬虫名称                        | 功能描述                                                                                | 测试用例代码文件         |
+|----|-----------------------------|-------------------------------------------------------------------------------------|------------------|
+| 1  | Gitee高星项目数据爬虫【页面提取数据】       | 一行代码启动多线程爬虫，分页方式扩散爬取“Gitee开源项目列表”，通过“注解式”自动提取页面数据，封装成PageVo输出；                      | XxlCrawlerTest01 |
+| 2  | Gitee页面下载爬虫【页面下载】           | 爬取“Gitee开源项目列表”，获取相关页面html原始数据，下载本地生成html文件；                                        | XxlCrawlerTest02 |
+| 3  | 网易图片下载爬虫【图片下载】              | 爬取“网易新闻文章图片”，下载图片文件至本地；                                                             | XxlCrawlerTest03 |
+| 4  | 百度新闻爬虫【接口提取数据】              | 爬取非Web页面，本案例为JSON接口，直接输出响应数据                                                        | XxlCrawlerTest04 |
+| 5  | 电商商品价格爬虫【JS渲染方式；Selenium集成】 | 爬虫获取电商商品价格，由于价格异步渲染；该方案使用 Selenium + ChromeDriver 方式JS渲染，模拟浏览器行为采集数据；               | XxlCrawlerTest05 |
+| 6  | 代理方式爬取数据【Proxy代理方式】         | 爬取目标页面数据，通过代理进行；可突破访问限制、保障数据安全；                                                     | XxlCrawlerTest06 |
+| 7  | 集群方式爬取数据【Redis集群方式】       | 爬取目标页面数据，通过集群方式进行；集群中多个XxlCrawler共享RunUrlPool，协同扩散URL并消费待采集任务，提升采集效率。               | XxlCrawlerTest07 |
 
 
 ## Communication
