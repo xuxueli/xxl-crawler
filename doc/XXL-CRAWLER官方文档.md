@@ -321,11 +321,11 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 2、版本升级：依赖版本升级，如jsoup、htmlunit、selenium等;
 - 3、代码重构：优化代码结构，提升系统可维护性；
 
-### v1.4.0 Release Notes[规划中]
-- 1、【重构】增强JS渲染采集能力，原生提供 "selenium chrome headless" 方案实现，并提供开箱即用的 PageLoader ；
-- 2、【重构】重构核心功能模块，提升扩展性；
-- 3、【优化】进一步优化 selenium 特性兼容问题；
-- 4、【升级】版本升级：依赖版本升级，如jsoup、selenium等;
+### v1.4.0 Release Notes[2024-01-05]
+- 1、【提升】爬虫JS渲染能力强化：升级提供 "Selenium + ChromeDriver" 方案支持JS渲染，兼容性更高，废弃旧Phantomjs方案。非JS渲染场景仍然Jsoup，速度更快。同时支持自由扩展其他实现。
+- 2、【优化】进一步优化 Selenium 兼容问题，完善JS渲染场景下兼容性和性能。
+- 3、【重构】重构核心功能模块，提升扩展性；修复历史代码隐藏问题，提升系统稳定习惯。
+- 4、【升级】多个依赖升级至更新版本，如jsoup、selenium等。
 
 
 ### TODO LIST
