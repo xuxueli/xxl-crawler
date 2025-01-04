@@ -2,7 +2,7 @@
     <img src="https://www.xuxueli.com/doc/static/xxl-job/images/xxl-logo.jpg" width="150">
     <h3 align="center">XXL-CRAWLER</h3>
     <p align="center">
-        XXL-CRAWLER, a distributed web crawler framework.
+        XXL-CRAWLER, a lightweight web crawler framework.
         <br>
         <a href="https://www.xuxueli.com/xxl-crawler/"><strong>-- Home Page --</strong></a>
         <br>
@@ -23,7 +23,7 @@
 
 ## Introduction
 
-XXL-CRAWLER is a lightweight crawler framework. A line of code to develop a multi-threaded crawler, fully annotated way to collect page data to Java objects, with "multi-threaded, fully annotated, JS rendering, proxy, distributed extension" and other features;
+XXL-CRAWLER is a lightweight web crawler framework. A line of code to develop a multi-threaded crawler, fully annotated way to collect page data to Java objects, with "multi-threaded, fully annotated, JS rendering, proxy, distributed extension" and other features;
 
 XXL-CRAWLER 是一个轻量级Java爬虫框架。一行代码开发一个多线程爬虫，全注解方式采集页面数据至Java对象，拥有"多线程、全注解、JS渲染、代理、分布式扩展"等特性；
 
