@@ -34,7 +34,7 @@ public class ProxyIpUtil {
             httpURLConnection.setReadTimeout(Const.TIMEOUT_MILLIS_DEFAULT);
 
             httpURLConnection.connect();
-            int statusCode = httpURLConnection.getResponseCode();
+            int statusCode = httpURLConnection.getResponseCode();           // 200 success
 
             /*InputStream inputStream = httpURLConnection.getInputStream();
             String content = IOUtil.toString(inputStream, null);

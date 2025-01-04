@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 爬虫示例01：
- *      - 爬虫名称：Gitee开源项目爬虫
- *      - 爬虫场景：Gitee开源项目列表，按照Star排序爬取 Top75 开源项目。
- *      - 爬虫开发：
+ *      - 爬虫名称：Gitee高星项目数据爬虫
+ *      - 爬虫场景：爬取目标页面（Gitee开源项目），提取页面元素数据并输出；
+ *      - 实现步骤：多线程、分页方式自动扩散爬取“Gitee开源项目列表”，按照Star排序提取Top75开源项目；最终通过“注解式”自动提取页面数据，封装成PageVo输出。
  *          1、XxlCrawler 开发：一行代码定义多线程爬虫，开启自动爬虫扩散，设置3线程并行运行；同时设计主动停顿时间等，避免对下游压力过大。
  *          2、PageVo 开发：通过 PageVO（GiteeProjectPageVo）注解式定义页面元素选择逻辑，实现页面元素到 Object 的自动映射。
- *          3、PageParser 开发：通过 “afterParse” 获取爬虫输出结果数据；本示例针对数据只做log输出，仅供学习参考。
+ *          3、PageParser 开发：通过 “afterParse/后处理逻辑” 获取爬虫输出结果数据；本示例针对数据只做log输出，仅供学习参考。
  *
  * (仅供学习测试使用，如有侵犯请联系删除；)
  * @author xuxueli 2017-10-09 19:48:48
@@ -43,12 +43,14 @@ public class XxlCrawlerTest01 {
                     @Override
                     public void afterParse(Response<GiteeProjectPageVo> response) {
                         /**
-                         * 2、获取爬虫结果数据
+                         * 3、获取爬虫结果数据
                          *
                          * 说明：afterParse 会在多线程爬虫运行过程中实时输出爬虫结果数据，避免结尾一次性反馈造成大对象问题；可实时消费处理数据，如存储在DB等。
                          */
-                        for (GiteeProjectPageVo pageVo: response.getParseVoList()) {
-                            logger.info("response.getHtml().baseUri()={}, PageDataVo={}", response.getHtml().baseUri(), pageVo);
+                        if (response.getParseVoList() != null) {
+                            for (GiteeProjectPageVo pageVo: response.getParseVoList()) {
+                                logger.info("response.getHtml().baseUri()={}, PageDataVo={}", response.getHtml().baseUri(), pageVo);
+                            }
                         }
                     }
                 })

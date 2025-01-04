@@ -6,6 +6,7 @@ import com.xxl.crawler.annotation.PageSelect;
 import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.param.Request;
 import com.xxl.crawler.pageloader.param.Response;
+import com.xxl.crawler.pageloader.strategy.SeleniumChromePageLoader;
 import com.xxl.crawler.parser.PageParser;
 import com.xxl.crawler.proxy.ProxyPool;
 import com.xxl.crawler.proxy.strategy.RoundProxyPool;
@@ -21,33 +22,48 @@ import java.net.Proxy;
 import java.util.*;
 
 /**
- * 爬虫示例：Proxy 用法
+ * 爬虫示例01：
+ *      - 爬虫名称：代理方式爬取数据
+ *      - 爬虫场景：爬取目标页面数据，通过代理进行；可突破访问限制、保障数据安全；
+ *      - 实现步骤：
+ *          1、ProxyPool 构建： 构建代理池：可人工构造代理池，或通过系统方式更新维护；
+ *          2、定义 XxlCrawler：配置开发爬虫代码；
+ *          3、PageParser 开发：通过 “afterParse/后处理逻辑” 获取爬虫输出结果数据；本示例针对数据只做log输出，仅供学习参考。
  *
+ * (仅供学习测试使用，如有侵犯请联系删除；)
  * @author xuxueli 2017-10-09 19:48:48
  */
-public class XxlCrawlerProxyTest {
-    private static Logger logger = LoggerFactory.getLogger(XxlCrawlerProxyTest.class);
+public class XxlCrawlerTest06 {
+    private static Logger logger = LoggerFactory.getLogger(XxlCrawlerTest06.class);
 
-
-    /**
-     * 爬虫示例01：爬取页面，代理IP方式
-     * (免费代理可搜索获取，免费代理不稳定可以多试几个；仅供学习测试使用，如有侵犯请联系删除； )
-     */
     @Test
-    public void test01() {
+    public void test() {
 
-        // 设置代理池
-        ProxyPool proxyMaker = new RoundProxyPool()
-                .addProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("{自定义代理信息}", 80)));
+        /**
+         * 1、构建代理池：可人工构造代理池，或通过系统方式更新维护；
+         *
+         * 说明：
+         *      a、可从网络自行获取，进行学习使用；比如从 “https://www.kuaidaili.com/free/inha/”，下面进行人工维护代理池；
+         *      b、真实业务场景通过人工维护代理池，成本太高；可参考 "test_proxypool_build" 构建代理池；
+         */
+        ProxyPool proxyPool = new RoundProxyPool()
+                .addProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("{代理IP}", 0)))
+                .addProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("{代理IP}", 0)));
 
-        // 构造爬虫     (代理方式请求IP地址查询网IP138，可从页面响应确认代理是否生效)
+        /**
+         * 2、定义 XxlCrawler
+         */
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("http://pv.sohu.com/cityjson")
+                .setUrls("http://whois.pconline.com.cn/ipJson.jsp?json=true")
                 .setAllowSpread(false)
-                .setProxyPool(proxyMaker)
+                .setProxyPool(proxyPool)
+                .setTimeoutMillis(15 * 1000)
                 .setPageParser(new PageParser<Object>() {
                     @Override
                     public void afterParse(Response<Object> response) {
+                        /**
+                         * 3、PageParser 开发：获取代理请求结果，可通过输出数据查看代理是否成功（会展示代理后IP和地址信息）。
+                         */
                         logger.info(response.getRequest().getUrl() + "：" + response.getHtml().outerHtml());
                     }
                 })
@@ -56,21 +72,24 @@ public class XxlCrawlerProxyTest {
         crawler.start(true);
     }
 
+
+
     /**
-     * 爬虫示例02：爬取公开的免费代理，生成动态代理池
+     * 爬虫示例：爬取公开的免费代理，生成动态代理池
      * (免费代理可从搜索获取，免费代理不稳定可以多试几个；仅供学习测试使用，如有侵犯请联系删除； )
-     */
+     *//*
     @Test
-    public void test02() {
+    public void test_proxypool_build() {
 
         // 代理池
         final List<PageProxyVo> proxyPool = new ArrayList<PageProxyVo>();
 
         // 构造爬虫
+        String driverPath = "/Users/admin/Downloads/chromedriver-mac-arm64/chromedriver";
         XxlCrawler crawler = new XxlCrawler.Builder()
                 .setUrls("https://www.kuaidaili.com/free/inha/1/")
-                .setWhiteUrlRegexs("https://www.kuaidaili.com/free/inha/\\b[1-2]/")      // 前2页数据
-                //.setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://www.kuaidaili.com/free/inha/\\\\d+/")))      // 全部数据
+                .setWhiteUrlRegexs("^https:\\/\\/www\\.kuaidaili\\.com\\/free\\/inha\\/[1-3]\\/$")      // 前3页数据
+                .setPageLoader(new SeleniumChromePageLoader(driverPath))
                 .setThreadCount(5)
                 .setPageParser(new PageParser<PageProxyVo>() {
                     @Override
@@ -153,6 +172,6 @@ public class XxlCrawlerProxyTest {
                     ", port=" + port +
                     '}';
         }
-    }
+    }*/
 
 }

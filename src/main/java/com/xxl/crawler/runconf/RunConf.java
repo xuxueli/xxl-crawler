@@ -30,7 +30,7 @@ public class RunConf {
     private volatile String referrer;                                               // 请求Referrer
     private volatile boolean ifPost = false;                                        // 请求方式：true=POST请求、false=GET请求
     private volatile int timeoutMillis = Const.TIMEOUT_MILLIS_DEFAULT;              // 超时时间，毫秒
-    private volatile boolean isValidateTLSCertificates = true;                      // 是否验证https
+    private volatile boolean isValidateTLSCertificates = false;                      // 是否验证https
     private volatile ProxyPool proxyPool;                                           // 代理生成器
 
     private volatile int pauseMillis = 1;                                           // 停顿时间，爬虫线程处理完页面之后进行主动停顿，避免过于频繁被拦截；

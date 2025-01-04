@@ -163,7 +163,7 @@ public class CrawlerThread implements Runnable {
             logger.error(e.getMessage(), e);
         }
         if (html == null) {
-            return new Response(request, false, null, null, null);
+            return new Response(request, false, null, null, new ArrayList());
         }
 
         // spread find url (FIFO队列,广度优先)
@@ -178,7 +178,7 @@ public class CrawlerThread implements Runnable {
 
         // parse page
         if (!crawler.getRunUrlPool().validUrlRegex(request.getUrl())) {     // limit unvalid-page parse, only allow spread child, finish here
-            return new Response(request, true, html, null, null);
+            return new Response(request, true, html, null, new ArrayList());
         }
 
         // pageVo ClassType

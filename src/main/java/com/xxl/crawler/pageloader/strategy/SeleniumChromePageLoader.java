@@ -1,7 +1,9 @@
 package com.xxl.crawler.pageloader.strategy;
 
+import com.xxl.crawler.exception.XxlCrawlerException;
 import com.xxl.crawler.pageloader.PageLoader;
 import com.xxl.crawler.pageloader.param.Request;
+import com.xxl.crawler.util.FileUtil;
 import com.xxl.crawler.util.UrlUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,6 +39,9 @@ public class SeleniumChromePageLoader extends PageLoader {
         }
 
         // init driver
+        if (!FileUtil.exists(driverPath)) {
+            throw new XxlCrawlerException("webdriver.chrome.driver not found.");
+        }
         System.setProperty("webdriver.chrome.driver", driverPath);
 
         // ChromeOptions
