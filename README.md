@@ -27,7 +27,7 @@ XXL-CRAWLER is a lightweight web crawler framework. A line of code to develop a 
 
 XXL-CRAWLER 是一个轻量级Java爬虫框架。一行代码开发一个多线程爬虫，全注解方式采集页面数据至Java对象，拥有"多线程、全注解、JS渲染、代理、分布式扩展"等特性；
 
-## Code Examples    
+## Example code 
 >注意：仅供学习测试使用，如有侵犯请联系删除
 
 如下测试代码可以前往仓库查看：[测试代码目录](https://github.com/xuxueli/xxl-crawler/tree/master/src/test/java/com/xxl/crawler/test)
