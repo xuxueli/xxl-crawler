@@ -80,7 +80,7 @@ XXL-CRAWLER 是一个轻量级爬虫框架。一行代码开发一个多线程�
 ```
 
 ### 第二步：定义 "PageVo/页面数据对象"（可选）
-下文测试代码可以前往仓库查看：[测试代码目录](https://github.com/xuxueli/xxl-crawler/blob/master/test/com/xxl/crawler/test/)
+下文测试代码可以前往仓库查看：[测试代码目录](https://github.com/xuxueli/xxl-crawler/tree/master/src/test/java/com/xxl/crawler/test)
 
 ```java
 /**
