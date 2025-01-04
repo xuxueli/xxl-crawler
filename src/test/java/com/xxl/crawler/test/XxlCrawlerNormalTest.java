@@ -21,64 +21,6 @@ import java.util.List;
 public class XxlCrawlerNormalTest {
     private static Logger logger = LoggerFactory.getLogger(XxlCrawlerNormalTest.class);
 
-    /**
-     * 爬虫示例01：分页爬取页面 + 注解式VO数据识别
-     */
-    @Test
-    public void test01() {
-
-        XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://gitee.com/xuxueli0323/projects?page=1")
-                .setWhiteUrlRegexs("https://gitee\\.com/xuxueli0323/projects\\?page=\\d+")
-                .setThreadCount(3)
-                .setPageParser(new PageParser<PageDataVo>() {
-                    @Override
-                    public void afterParse(Response<PageDataVo> response) {
-                        // 解析封装 PageVo 对象
-                        String pageUrl = response.getHtml().baseUri();
-                        for (PageDataVo pageVo: response.getParseVoList()) {
-                            logger.info("pageUrl={}, PageDataVo={}", pageUrl, pageVo);
-                        }
-                    }
-                })
-                .build();
-
-        crawler.start(true);
-    }
-
-    @PageSelect(cssQuery = "#search-projects-ulist .project")
-    public static class PageDataVo {
-
-        @PageFieldSelect(cssQuery = ".repository")
-        private String repository;
-
-        @PageFieldSelect(cssQuery = ".description")
-        private String description;
-
-        public String getRepository() {
-            return repository;
-        }
-
-        public void setRepository(String repository) {
-            this.repository = repository;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        @Override
-        public String toString() {
-            return "PageVo{" +
-                    "repository='" + repository + '\'' +
-                    ", description='" + description + '\'' +
-                    '}';
-        }
-    }
 
 
     /**

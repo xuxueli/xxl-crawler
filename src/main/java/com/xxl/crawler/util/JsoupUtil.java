@@ -79,7 +79,7 @@ public class JsoupUtil {
             Document document = resp.parse();
             return document;
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            logger.error("jsoup load error, url={}, error:{}", request.getUrl(), e.getMessage(), e);
             return null;
         }
     }
