@@ -313,6 +313,9 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 3、【重构】重构核心功能模块，提升扩展性；修复历史代码隐藏问题，提升系统稳定习惯。
 - 4、【升级】多个依赖升级至更新版本，如jsoup、selenium等。
 
+### v1.4.1 Release Notes[迭代中]
+- 1、【TODO】爬虫扩散规则抽象，支持自定义；包括深度、URL正则、以及自定义编码等；
+
 
 ### TODO LIST
 - 1、扩展SelectType；
