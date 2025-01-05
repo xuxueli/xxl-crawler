@@ -198,7 +198,7 @@ public class CrawlerThread implements Runnable {
         String pageVoCssQuery = (pageVoSelect!=null && pageVoSelect.cssQuery()!=null && pageVoSelect.cssQuery().trim().length()>0)?pageVoSelect.cssQuery():"html";
         Elements pageVoElements = html.select(pageVoCssQuery);
 
-        if (pageVoElements!=null && pageVoElements.hasText()) {
+        if (pageVoElements!=null && !pageVoElements.isEmpty()) {
             for (Element pageVoElement : pageVoElements) {
 
                 // build pageVo
