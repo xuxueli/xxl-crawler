@@ -80,7 +80,7 @@ public class XxlCrawlerTest05 {
     @PageSelect(cssQuery = "body")
     public static class ProductPageVo {
 
-        @PageFieldSelect(cssQuery = ".text--Mdqy24Ex", selectType = Const.SelectType.TEXT)
+        @PageFieldSelect(cssQuery = ".text--Do8Zgb3q", selectType = Const.SelectType.TEXT)
         private String data;
 
         public String getData() {

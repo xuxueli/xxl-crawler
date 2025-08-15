@@ -7,48 +7,36 @@
     <packaging>jar</packaging>
 
     <name>xxl-crawler</name>
-    <description>A distributed web crawler framework.</description>
+    <description>A lightweight web crawler framework.</description>
     <url>https://www.xuxueli.com/</url>
 
     <properties>
+        <!-- env -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.test.skip>true</maven.test.skip>
-
+        <!-- plugin -->
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.10.1</maven-javadoc-plugin.version>
-        <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
+        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+        <central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
 
-        <!-- slf4j+junit(base) -->
-        <slf4j-api.version>2.0.16</slf4j-api.version>
-        <junit-jupiter.version>5.11.4</junit-jupiter.version>
+        <!-- base -->
+        <slf4j-api.version>2.0.17</slf4j-api.version>
+        <junit-jupiter.version>5.13.4</junit-jupiter.version>
+
         <!-- jsoup -->
-        <jsoup.version>1.18.1</jsoup.version>
+        <jsoup.version>1.21.1</jsoup.version>
         <!-- selenium + chromedriver -->
-        <selenium-java.version>3.141.59</selenium-java.version>
+        <selenium-java.version>4.35.0</selenium-java.version>
     </properties>
 
     <dependencies>
-        <!-- jsoup -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
-        </dependency>
 
-
-
-        <!-- selenium -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium-java.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
+        <!-- ********************** slf4j+junit(base) ********************** -->
         <!-- slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -61,13 +49,27 @@
             <version>${slf4j-api.version}</version>
             <scope>test</scope>
         </dependency>
-
         <!-- junit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- ********************** jsoup + selenium ********************** -->
+        <!-- jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+        <!-- selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium-java.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -103,6 +105,9 @@
 
         <profile>
             <id>release</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <!-- Source -->
@@ -153,18 +158,18 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- maven central -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central-publishing-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
         </profile>
     </profiles>
 

@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -91,9 +92,9 @@ public class SeleniumChromePageLoader extends PageLoader {
             webDriver.get(request.getUrl());
 
 
-            webDriver.manage().timeouts().implicitlyWait(request.getTimeoutMillis(), TimeUnit.MILLISECONDS);
-            webDriver.manage().timeouts().pageLoadTimeout(request.getTimeoutMillis(), TimeUnit.MILLISECONDS);
-            webDriver.manage().timeouts().setScriptTimeout(request.getTimeoutMillis(), TimeUnit.MILLISECONDS);
+            webDriver.manage().timeouts().pageLoadTimeout(Duration.ofMillis(request.getTimeoutMillis()));
+            webDriver.manage().timeouts().scriptTimeout(Duration.ofMillis(request.getTimeoutMillis()));
+            webDriver.manage().timeouts().implicitlyWait(Duration.ofMillis(request.getTimeoutMillis()));
 
             String pageSource = webDriver.getPageSource();
             if (pageSource != null) {
