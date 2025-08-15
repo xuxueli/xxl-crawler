@@ -1,7 +1,9 @@
 ## 《Java爬虫框架XXL-CRAWLER》
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/)
+[![Actions Status](https://github.com/xuxueli/xxl-crawler/workflows/Java%20CI/badge.svg)](https://github.com/xuxueli/xxl-crawler/actions)
+[![Maven Central](https://img.shields.io/maven-central/v/com.xuxueli/xxl-crawler)](https://central.sonatype.com/artifact/com.xuxueli/xxl-crawler/)
 [![GitHub release](https://img.shields.io/github/release/xuxueli/xxl-crawler.svg)](https://github.com/xuxueli/xxl-crawler/releases)
+[![GitHub stars](https://img.shields.io/github/stars/xuxueli/xxl-crawler)](https://github.com/xuxueli/xxl-crawler/)
 ![License](https://img.shields.io/github/license/xuxueli/xxl-crawler.svg)
 [![donate](https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square)](https://www.xuxueli.com/page/donate.html)
 

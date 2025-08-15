@@ -7,12 +7,18 @@
         <a href="https://www.xuxueli.com/xxl-crawler/"><strong>-- Home Page --</strong></a>
         <br>
         <br>
-        <a href="https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/">
-            <img src="https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-crawler/badge.svg" >
+        <a href="https://github.com/xuxueli/xxl-crawler/actions">
+            <img src="https://github.com/xuxueli/xxl-crawler/workflows/Java%20CI/badge.svg" >
+        </a>
+        <a href="https://central.sonatype.com/artifact/com.xuxueli/xxl-crawler">
+            <img src="https://img.shields.io/maven-central/v/com.xuxueli/xxl-crawler" >
         </a>
          <a href="https://github.com/xuxueli/xxl-crawler/releases">
              <img src="https://img.shields.io/github/release/xuxueli/xxl-crawler.svg" >
          </a>
+        <a href="https://github.com/xuxueli/xxl-crawler/">
+            <img src="https://img.shields.io/github/stars/xuxueli/xxl-crawler" >
+        </a>
          <img src="https://img.shields.io/github/license/xuxueli/xxl-crawler.svg" >
          <a href="https://www.xuxueli.com/page/donate.html">
             <img src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square" >
