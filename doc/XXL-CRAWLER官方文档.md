@@ -55,7 +55,8 @@ XXL-CRAWLER 是一个轻量级Java爬虫框架。一行代码开发一个多线�
 - [社区交流](https://www.xuxueli.com/page/community.html)
 
 ### 1.4 环境
-- JDK：1.8+
+- Maven：3+
+- Jdk：17+ (说明：版本1.5开始要求Jdk17；版本1.4及以下支持Jdk1.8)
 
 
 ## 二、快速入门
