@@ -20,7 +20,7 @@ public final class FieldReflectionUtil {
 
 	public static Byte parseByte(String value) {
 		try {
-			value = value.replaceAll("　", "");
+			value = removeBlanks(value);
 			return Byte.valueOf(value);
 		} catch(NumberFormatException e) {
 			throw new RuntimeException("parseByte but input illegal input=" + value, e);
@@ -28,7 +28,7 @@ public final class FieldReflectionUtil {
 	}
 
 	public static Boolean parseBoolean(String value) {
-		value = value.replaceAll("　", "");
+		value = removeBlanks(value);
 		if (Boolean.TRUE.toString().equalsIgnoreCase(value)) {
 			return Boolean.TRUE;
 		} else if (Boolean.FALSE.toString().equalsIgnoreCase(value)) {
@@ -40,7 +40,7 @@ public final class FieldReflectionUtil {
 
 	public static Integer parseInt(String value) {
 		try {	
-			value = value.replaceAll("　", "");
+			value = removeBlanks(value);
 			return Integer.valueOf(value);
 		} catch(NumberFormatException e) {
 			throw new RuntimeException("parseInt but input illegal input=" + value, e);
@@ -49,7 +49,7 @@ public final class FieldReflectionUtil {
 
 	public static Short parseShort(String value) {
 		try {
-			value = value.replaceAll("　", "");
+			value = removeBlanks(value);
 			return Short.valueOf(value);
 		} catch(NumberFormatException e) {
 			throw new RuntimeException("parseShort but input illegal input=" + value, e);
@@ -58,7 +58,7 @@ public final class FieldReflectionUtil {
 
 	public static Long parseLong(String value) {
 		try {
-			value = value.replaceAll("　", "");
+			value = removeBlanks(value);
 			return Long.valueOf(value);
 		} catch(NumberFormatException e) {
 			throw new RuntimeException("parseLong but input illegal input=" + value, e);
@@ -67,7 +67,7 @@ public final class FieldReflectionUtil {
 
 	public static Float parseFloat(String value) {
 		try {
-			value = value.replaceAll("　", "");
+			value = removeBlanks(value);
 			return Float.valueOf(value);
 		} catch(NumberFormatException e) {
 			throw new RuntimeException("parseFloat but input illegal input=" + value, e);
@@ -76,7 +76,7 @@ public final class FieldReflectionUtil {
 
 	public static Double parseDouble(String value) {
 		try {
-			value = value.replaceAll("　", "");
+			value = removeBlanks(value);
 			return Double.valueOf(value);
 		} catch(NumberFormatException e) {
 			throw new RuntimeException("parseDouble but input illegal input=" + value, e);
@@ -148,4 +148,16 @@ public final class FieldReflectionUtil {
 		}
 	}
 
+    /**
+     * 删除半角空格符和全角空格符
+     *
+     * @param str 原始字符串
+     * @return 处理后字符串
+     */
+    private static String removeBlanks(String str) {
+        if (str == null) {
+            return null;
+        }
+        return str.replaceAll("[ \\u3000]+", "");
+    }
 }
