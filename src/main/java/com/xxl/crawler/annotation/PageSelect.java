@@ -15,9 +15,15 @@ import java.lang.annotation.*;
 public @interface PageSelect {
 
     /**
-     * CSS-like query, like "#body"
+     * css selector of page element
      *
-     * CSS选择器, 如 "#body"
+     * CSS选择器语法，参考Jsoup - Selector文档：https://jsoup.org/apidocs/org/jsoup/select/Selector.html
+     * <pre>
+     *     cssQuery="*"                 // any element
+     *     cssQuery=".class"            // elements with a class name of "class"
+     *     cssQuery="#id"               // element with an ID of "id"
+     *     cssQuery="body"              // body element
+     * </pre>
      *
      * @return String
      */

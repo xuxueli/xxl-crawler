@@ -17,9 +17,15 @@ import java.lang.annotation.*;
 public @interface PageFieldSelect {
 
     /**
-     * CSS-like query, like "#title"
+     * css selector of page element
      *
-     * CSS选择器, 如 "#title"
+     * CSS选择器语法，参考Jsoup - Selector文档：https://jsoup.org/apidocs/org/jsoup/select/Selector.html
+     * <pre>
+     *     cssQuery="*"                 // any element
+     *     cssQuery=".class"            // elements with a class name of "class"
+     *     cssQuery="#id"               // element with an ID of "id"
+     *     cssQuery="body"              // body element
+     * </pre>
      *
      * @return String
      */
@@ -28,7 +34,14 @@ public @interface PageFieldSelect {
     /**
      * jquery data-extraction-type，like ".html()/.text()/.val()/.attr() ..."
      *
-     * jquery 数据抽取方式，如 ".html()/.text()/.val()/.attr() ..."等
+     * <pre>
+     *     selectType = SelectType.HTML                             // html of element
+     *     selectType = SelectType.VAL                              // val of element
+     *     selectType = SelectType.TEXT                             // text of element
+     *     selectType = SelectType.TOSTRING                         // toString of element
+     *     selectType = SelectType.ATTR, selectVal="href"           // attr of element
+     *     selectType = SelectType.HAS_CLASS, selectVal="abs:src"   // hasClass of element
+     * </pre>
      *
      * @see Const.SelectType
      *
@@ -37,9 +50,9 @@ public @interface PageFieldSelect {
     public Const.SelectType selectType() default Const.SelectType.TEXT;
 
     /**
-     * jquery data-extraction-value, effect when SelectType=ATTR/HAS_CLASS, like ".attr("abs:src")"
+     * jquery data-extraction-value
      *
-     * jquery 数据抽取参数，SelectType=ATTR/HAS_CLASS 时有效，如 ".attr("abs:src")"
+     *  1、effect when SelectType=ATTR/HAS_CLASS, like ".attr("abs:src")"
      *
      * @return String
      */
@@ -48,7 +61,7 @@ public @interface PageFieldSelect {
     /**
      * data patttern, valid when date data
      *
-     * 时间格式化，日期类型数据有效
+     *  1、时间格式化，日期类型数据有效
      *
      * @return String
      */

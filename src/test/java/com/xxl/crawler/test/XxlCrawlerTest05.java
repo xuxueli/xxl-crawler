@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 爬虫示例04：
- *      - 爬虫名称：电商商品价格爬虫
- *      - 爬虫场景：爬虫获取电商商品价格，由于价格异步渲染；该方案使用 Selenium + ChromeDriver 方式JS渲染，模拟浏览器行为采集数据；
+ *      - 爬虫名称：Hao123动态页面爬虫
+ *      - 爬虫场景：爬虫获取Hao123动态页面，由于数据异步渲染；该方案使用 Selenium + ChromeDriver 方式JS渲染，模拟浏览器行为采集数据；
  *      - 实现步骤：
  *          1、下载驱动 chromedriver ，并解压在磁盘空间下
  *          2、定义 XxlCrawler
@@ -39,7 +39,7 @@ public class XxlCrawlerTest05 {
         /**
          * 1、下载驱动 chromedriver ，并解压在磁盘空间下；
          *
-         *  下载地址：
+         *  下载地址：version：>=143.0.7499.169
          *      a、https://developer.chrome.com/docs/chromedriver?hl=zh-cn
          *      b、https://googlechromelabs.github.io/chrome-for-testing/#stable
          */
@@ -50,20 +50,20 @@ public class XxlCrawlerTest05 {
          * 2、定义 XxlCrawler
          */
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("https://detail.tmall.com/item.htm?id=603403919330")
+                .setUrls("https://www.hao123.com/")
                 .setAllowSpread(false)
                 .setTimeoutMillis(10 * 1000)
                 .setPageLoader(new SeleniumChromePageLoader(driverPath))                // "selenisum + chrome" 版本 PageLoader：支持 JS 渲染
-                .setPageParser(new PageParser<ProductPageVo>() {
+                .setPageParser(new PageParser<PageVo>() {
                     @Override
-                    public void afterParse(Response<ProductPageVo> response) {
+                    public void afterParse(Response<PageVo> response) {
                         /**
                          * 4、PageParser 开发
                          */
-                        if (response.getParseVoList() != null && response.getParseVoList().size() > 0) {
-                            logger.info("商品价格（JS动态渲染方式获取）: {}", response.getParseVoList());
+                        if (response.getParseVoList() != null && !response.getParseVoList().isEmpty()) {
+                            logger.info("JS动态渲染方式获取: {}", response.getParseVoList());
                         } else {
-                            logger.info("商品价格（JS动态渲染方式获取）: 获取失败");
+                            logger.info("JS动态渲染方式获取: 获取失败");
                         }
 
                     }
@@ -77,24 +77,36 @@ public class XxlCrawlerTest05 {
     /**
      * 3、定义 PageVo
      */
-    @PageSelect(cssQuery = "body")
-    public static class ProductPageVo {
+    @PageSelect(cssQuery = ".js-hotword")
+    public static class PageVo {
 
-        @PageFieldSelect(cssQuery = ".text--Do8Zgb3q", selectType = Const.SelectType.TEXT)
-        private String data;
+        @PageFieldSelect(cssQuery = "*", selectType = Const.SelectType.TEXT)
+        private String title;
 
-        public String getData() {
-            return data;
+        @PageFieldSelect(cssQuery = "href", selectType = Const.SelectType.ATTR)
+        private String link;
+
+        public String getTitle() {
+            return title;
         }
 
-        public void setData(String data) {
-            this.data = data;
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
         }
 
         @Override
         public String toString() {
             return "PageVo{" +
-                    "data='" + data + '\'' +
+                    "title='" + title + '\'' +
+                    ", link='" + link + '\'' +
                     '}';
         }
     }
