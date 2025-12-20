@@ -328,9 +328,8 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 1、【优化】文件处理优化，优化爬虫文件下载及处理流程；合并PR-37；
 - 2、【升级】多个依赖升级至更新版本，如jsoup、selenium、junit等。
 - 3、【优化】JS动态渲染爬虫（Selenium + ChromeDriver ）示例完善；
-  
 
-### v1.5.2 Release Notes[迭代中]
+### v1.6.1 Release Notes[迭代中]
 - 1、【TODO】爬虫扩散规则抽象，支持自定义；包括深度、URL正则、以及自定义编码等；
 
 ### TODO LIST
