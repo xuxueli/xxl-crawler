@@ -6,7 +6,7 @@ import com.xxl.crawler.annotation.PageSelect;
 import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.param.Response;
 import com.xxl.crawler.pageparser.PageParser;
-import com.xxl.crawler.util.FileUtil;
+import com.xxl.crawler.util.CrawlerFileUtil;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,8 +60,8 @@ public class XxlCrawlerTest03 {
                                 if (pageImgVo.getImages()!=null && !pageImgVo.getImages().isEmpty()) {
                                     for (String img: pageImgVo.getImages()) {
                                         // save
-                                        String fileName = FileUtil.getFileNameByUrl(img, "image/jpeg");
-                                        boolean ret = FileUtil.downFile(img, Const.TIMEOUT_MILLIS_DEFAULT, filePath, fileName);
+                                        String fileName = CrawlerFileUtil.getFileNameByUrl(img, "image/jpeg");
+                                        boolean ret = CrawlerFileUtil.downFile(img, Const.TIMEOUT_MILLIS_DEFAULT, filePath, fileName);
                                         logger.info("down images " + (ret?"success":"fail") + "：" + img);
                                     }
                                 }

@@ -14,40 +14,53 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 /**
- * Page downloader with enhanced file handling capabilities
+ * Crawler File Util
  *
  * @author xuxueli 2015-05-14 22:44:43
  */
-public class FileUtil {
-    private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
-    private static final int BUFFER_SIZE = 8192; // 增大缓冲区提高IO效率
-    private static final int MAX_FILENAME_LENGTH = 255; // 文件名最大长度限制
+public class CrawlerFileUtil {
+    private static final Logger logger = LoggerFactory.getLogger(CrawlerFileUtil.class);
+
+    /**
+     * buffer size
+     */
+    private static final int BUFFER_SIZE = 8192;
+
+    /**
+     * max length of filename
+     */
+    private static final int MAX_FILENAME_LENGTH = 255;
 
     /**
      * 根据URL和内容类型生成安全的文件名，移除非法字符
      *
-     * @param url         源URL
-     * @param contentType 内容类型
-     * @return 处理后的文件名
+     * @param url           origin  url
+     * @param contentType   content-type
+     * @return fileName
      */
     public static String getFileNameByUrl(String url, String contentType) {
+        // valid url
         if (url == null || url.trim().isEmpty()) {
             return "unknown_file";
         }
 
-        // 提取URL中的文件名部分（最后一个/后的内容）
-        String fileName = url.substring(url.lastIndexOf('/') + 1);
-        if (fileName.isEmpty()) {
-            fileName = "index"; // 处理以/结尾的URL
-        }
+        // parse fileName from url
+        String fileName = url;
 
-        // 替换所有非法字符（兼容Windows和Linux系统）
+        // filter url after last "/"
+        /*String fileName = url.substring(url.lastIndexOf('/') + 1);
+        if (fileName.isEmpty()) {
+            fileName = "index"; // parse url end with "/"
+        }*/
+
+        // replace all invalid-characters with "_", for windows and linux
         fileName = fileName.replaceAll("[\\\\/:*?\"<>|]", "_");
 
-        // 仅在文件名不含后缀且contentType有效时添加后缀
-        if (contentType != null && contentType.contains("/") && !fileName.contains(".")) {
+        // append suffix to fileName
+        if (contentType != null && contentType.contains("/")) {         //  ignore "." : /*!fileName.contains(".") &&*/
+			// such as: text/html、application/pdf、image/png、image/jpeg
             String suffix = contentType.substring(contentType.lastIndexOf("/") + 1);
-            // 过滤包含参数的contentType（如image/jpeg;charset=utf-8）
+            // filter parameters of contentType, like : application/pdf;charset=utf-8
             if (suffix.contains(";")) {
                 suffix = suffix.substring(0, suffix.indexOf(";"));
             }
@@ -56,7 +69,7 @@ public class FileUtil {
             }
         }
 
-        // 限制文件名长度，防止超出系统限制
+        // limit length of filename, avoid filename too long
         if (fileName.length() > MAX_FILENAME_LENGTH) {
             int extIndex = fileName.lastIndexOf('.');
             if (extIndex > 0 && extIndex < fileName.length() - 1) {
@@ -74,9 +87,9 @@ public class FileUtil {
     /**
      * 保存字符串数据到本地文件
      *
-     * @param fileData  文件内容字符串
-     * @param filePath  文件夹路径
-     * @param fileName  文件名
+     * @param fileData      file data
+     * @param filePath      file path
+     * @param fileName      file name
      */
     public static void saveFile(String fileData, String filePath, String fileName) {
         if (fileData == null) {
@@ -88,7 +101,7 @@ public class FileUtil {
         Path outputPath = dirPath.resolve(fileName);
 
         try {
-            // 创建目录（支持多级目录）并验证
+            // create directory if not exists
             if (!Files.exists(dirPath)) {
                 Files.createDirectories(dirPath);
                 if (!Files.exists(dirPath)) {
@@ -96,12 +109,12 @@ public class FileUtil {
                 }
             }
 
-            // 检查文件是否已存在
+            // check fileName if exists, will be overwritten if exists
             if (Files.exists(outputPath)) {
                 logger.warn("File already exists, will be overwritten: {}", outputPath);
             }
 
-            // 使用NIO写入文件，指定UTF-8编码
+            // write file
             Files.write(outputPath, fileData.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             logger.error("Failed to save file to: " + outputPath, e);
@@ -112,14 +125,14 @@ public class FileUtil {
     /**
      * 从URL下载文件到本地
      *
-     * @param fileUrl      待下载文件的URL
-     * @param timeoutMillis 超时时间（毫秒）
-     * @param filePath     保存目录
-     * @param fileName     保存的文件名
-     * @return 下载是否成功
+     * @param fileUrl           file url
+     * @param timeoutMillis     timeout millis
+     * @param filePath          file path
+     * @param fileName          file name
+     * @return whether download success
      */
     public static boolean downFile(String fileUrl, int timeoutMillis, String filePath, String fileName) {
-        // 验证输入参数
+        // parse param
         if (fileUrl == null || fileUrl.trim().isEmpty()) {
             logger.error("Invalid file URL: {}", fileUrl);
             return false;
@@ -134,17 +147,17 @@ public class FileUtil {
         Path tempPath = outputPath.resolveSibling(fileName + ".tmp"); // 临时文件路径
 
         try {
-            // 创建目录
+            // create directory if not exists
             if (!Files.exists(dirPath)) {
                 Files.createDirectories(dirPath);
             }
 
+            // download temp file
             URL url = new URL(fileUrl);
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(timeoutMillis);
             connection.setReadTimeout(timeoutMillis); // 添加读取超时
 
-            // 下载到临时文件
             try (InputStream inputStream = connection.getInputStream();
                  BufferedOutputStream out = new BufferedOutputStream(Files.newOutputStream(tempPath))) {
 
@@ -155,7 +168,7 @@ public class FileUtil {
                 }
             }
 
-            // 下载完成后原子性移动到目标路径
+            // move temp file to output file
             Files.move(tempPath, outputPath, StandardCopyOption.REPLACE_EXISTING);
             logger.debug("File downloaded successfully: {}", outputPath);
             return true;
@@ -164,7 +177,7 @@ public class FileUtil {
         } catch (IOException e) {
             logger.error("Failed to download file from URL: {} to path: {}", fileUrl, outputPath, e);
         } finally {
-            // 清理临时文件（无论成功失败）
+            // delete temp file
             try {
                 if (Files.exists(tempPath)) {
                     Files.delete(tempPath);
@@ -179,8 +192,8 @@ public class FileUtil {
     /**
      * 检查文件或目录是否存在
      *
-     * @param filePath 路径
-     * @return 是否存在
+     * @param filePath      check file or directory
+     * @return true if exists, false otherwise
      */
     public static boolean exists(String filePath) {
         if (filePath == null || filePath.trim().isEmpty()) {

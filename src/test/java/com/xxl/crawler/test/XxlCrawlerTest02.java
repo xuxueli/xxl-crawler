@@ -4,7 +4,7 @@ import com.xxl.crawler.XxlCrawler;
 import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.param.Response;
 import com.xxl.crawler.pageparser.PageParser;
-import com.xxl.crawler.util.FileUtil;
+import com.xxl.crawler.util.CrawlerFileUtil;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +45,8 @@ public class XxlCrawlerTest02 {
 
                         // 下载Html文件
                         String filePath = "/Users/admin/Downloads/tmp/html";
-                        String fileName = FileUtil.getFileNameByUrl(response.getHtml().baseUri(), Const.CONTENT_TYPE_HTML);
-                        FileUtil.saveFile(htmlData, filePath, fileName);
+                        String fileName = CrawlerFileUtil.getFileNameByUrl(response.getHtml().baseUri(), Const.CONTENT_TYPE_HTML);
+                        CrawlerFileUtil.saveFile(htmlData, filePath, fileName);
                         logger.info("saveFile success, url = {}, file={}", response.getRequest().getUrl(), filePath + "/" + fileName);
                     }
                 })

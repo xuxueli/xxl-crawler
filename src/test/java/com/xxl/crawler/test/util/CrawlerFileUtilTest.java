@@ -1,7 +1,7 @@
 package com.xxl.crawler.test.util;
 
 import com.xxl.crawler.constant.Const;
-import com.xxl.crawler.util.FileUtil;
+import com.xxl.crawler.util.CrawlerFileUtil;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author xuxueli 2017-10-09 17:47:13
  */
-public class FileUtilTest {
+public class CrawlerFileUtilTest {
 
     /**
      * 生成Html本地文件
@@ -19,9 +19,9 @@ public class FileUtilTest {
 
         String htmlData = "<html>Hello world.</html>";
         String filePath = "/Users/xuxueli/Downloads/tmp";
-        String fileName = FileUtil.getFileNameByUrl("http://www.baidu.com/",	Const.CONTENT_TYPE_HTML);
+        String fileName = CrawlerFileUtil.getFileNameByUrl("http://www.baidu.com/",	Const.CONTENT_TYPE_HTML);
 
-        FileUtil.saveFile(htmlData, filePath, fileName);
+        CrawlerFileUtil.saveFile(htmlData, filePath, fileName);
     }
 
 }

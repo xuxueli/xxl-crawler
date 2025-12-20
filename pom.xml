@@ -33,8 +33,6 @@
         <jsoup.version>1.21.2</jsoup.version>
         <!-- selenium + chromedriver -->
         <selenium-java.version>4.39.0</selenium-java.version>
-        <!-- xxl-tool -->
-        <xxl-tool.version>2.4.1</xxl-tool.version>
     </properties>
 
     <dependencies>
@@ -58,14 +56,6 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- ********************** tool ********************** -->
-        <!-- xxl-tool -->
-        <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-tool</artifactId>
-            <version>${xxl-tool.version}</version>
         </dependency>
 
         <!-- ********************** jsoup + selenium ********************** -->

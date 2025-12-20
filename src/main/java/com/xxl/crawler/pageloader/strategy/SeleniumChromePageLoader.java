@@ -3,7 +3,7 @@ package com.xxl.crawler.pageloader.strategy;
 import com.xxl.crawler.exception.XxlCrawlerException;
 import com.xxl.crawler.pageloader.PageLoader;
 import com.xxl.crawler.pageloader.param.Request;
-import com.xxl.crawler.util.FileUtil;
+import com.xxl.crawler.util.CrawlerFileUtil;
 import com.xxl.crawler.util.UrlUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * "selenisum + chrome" page loader
@@ -40,7 +39,7 @@ public class SeleniumChromePageLoader extends PageLoader {
         }
 
         // init driver
-        if (!FileUtil.exists(driverPath)) {
+        if (!CrawlerFileUtil.exists(driverPath)) {
             throw new XxlCrawlerException("webdriver.chrome.driver not found.");
         }
         System.setProperty("webdriver.chrome.driver", driverPath);
