@@ -19,19 +19,22 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.test.skip>true</maven.test.skip>
         <!-- plugin -->
-        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-        <central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
 
         <!-- base -->
         <slf4j-api.version>2.0.17</slf4j-api.version>
-        <junit-jupiter.version>5.13.4</junit-jupiter.version>
+        <junit-jupiter.version>6.0.1</junit-jupiter.version>
 
         <!-- jsoup -->
-        <jsoup.version>1.21.1</jsoup.version>
+        <jsoup.version>1.21.2</jsoup.version>
         <!-- selenium + chromedriver -->
-        <selenium-java.version>4.35.0</selenium-java.version>
+        <selenium-java.version>4.39.0</selenium-java.version>
+        <!-- xxl-tool -->
+        <xxl-tool.version>2.4.1</xxl-tool.version>
     </properties>
 
     <dependencies>
@@ -55,6 +58,14 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- ********************** tool ********************** -->
+        <!-- xxl-tool -->
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-tool</artifactId>
+            <version>${xxl-tool.version}</version>
         </dependency>
 
         <!-- ********************** jsoup + selenium ********************** -->
