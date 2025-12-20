@@ -325,7 +325,8 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 3、【升级】多个依赖升级至更新版本，如jsoup、selenium等。
 
 ### v1.5.1 Release Notes[2025-12-20]
-- 1、【升级】多个依赖升级至更新版本，如jsoup、selenium、junit等。
+- 1、【升级】文件处理优化，合并PR-37；
+- 2、【升级】多个依赖升级至更新版本，如jsoup、selenium、junit等。
 
 ### v1.5.2 Release Notes[迭代中]
 - 1、【TODO】爬虫扩散规则抽象，支持自定义；包括深度、URL正则、以及自定义编码等；
