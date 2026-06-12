@@ -39,7 +39,7 @@ public class XxlCrawlerTest05 {
         /**
          * 1、下载驱动 chromedriver ，并解压在磁盘空间下；
          *
-         *  下载版本：>=143.0.7499.169
+         *  下载版本：>=149.x （与 Chrome 保持一致）
          *  下载地址：
          *      a、https://developer.chrome.com/docs/chromedriver?hl=zh-cn
          *      b、https://googlechromelabs.github.io/chrome-for-testing/#stable

@@ -25,13 +25,13 @@
         <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
 
         <!-- base -->
-        <slf4j-api.version>2.0.17</slf4j-api.version>
-        <junit-jupiter.version>6.0.1</junit-jupiter.version>
+        <slf4j-api.version>2.0.18</slf4j-api.version>
+        <junit-jupiter.version>6.1.0</junit-jupiter.version>
 
         <!-- jsoup -->
-        <jsoup.version>1.21.2</jsoup.version>
+        <jsoup.version>1.22.2</jsoup.version>
         <!-- selenium + chromedriver -->
-        <selenium-java.version>4.39.0</selenium-java.version>
+        <selenium-java.version>4.44.0</selenium-java.version>
     </properties>
 
     <dependencies>

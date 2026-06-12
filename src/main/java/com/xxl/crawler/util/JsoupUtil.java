@@ -164,7 +164,7 @@ public class JsoupUtil {
         Elements hrefElements = html.select("a[href]");
 
         // parse url
-        Set<String> links = new HashSet<String>();
+        Set<String> links = new HashSet<>();
         if (hrefElements!=null && !hrefElements.isEmpty()) {
             for (Element item : hrefElements) {
                 String href = item.attr("abs:href");        // href、abs:href
