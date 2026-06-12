@@ -237,7 +237,7 @@ public class CrawlerThread implements Runnable {
                                 Elements fieldElementList = pageVoElement.select(cssQuery);
                                 if (fieldElementList!=null && !fieldElementList.isEmpty()) {
 
-                                    List<Object> fieldValueTmp = new ArrayList<Object>();
+                                    List<Object> fieldValueTmp = new ArrayList<>();
                                     for (Element fieldElement: fieldElementList) {
 
                                         // get field-value

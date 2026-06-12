@@ -3,6 +3,7 @@ package com.xxl.crawler.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,6 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 /**
  * Crawler File Util
@@ -158,6 +162,12 @@ public class CrawlerFileUtil {
             connection.setConnectTimeout(timeoutMillis);
             connection.setReadTimeout(timeoutMillis); // 添加读取超时
 
+            // default: trust-https
+            if (isHttps(fileUrl)) {
+                HttpsURLConnection https = (HttpsURLConnection) connection;
+                trustAllHosts(https);
+            }
+
             try (InputStream inputStream = connection.getInputStream();
                  BufferedOutputStream out = new BufferedOutputStream(Files.newOutputStream(tempPath))) {
 
@@ -201,4 +211,55 @@ public class CrawlerFileUtil {
         }
         return Files.exists(Paths.get(filePath));
     }
+
+    // ---------------------- tool: http valid ----------------------
+
+    /**
+     * 检测是否https
+     */
+    public static boolean isHttps(String url) {
+        return url != null && url.toLowerCase().startsWith("https:");
+    }
+
+    // ---------------------- ssl ----------------------
+
+    /**
+     * trust-https
+     */
+    private static void trustAllHosts(HttpsURLConnection connection) {
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            SSLSocketFactory newFactory = sc.getSocketFactory();
+
+            connection.setSSLSocketFactory(newFactory);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        connection.setHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+    }
+
+    /**
+     * trust-all-certs
+     */
+    private static final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[]{};
+        }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+    }};
+
 }
