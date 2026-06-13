@@ -3,12 +3,13 @@ package com.xxl.crawler.test.util;
 import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.param.Request;
 import com.xxl.crawler.util.JsoupUtil;
+import com.xxl.tool.http.http.enums.Header;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Set;
 
 /**
  * jsoup tool test
@@ -26,7 +27,7 @@ public class JsoupUtilTest {
         String url = "http://www.baidu.com/";
 
         Document html = JsoupUtil.load(new Request(url, null, null, null,
-                Const.USER_AGENT_CHROME, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false, null));
+                Header.DEFAULT_USER_AGENT_MAC, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false, null));
         logger.info(html.html());
     }
 
@@ -38,7 +39,7 @@ public class JsoupUtilTest {
         String url = "http://www.baidu.com/";
 
         Document html = JsoupUtil.load(new Request(url, null, null, null,
-                Const.USER_AGENT_CHROME, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false,null));
+                Header.DEFAULT_USER_AGENT_MAC, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false,null));
         Set<String> linkList = JsoupUtil.findLinks(html);
 
         logger.info("link num {}", linkList.size());
@@ -58,7 +59,7 @@ public class JsoupUtilTest {
         String url = "http://www.baidu.com/";
 
         Document html = JsoupUtil.load(new Request(url, null, null, null,
-                Const.USER_AGENT_CHROME, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false,null));
+                Header.DEFAULT_USER_AGENT_MAC, null, false, Const.TIMEOUT_MILLIS_DEFAULT, false,null));
         Set<String> linkList = JsoupUtil.findImages(html);
 
         logger.info("images num {}", linkList.size());

@@ -3,7 +3,7 @@ package com.xxl.crawler.test;
 import com.xxl.crawler.XxlCrawler;
 import com.xxl.crawler.annotation.PageFieldSelect;
 import com.xxl.crawler.annotation.PageSelect;
-import com.xxl.crawler.constant.Const;
+import com.xxl.crawler.constant.SelectType;
 import com.xxl.crawler.pageloader.param.Response;
 import com.xxl.crawler.pageloader.strategy.SeleniumChromePageLoader;
 import com.xxl.crawler.pageparser.PageParser;
@@ -81,10 +81,10 @@ public class XxlCrawlerTest05 {
     @PageSelect(cssQuery = ".js-hotword")
     public static class PageVo {
 
-        @PageFieldSelect(cssQuery = "*", selectType = Const.SelectType.TEXT)
+        @PageFieldSelect(cssQuery = "*", selectType = SelectType.TEXT)
         private String title;
 
-        @PageFieldSelect(cssQuery = "href", selectType = Const.SelectType.ATTR)
+        @PageFieldSelect(cssQuery = "href", selectType = SelectType.ATTR)
         private String link;
 
         public String getTitle() {

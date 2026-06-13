@@ -1,7 +1,7 @@
 package com.xxl.crawler.rundata.strategy;
 
 import com.xxl.crawler.rundata.RunUrlPool;
-import com.xxl.crawler.util.UrlUtil;
+import com.xxl.tool.http.HttpTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public class LocalRunUrlPool extends RunUrlPool {
     @Override
     public boolean addUrl(String url, boolean validUrlRegex) {
         // valid
-        if (!UrlUtil.isUrl(url)) {
+        if (!(HttpTool.isHttp(url) || HttpTool.isHttps(url))) {
             logger.debug(">>>>>>>>>>> xxl-crawler isUrl fail, url not valid: {}", url);
             return false;
         }

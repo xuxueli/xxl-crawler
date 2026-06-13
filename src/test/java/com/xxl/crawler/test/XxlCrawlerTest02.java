@@ -1,13 +1,16 @@
 package com.xxl.crawler.test;
 
 import com.xxl.crawler.XxlCrawler;
-import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.param.Response;
 import com.xxl.crawler.pageparser.PageParser;
-import com.xxl.crawler.util.CrawlerFileUtil;
+import com.xxl.crawler.util.CrawlerUtil;
+import com.xxl.tool.http.http.enums.ContentType;
+import com.xxl.tool.io.FileTool;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.file.Path;
 
 /**
  * 爬虫示例01：
@@ -40,14 +43,24 @@ public class XxlCrawlerTest02 {
                      */
                     @Override
                     public void afterParse(Response<Object> response) {
-                        // 获取页面html源码
-                        String htmlData = response.getHtml().html();
 
-                        // 下载Html文件
-                        String filePath = "/Users/admin/Downloads/tmp/html";
-                        String fileName = CrawlerFileUtil.getFileNameByUrl(response.getHtml().baseUri(), Const.CONTENT_TYPE_HTML);
-                        CrawlerFileUtil.saveFile(htmlData, filePath, fileName);
-                        logger.info("saveFile success, url = {}, file={}", response.getRequest().getUrl(), filePath + "/" + fileName);
+                        try {
+
+                            // 2.1、获取页面html源码
+                            String htmlData = response.getHtml().html();
+
+                            // 2.2、生成文件保存路径 和 文件名
+                            String fileDir = "/Users/admin/Downloads/tmp/html";
+                            String fileName = CrawlerUtil.generateFileNameWithUrl(response.getHtml().baseUri(), ContentType.TEXT_HTML.getValue());
+                            String finalFilePath = Path.of(fileDir, fileName).toString();
+
+                            // 2.2、下载Html文件
+                            FileTool.writeString(finalFilePath, htmlData);
+                            logger.info("saveFile success, url = {}, finalFilePath={}", response.getRequest().getUrl(), finalFilePath);
+
+                        } catch (Exception e) {
+                            logger.error(e.getMessage(), e);
+                        }
                     }
                 })
                 .build();

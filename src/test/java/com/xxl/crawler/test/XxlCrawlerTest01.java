@@ -3,7 +3,7 @@ package com.xxl.crawler.test;
 import com.xxl.crawler.XxlCrawler;
 import com.xxl.crawler.annotation.PageFieldSelect;
 import com.xxl.crawler.annotation.PageSelect;
-import com.xxl.crawler.constant.Const;
+import com.xxl.crawler.constant.SelectType;
 import com.xxl.crawler.pageloader.param.Response;
 import com.xxl.crawler.pageparser.PageParser;
 import org.junit.jupiter.api.Test;
@@ -69,13 +69,13 @@ public class XxlCrawlerTest01 {
     @PageSelect(cssQuery = ".post-item-body")
     public static class BlogPageVo {
 
-        @PageFieldSelect(cssQuery = ".post-item-title", selectType = Const.SelectType.TEXT)
+        @PageFieldSelect(cssQuery = ".post-item-title", selectType = SelectType.TEXT)
         private String title;
 
-        @PageFieldSelect(cssQuery = ".post-item-summary", selectType = Const.SelectType.TEXT)
+        @PageFieldSelect(cssQuery = ".post-item-summary", selectType = SelectType.TEXT)
         private String description;
 
-        @PageFieldSelect(cssQuery = ".post-item-title", selectType = Const.SelectType.ATTR, selectVal = "href")
+        @PageFieldSelect(cssQuery = ".post-item-title", selectType = SelectType.ATTR, selectVal = "href")
         private String href;
 
         public String getTitle() {

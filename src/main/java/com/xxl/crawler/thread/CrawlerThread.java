@@ -3,13 +3,13 @@ package com.xxl.crawler.thread;
 import com.xxl.crawler.XxlCrawler;
 import com.xxl.crawler.annotation.PageFieldSelect;
 import com.xxl.crawler.annotation.PageSelect;
-import com.xxl.crawler.constant.Const;
+import com.xxl.crawler.constant.SelectType;
 import com.xxl.crawler.exception.XxlCrawlerException;
 import com.xxl.crawler.pageloader.param.Request;
 import com.xxl.crawler.pageloader.param.Response;
 import com.xxl.crawler.util.FieldReflectionUtil;
 import com.xxl.crawler.util.JsoupUtil;
-import com.xxl.crawler.util.UrlUtil;
+import com.xxl.tool.http.HttpTool;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -65,7 +65,7 @@ public class CrawlerThread implements Runnable {
 
                 // process url
                 running = true;
-                if (!UrlUtil.isUrl(link)) {
+                if (!(HttpTool.isHttp(link) || HttpTool.isHttps(link))) {
                     continue;
                 }
 
@@ -215,7 +215,7 @@ public class CrawlerThread implements Runnable {
                         // field origin value
                         PageFieldSelect fieldSelect = field.getAnnotation(PageFieldSelect.class);
                         String cssQuery = null;
-                        Const.SelectType selectType = null;
+                        SelectType selectType = null;
                         String selectVal = null;
                         if (fieldSelect != null) {
                             cssQuery = fieldSelect.cssQuery();

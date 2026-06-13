@@ -1,6 +1,6 @@
 package com.xxl.crawler.annotation;
 
-import com.xxl.crawler.constant.Const;
+import com.xxl.crawler.constant.SelectType;
 
 import java.lang.annotation.*;
 
@@ -43,11 +43,11 @@ public @interface PageFieldSelect {
      *     selectType = SelectType.HAS_CLASS, selectVal="abs:src"   // hasClass of element
      * </pre>
      *
-     * @see Const.SelectType
+     * @see SelectType
      *
      * @return SelectType
      */
-    public Const.SelectType selectType() default Const.SelectType.TEXT;
+    public SelectType selectType() default SelectType.TEXT;
 
     /**
      * jquery data-extraction-value

@@ -1,6 +1,7 @@
 package com.xxl.crawler.util;
 
 import com.xxl.crawler.constant.Const;
+import com.xxl.tool.http.http.enums.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,7 @@ public class ProxyIpUtil {
             URL url = new URL(validSite!=null?validSite: Const.SITE_BAIDU);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection(proxy);
-            httpURLConnection.setRequestProperty("User-Agent", Const.USER_AGENT_CHROME);
+            httpURLConnection.setRequestProperty(Header.USER_AGENT.getValue(), Header.DEFAULT_USER_AGENT_MAC);
             httpURLConnection.setConnectTimeout(Const.TIMEOUT_MILLIS_DEFAULT);
             httpURLConnection.setReadTimeout(Const.TIMEOUT_MILLIS_DEFAULT);
 

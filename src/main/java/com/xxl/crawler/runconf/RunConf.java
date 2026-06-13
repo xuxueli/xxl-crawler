@@ -2,12 +2,16 @@ package com.xxl.crawler.runconf;
 
 import com.xxl.crawler.constant.Const;
 import com.xxl.crawler.pageloader.PageLoader;
-import com.xxl.crawler.pageparser.PageParser;
 import com.xxl.crawler.pageloader.strategy.JsoupPageLoader;
+import com.xxl.crawler.pageparser.PageParser;
 import com.xxl.crawler.pageparser.strategy.PrintPageParser;
 import com.xxl.crawler.proxy.ProxyPool;
+import com.xxl.tool.http.http.enums.Header;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * run conf
@@ -26,7 +30,7 @@ public class RunConf {
     private volatile Map<String, String> cookieMap;                                 // 请求Cookie
     private volatile List<String> userAgentList =
             Collections.synchronizedList(
-                    new ArrayList<String>(Arrays.asList(Const.USER_AGENT_CHROME))); // 请求UserAgent
+                    new ArrayList<>(List.of(Header.DEFAULT_USER_AGENT_MAC)));       // 请求UserAgent
     private volatile String referrer;                                               // 请求Referrer
     private volatile boolean ifPost = false;                                        // 请求方式：true=POST请求、false=GET请求
     private volatile int timeoutMillis = Const.TIMEOUT_MILLIS_DEFAULT;              // 超时时间，毫秒

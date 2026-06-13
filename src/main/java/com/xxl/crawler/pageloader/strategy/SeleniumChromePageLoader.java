@@ -3,8 +3,8 @@ package com.xxl.crawler.pageloader.strategy;
 import com.xxl.crawler.exception.XxlCrawlerException;
 import com.xxl.crawler.pageloader.PageLoader;
 import com.xxl.crawler.pageloader.param.Request;
-import com.xxl.crawler.util.CrawlerFileUtil;
-import com.xxl.crawler.util.UrlUtil;
+import com.xxl.tool.http.HttpTool;
+import com.xxl.tool.io.FileTool;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.Cookie;
@@ -34,12 +34,12 @@ public class SeleniumChromePageLoader extends PageLoader {
 
     @Override
     public Document load(Request request) {
-        if (!UrlUtil.isUrl(request.getUrl())) {
+        if (!(HttpTool.isHttp(request.getUrl()) || HttpTool.isHttps(request.getUrl()))) {
             return null;
         }
 
         // init driver
-        if (!CrawlerFileUtil.exists(driverPath)) {
+        if (!FileTool.exists(driverPath)) {
             throw new XxlCrawlerException("webdriver.chrome.driver not found.");
         }
         System.setProperty("webdriver.chrome.driver", driverPath);

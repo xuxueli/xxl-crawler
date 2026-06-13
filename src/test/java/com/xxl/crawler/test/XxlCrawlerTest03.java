@@ -3,14 +3,17 @@ package com.xxl.crawler.test;
 import com.xxl.crawler.XxlCrawler;
 import com.xxl.crawler.annotation.PageFieldSelect;
 import com.xxl.crawler.annotation.PageSelect;
-import com.xxl.crawler.constant.Const;
+import com.xxl.crawler.constant.SelectType;
 import com.xxl.crawler.pageloader.param.Response;
 import com.xxl.crawler.pageparser.PageParser;
-import com.xxl.crawler.util.CrawlerFileUtil;
+import com.xxl.crawler.util.CrawlerUtil;
+import com.xxl.tool.core.CollectionTool;
+import com.xxl.tool.http.HttpTool;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -45,28 +48,38 @@ public class XxlCrawlerTest03 {
                      */
                     @Override
                     public void afterParse(Response<ImgPageVo> response) {
+
                         // 爬虫范围限制，仅爬取“油画世界”相关页面
                         if (!response.getParseElementList().get(0).outerHtml().contains("油画世界")) {      // 上文入口setUrls为“油画世界”空间地址，此处限制扩散范围；
                             return;
                         }
-
-                        // 生成下载目录，不同文档图片隔离存放
-                        String filePath = "/Users/admin/Downloads/tmp/img";
-                        filePath = filePath + "/" +response.getHtml().title();
+                        if (CollectionTool.isEmpty(response.getParseVoList())) {
+                            return;
+                        }
 
                         // 下载图片至本地
-                        if (response.getParseVoList()!=null) {
-                            for (ImgPageVo pageImgVo: response.getParseVoList()) {
-                                if (pageImgVo.getImages()!=null && !pageImgVo.getImages().isEmpty()) {
-                                    for (String img: pageImgVo.getImages()) {
-                                        // save
-                                        String fileName = CrawlerFileUtil.getFileNameByUrl(img, "image/jpeg");
-                                        boolean ret = CrawlerFileUtil.downFile(img, Const.TIMEOUT_MILLIS_DEFAULT, filePath, fileName);
-                                        logger.info("down images " + (ret?"success":"fail") + "：" + img);
-                                    }
+                        String fileDir = "/Users/admin/Downloads/tmp/img";
+                        for (ImgPageVo pageImgVo: response.getParseVoList()) {
+
+                            if (CollectionTool.isNotEmpty(pageImgVo.getImages())) {
+                                for (String img: pageImgVo.getImages()) {
+
+                                    // 生成文件名
+                                    String fileName = CrawlerUtil.generateFileNameWithUrl(img, "image/jpeg");
+
+                                    // 最终文件目录地址
+                                    String finePathFinal = Path.of(fileDir, response.getHtml().title(), fileName).toString();
+
+                                    // 图片下载到本地
+                                    HttpTool.createGet(img)
+                                            .connectTimeout(3000)
+                                            .download(finePathFinal);
+
+                                    logger.info("down images final path：" + finePathFinal + ", file url:" + img);
                                 }
                             }
                         }
+
                     }
                 })
                 .build();
@@ -81,13 +94,13 @@ public class XxlCrawlerTest03 {
      *      @PageSelect： 通过该注解页面元素，单个页面可以匹配多个页面元素生成多个 PageVo 对象。
      *      @PageFieldSelect： 通过该注解匹配页面元素的属性，每个页面元素可以匹配多个属性，即对应 PageVo 的多个属性值。
      */
-    @PageSelect(cssQuery = "#content")
+    @PageSelect(cssQuery = ".post_body")
     public static class ImgPageVo {
 
-        @PageFieldSelect(cssQuery = "img", selectType = Const.SelectType.ATTR, selectVal = "abs:src")
+        @PageFieldSelect(cssQuery = "img", selectType = SelectType.ATTR, selectVal = "abs:src")
         private List<String> images;
 
-        @PageFieldSelect(cssQuery = ".post_wemedia_name")
+        @PageFieldSelect(cssQuery = ".post_title")
         private String title;
 
         public List<String> getImages() {

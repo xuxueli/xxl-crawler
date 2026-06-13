@@ -1,7 +1,8 @@
 package com.xxl.crawler.util;
 
-import com.xxl.crawler.constant.Const;
+import com.xxl.crawler.constant.SelectType;
 import com.xxl.crawler.pageloader.param.Request;
+import com.xxl.tool.http.HttpTool;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,7 +38,7 @@ public class JsoupUtil {
      * @return Document
      */
     public static Document load(Request request) {
-        if (!UrlUtil.isUrl(request.getUrl())) {
+        if (!(HttpTool.isHttp(request.getUrl()) || HttpTool.isHttps(request.getUrl()))) {
             logger.debug("url is invalid, request="+request.toString());
             return null;
         }
@@ -122,17 +123,17 @@ public class JsoupUtil {
      * @param selectVal
      * @return String
      */
-    public static String parseElement(Element fieldElement, Const.SelectType selectType, String selectVal) {
+    public static String parseElement(Element fieldElement, SelectType selectType, String selectVal) {
         String fieldElementOrigin = null;
-        if (Const.SelectType.HTML == selectType) {
+        if (SelectType.HTML == selectType) {
             fieldElementOrigin = fieldElement.html();
-        } else if (Const.SelectType.VAL == selectType) {
+        } else if (SelectType.VAL == selectType) {
             fieldElementOrigin = fieldElement.val();
-        } else if (Const.SelectType.TEXT == selectType) {
+        } else if (SelectType.TEXT == selectType) {
             fieldElementOrigin = fieldElement.text();
-        } else if (Const.SelectType.ATTR == selectType) {
+        } else if (SelectType.ATTR == selectType) {
             fieldElementOrigin = fieldElement.attr(selectVal);
-        }  else if (Const.SelectType.HAS_CLASS == selectType) {
+        }  else if (SelectType.HAS_CLASS == selectType) {
             fieldElementOrigin = String.valueOf(fieldElement.hasClass(selectVal));
         }  else {
             fieldElementOrigin = fieldElement.toString();
@@ -168,7 +169,7 @@ public class JsoupUtil {
         if (hrefElements!=null && !hrefElements.isEmpty()) {
             for (Element item : hrefElements) {
                 String href = item.attr("abs:href");        // href、abs:href
-                if (UrlUtil.isUrl(href)) {
+                if (HttpTool.isHttp(href) || HttpTool.isHttps(href)) {
                     links.add(href);
                 }
             }

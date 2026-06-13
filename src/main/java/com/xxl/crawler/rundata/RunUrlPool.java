@@ -1,7 +1,7 @@
 package com.xxl.crawler.rundata;
 
 import com.xxl.crawler.util.RegexUtil;
-import com.xxl.crawler.util.UrlUtil;
+import com.xxl.tool.http.HttpTool;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,7 +32,7 @@ public abstract class RunUrlPool {
      * @return boolean
      */
     public boolean validUrlRegex(String url){
-        if (!UrlUtil.isUrl(url)) {
+        if (!(HttpTool.isHttp(url) || HttpTool.isHttps(url))) {
             return false;   // false if url invalid
         }
 
