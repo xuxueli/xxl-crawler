@@ -329,11 +329,15 @@ public abstract int getUrlNum(); | 获取待采集URL数量；
 - 2、【升级】多个依赖升级至更新版本，如jsoup、selenium、junit等。
 - 3、【优化】JS动态渲染爬虫（Selenium + ChromeDriver ）示例完善；
 
-### v1.6.1 Release Notes[迭代中]
-- 1、【升级】升级多项依赖至较新版本；
-- 2、【优化】文件下载组件优化，支持HTTPS文件下载；
+### v1.6.1 Release Notes[2026-06-13]
+- 1、【重构】重构爬虫核心组件并优化依赖管理，提升系统可维护性；
+- 2、【优化】文件下载组件优化，引入XXL-TOOL，支持HTTPS文件下载；
+- 3、【升级】升级多项依赖至较新版本；
+
+### v1.6.2 Release Notes[ING]
 - 3、【TODO】代码重构，爬虫属性格式统一、文件下载组件替换HttpTool；
 - 4、【TODO】爬虫扩散规则抽象，支持自定义；包括深度、URL正则、以及自定义编码等；
+
 
 ### TODO LIST
 - 1、扩展SelectType；
