@@ -21,8 +21,8 @@ public class ProxyIpUtil {
     /**
      * check proxy
      *
-     * @param proxy
-     * @param validSite
+     * @param proxy         proxy
+     * @param validSite     valid site, default is baidu
      * @return int
      */
     public static int checkProxy(Proxy proxy, String validSite){
@@ -54,8 +54,8 @@ public class ProxyIpUtil {
     /**
      * check proxy, repeat 3 times
      *
-     * @param proxy
-     * @param validSite
+     * @param proxy         proxy
+     * @param validSite     valid site, default is baidu
      * @return int
      */
     public static int checkProxyRepeat(Proxy proxy, String validSite){

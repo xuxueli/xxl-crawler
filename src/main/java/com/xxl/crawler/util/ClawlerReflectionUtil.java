@@ -11,12 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * api request field, reflect util
+ * Clawler Reflection Util, parse field value
+ *
  * @author xuxueli 2017-05-26
  */
-public final class FieldReflectionUtil {
+public final class ClawlerReflectionUtil {
 
-	private FieldReflectionUtil(){}
+	private ClawlerReflectionUtil(){}
 
 	public static Byte parseByte(String value) {
 		try {

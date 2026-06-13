@@ -1,6 +1,6 @@
 package com.xxl.crawler.rundata;
 
-import com.xxl.crawler.util.RegexUtil;
+import com.xxl.tool.core.RegexTool;
 import com.xxl.tool.http.HttpTool;
 
 import java.util.Collections;
@@ -39,7 +39,7 @@ public abstract class RunUrlPool {
         if (whiteUrlRegexs!=null && !whiteUrlRegexs.isEmpty()) {
             boolean underWhiteUrl = false;
             for (String whiteRegex: whiteUrlRegexs) {
-                if (RegexUtil.matches(whiteRegex, url)) {
+                if (RegexTool.matches(whiteRegex, url)) {
                     underWhiteUrl = true;
                 }
             }

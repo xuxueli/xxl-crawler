@@ -107,8 +107,8 @@ public class JsoupUtil {
     /**
      * load PageSource
      *
-     * @param request
-     * @return
+     * @param request   request
+     * @return          the  html source of page
      */
     public static String loadPageSource(Request request) {
         Document html = load(request);
@@ -118,10 +118,10 @@ public class JsoupUtil {
     /**
      * 抽取元素数据
      *
-     * @param fieldElement
-     * @param selectType
-     * @param selectVal
-     * @return String
+     * @param fieldElement      fieldElement
+     * @param selectType        selectType
+     * @param selectVal         selectVal
+     * @return String           the element data
      */
     public static String parseElement(Element fieldElement, SelectType selectType, String selectVal) {
         String fieldElementOrigin = null;
@@ -144,8 +144,8 @@ public class JsoupUtil {
     /**
      * find links("<a href=XX ></>") from Document
      *
-     * @param html
-     * @return Set<String>
+     * @param html              html Document
+     * @return Set<String>      the links of Document
      */
     public static Set<String> findLinks(Document html) {
         // valid
@@ -180,8 +180,8 @@ public class JsoupUtil {
     /**
      *  find imgs("<img src=XX ></>") from Document
      *
-     * @param html
-     * @return Set<String>
+     * @param html          html Document
+     * @return Set<String>  the set of images
      */
     public static Set<String> findImages(Document html) {
 

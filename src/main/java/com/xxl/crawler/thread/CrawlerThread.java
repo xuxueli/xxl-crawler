@@ -7,7 +7,7 @@ import com.xxl.crawler.constant.SelectType;
 import com.xxl.crawler.exception.XxlCrawlerException;
 import com.xxl.crawler.pageloader.param.Request;
 import com.xxl.crawler.pageloader.param.Response;
-import com.xxl.crawler.util.FieldReflectionUtil;
+import com.xxl.crawler.util.ClawlerReflectionUtil;
 import com.xxl.crawler.util.JsoupUtil;
 import com.xxl.tool.http.HttpTool;
 import org.jsoup.nodes.Document;
@@ -150,8 +150,8 @@ public class CrawlerThread implements Runnable {
     /**
      * load and parse page
      *
-     * @param request
-     * @return boolean
+     * @param request   request
+     * @return boolean  the result of parse
      */
     private Response loadAndParsePage(Request request) throws IllegalAccessException, InstantiationException {
 
@@ -246,7 +246,7 @@ public class CrawlerThread implements Runnable {
                                             continue;
                                         }
                                         try {
-                                            fieldValueTmp.add(FieldReflectionUtil.parseValue(field, fieldElementOrigin));
+                                            fieldValueTmp.add(ClawlerReflectionUtil.parseValue(field, fieldElementOrigin));
                                         } catch (Exception e) {
                                             logger.error(e.getMessage(), e);
                                         }
@@ -270,7 +270,7 @@ public class CrawlerThread implements Runnable {
                             }
 
                             try {
-                                fieldValue = FieldReflectionUtil.parseValue(field, fieldValueOrigin);
+                                fieldValue = ClawlerReflectionUtil.parseValue(field, fieldValueOrigin);
                             } catch (Exception e) {
                                 logger.error(e.getMessage(), e);
                             }

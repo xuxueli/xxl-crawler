@@ -28,7 +28,7 @@ public class XxlCrawlerTest04 {
     public void test() {
 
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setUrls("http://news.baidu.com/widget?id=LocalNews&ajax=json")
+                .setUrls("https://news.baidu.com/widget?id=LocalNews&ajax=json")
                 .setTimeoutMillis(5000)
                 .setPageParser(new PageParser<Object>() {
                     @Override
