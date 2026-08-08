@@ -32,7 +32,7 @@
         <xxl-tool.version>2.5.1</xxl-tool.version>
 
         <!-- jsoup -->
-        <jsoup.version>1.22.2</jsoup.version>
+        <jsoup.version>1.23.1</jsoup.version>
         <!-- selenium + chromedriver -->
         <selenium-java.version>4.44.0</selenium-java.version>
     </properties>
